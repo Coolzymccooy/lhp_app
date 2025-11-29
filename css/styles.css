@@ -293,7 +293,7 @@ img {
 .hero-slider {
     position: relative;
     width: 100%;
-    height: 100vh;
+    height: 70vh;
     overflow: hidden;
 }
 
@@ -342,6 +342,14 @@ img {
     padding: 2rem;
 }
 
+.slide[data-bg*="family"] .slide-bg {
+    background-position: center 20%;
+}
+
+.slide[data-bg*="family"] .slide-content {
+    justify-content: flex-end;
+    padding-bottom: 4rem;
+}
 
 
 .title-script {
@@ -386,20 +394,44 @@ img {
 .btn-join {
     display: inline-flex;
     align-items: center;
-    gap: 10px;
-    background: #fff;
-    color: #1a1a1a;
-    padding: 15px 30px;
+    gap: 12px;
+    padding: 16px 36px;
+    font-size: 1.1rem;
     font-weight: 700;
-    font-size: 14px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: 50px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
     transition: all 0.3s ease;
 }
 
     .btn-join:hover {
-        background: #e91e9a;
-        color: #fff;
+        background: rgba(255, 255, 255, 0.25);
+        border-color: #fff;
+        transform: translateY(-3px);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
     }
 
+    .btn-join i {
+        font-size: 1.3rem;
+        animation: pulse 1.5s ease-in-out infinite;
+    }
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.15);
+    }
+}
 /* ========================================
    SECTIONS - GENERAL
    ======================================== */
@@ -799,6 +831,65 @@ img {
         height: 100%;
     }
 
+
+/* Instagram Section */
+.instagram-live-section {
+    background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
+    padding: 4rem 2rem;
+    text-align: center;
+}
+
+    .instagram-live-section .section-title {
+        color: #fff;
+    }
+
+    .instagram-live-section .services-intro {
+        color: rgba(255, 255, 255, 0.9);
+        margin-bottom: 2rem;
+    }
+
+.instagram-embed-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 2rem;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.instagram-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 32px;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: 50px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+    .instagram-cta:hover {
+        background: rgba(255, 255, 255, 0.35);
+        border-color: #fff;
+        transform: scale(1.05);
+    }
+
+    .instagram-cta i {
+        font-size: 2rem;
+    }
+
+/* Limit the Instagram blockquote width */
+.instagram-embed-wrapper .instagram-media {
+    max-width: 400px !important;
+    min-width: 300px !important;
+    margin: 0 !important;
+}
 /* ========================================
    FOOTER
    ======================================== */
@@ -858,17 +949,49 @@ img {
    PAGE HERO (About, Give, etc.)
    ======================================== */
 .page-hero {
-    height: 500px;
     position: relative;
+    width: 100%;
+    height: 50vh; /* adjust height as needed */
+    overflow: hidden;
 }
 
     .page-hero .hero-bg {
         position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
+        inset: 0;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
     }
+
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5); /* dark overlay for text readability */
+    z-index: 1;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #fff;
+}
+
+    .hero-content h1 {
+        font-size: 3rem;
+        font-weight: bold;
+        margin-bottom: 1rem;
+    }
+
+    .hero-content p {
+        font-size: 1.5rem;
+    }
+
 
 .give-hero {
     height: 400px;
@@ -1436,9 +1559,9 @@ img {
 }
 
 /* Mobile Portrait */
-@media (max-width: 480px) {
+@media (max-width: 768px) {
     .hero-slider {
-        height: 400px;
+        height: 50vh;
     }
 
     .title-script {
@@ -1499,6 +1622,9 @@ img {
 
     .error-code {
         font-size: 80px;
+    }
+    .hero-slider {
+        height: 50vh;
     }
 }
 
@@ -2250,6 +2376,158 @@ img {
         margin-bottom: 25px;
         color: #666;
     }
+
+/* === Global Form Styles (Prayer, Counselling, iCare, Membership, Contact, Response) === */
+
+/* Main form shells */
+.prayer-form,
+.booking-form, /* counselling */
+.icare-form,
+.membership-form,
+.contact-form,
+.response-form {
+    max-width: 700px;
+    margin: 0 auto;
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+    /* Headings inside forms */
+    .prayer-form h3,
+    .booking-form h2,
+    .booking-form h3,
+    .icare-form h3,
+    .membership-form h1,
+    .membership-form h2,
+    .contact-form h3,
+    .response-form h3 {
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 700;
+        margin-bottom: 15px;
+        color: #2c3e50;
+    }
+
+/* Generic form layout */
+.form-row {
+    display: flex;
+    gap: 20px;
+}
+
+    .form-row .form-group {
+        flex: 1;
+    }
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+    .form-group label {
+        display: block;
+        font-size: 14px;
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 6px;
+    }
+
+    /* Inputs, selects, textareas */
+    .form-group input[type="text"],
+    .form-group input[type="email"],
+    .form-group input[type="tel"],
+    .form-group input[type="date"],
+    .form-group input[type="password"],
+    .form-group select,
+    .form-group textarea {
+        width: 100%;
+        padding: 10px 12px;
+        border-radius: 6px;
+        border: 1px solid #dcdfe6;
+        font-size: 14px;
+        font-family: 'Montserrat', sans-serif;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        background: #fdfdfd;
+    }
+
+    .form-group textarea {
+        resize: vertical;
+        min-height: 120px;
+    }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+        }
+
+/* Checkboxes + radios */
+.checkbox-single label,
+.privacy-checkbox label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+    font-size: 13px;
+}
+
+.checkbox-single input[type="checkbox"],
+.privacy-checkbox input[type="checkbox"],
+.radio-option input[type="radio"] {
+    width: 16px;
+    height: 16px;
+}
+
+/* Buttons (submit / create account / etc.) */
+.btn-submit,
+.btn-create-account {
+    display: inline-block;
+    width: 100%;
+    padding: 14px 18px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #ffffff;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+    text-align: center;
+}
+
+    .btn-submit:hover,
+    .btn-create-account:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 8px 18px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-submit:disabled,
+    .btn-create-account:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
+/* Mobile tweaks */
+@media (max-width: 768px) {
+    .prayer-form,
+    .booking-form,
+    .icare-form,
+    .membership-form,
+    .contact-form,
+    .response-form {
+        padding: 20px;
+    }
+
+    .form-row {
+        flex-direction: column;
+        gap: 0;
+    }
+}
+
 
 /* ========================================
    RESPONSIVE - NEW PAGES

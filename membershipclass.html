@@ -265,17 +265,32 @@
             <p>Welcome to RCCG The Lighthouse Parish, Bury. This e-Membership portal has been built to collate information of both existing and new members in the church.</p>
         </div>
 
-        <form class="membership-form" id="membershipForm">
+        <form class="membership-form"
+              id="membershipForm"
+              action="https://formspree.io/f/xkgldzzr"
+              method="POST">
+            <!-- Hidden Formspree helpers -->
+            <input type="hidden" name="_subject" value="New E-Membership Registration - LHP Website">
+            <input type="hidden" name="_redirect" value="https://lhp-app.vercel.app/thank-you.html">
+            <input type="text" name="_gotcha" style="display:none">
+
             <!-- Member Type -->
             <div class="form-group">
                 <label>Member Type<span class="required">*</span></label>
                 <div class="radio-group">
                     <div class="radio-option">
-                        <input type="radio" id="newMember" name="memberType" value="new" checked>
+                        <input type="radio"
+                               id="newMember"
+                               name="member_type"
+                               value="New Member"
+                               checked>
                         <label for="newMember">New Member</label>
                     </div>
                     <div class="radio-option">
-                        <input type="radio" id="existingMember" name="memberType" value="existing">
+                        <input type="radio"
+                               id="existingMember"
+                               name="member_type"
+                               value="Existing Member">
                         <label for="existingMember">Existing Member</label>
                     </div>
                 </div>
@@ -284,56 +299,57 @@
             <!-- First Name -->
             <div class="form-group">
                 <label for="firstName">First Name<span class="required">*</span></label>
-                <input type="text" id="firstName" name="firstName" placeholder="Enter your First Name" required>
+                <input type="text"
+                       id="firstName"
+                       name="first_name"
+                       placeholder="Enter your First Name"
+                       required>
             </div>
 
             <!-- Last Name -->
             <div class="form-group">
                 <label for="lastName">Last Name<span class="required">*</span></label>
-                <input type="text" id="lastName" name="lastName" placeholder="Enter your Last Name" required>
+                <input type="text"
+                       id="lastName"
+                       name="last_name"
+                       placeholder="Enter your Last Name"
+                       required>
             </div>
 
             <!-- Phone Number -->
             <div class="form-group">
                 <label for="phone">Phone Number<span class="required">*</span></label>
-                <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
+                <input type="tel"
+                       id="phone"
+                       name="phone"
+                       placeholder="Enter your phone number"
+                       required>
             </div>
 
             <!-- Email -->
             <div class="form-group">
                 <label for="email">Email</label>
-                <input type="email" id="email" name="email" placeholder="Enter your email address">
+                <input type="email"
+                       id="email"
+                       name="email"
+                       placeholder="Enter your email address">
             </div>
 
-            <!-- Password -->
-            <div class="form-group">
-                <label for="password">Password<span class="required">*</span></label>
-                <div class="password-field">
-                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
-                    <i class="fas fa-eye password-toggle" id="togglePassword"></i>
-                </div>
-            </div>
-
-            <!-- Confirm Password -->
-            <div class="form-group">
-                <label for="confirmPassword">Confirm Password<span class="required">*</span></label>
-                <div class="password-field">
-                    <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm your password" required>
-                    <i class="fas fa-eye password-toggle" id="toggleConfirmPassword"></i>
-                </div>
-            </div>
-
-            <!-- reCAPTCHA (Placeholder) -->
+            <!-- reCAPTCHA Placeholder (visual only, no logic) -->
             <div class="recaptcha-container">
                 <div style="border: 1px solid #ddd; padding: 15px; border-radius: 5px; background: #f9f9f9; text-align: center; color: #777;">
                     <i class="fas fa-shield-alt"></i> reCAPTCHA Verification
-                    <br><small>(Add your reCAPTCHA site key here)</small>
+                    <br><small>(Optional: plug in real reCAPTCHA later)</small>
                 </div>
             </div>
 
             <!-- Privacy Policy -->
             <div class="privacy-checkbox">
-                <input type="checkbox" id="privacyPolicy" name="privacyPolicy" required>
+                <input type="checkbox"
+                       id="privacyPolicy"
+                       name="privacy_policy"
+                       value="agreed"
+                       required>
                 <label for="privacyPolicy">
                     I agree to the <a href="#">Privacy Policy</a>
                 </label>
@@ -342,6 +358,7 @@
             <!-- Submit Button -->
             <button type="submit" class="btn-create-account">Create Account</button>
         </form>
+
 
         <div class="back-link">
             <a href="index.html"><i class="fas fa-arrow-left"></i> Back to Home</a>
@@ -384,113 +401,113 @@
     </footer>
 
     <script src="js/app.js"></script>
-    <script>
+    <!--<script>
     // Password toggle functionality
-    document.getElementById('togglePassword').addEventListener('click', function() {
-        const passwordInput = document.getElementById('password');
-        const icon = this;
+    //document.getElementById('togglePassword').addEventListener('click', function() {
+    //    const passwordInput = document.getElementById('password');
+    //    const icon = this;
 
-        if (passwordInput.type === 'password') {
-            passwordInput.type = 'text';
-            icon.classList.remove('fa-eye');
-            icon.classList.add('fa-eye-slash');
-        } else {
-            passwordInput.type = 'password';
-            icon.classList.remove('fa-eye-slash');
-            icon.classList.add('fa-eye');
-        }
-    });
+    //    if (passwordInput.type === 'password') {
+    //        passwordInput.type = 'text';
+    //        icon.classList.remove('fa-eye');
+    //        icon.classList.add('fa-eye-slash');
+    //    } else {
+    //        passwordInput.type = 'password';
+    //        icon.classList.remove('fa-eye-slash');
+    //        icon.classList.add('fa-eye');
+    //    }
+    //});
 
-    document.getElementById('toggleConfirmPassword').addEventListener('click', function() {
-        const confirmPasswordInput = document.getElementById('confirmPassword');
-        const icon = this;
+    ////document.getElementById('toggleConfirmPassword').addEventListener('click', function() {
+    ////    const confirmPasswordInput = document.getElementById('confirmPassword');
+    ////    const icon = this;
 
-        if (confirmPasswordInput.type === 'password') {
-            confirmPasswordInput.type = 'text';
-            icon.classList.remove('fa-eye');
-            icon.classList.add('fa-eye-slash');
-        } else {
-            confirmPasswordInput.type = 'password';
-            icon.classList.remove('fa-eye-slash');
-            icon.classList.add('fa-eye');
-        }
-    });
+    ////    if (confirmPasswordInput.type === 'password') {
+    ////        confirmPasswordInput.type = 'text';
+    ////        icon.classList.remove('fa-eye');
+    ////        icon.classList.add('fa-eye-slash');
+    ////    } else {
+    ////        confirmPasswordInput.type = 'password';
+    ////        icon.classList.remove('fa-eye-slash');
+    ////        icon.classList.add('fa-eye');
+    ////    }
+    ////});
 
-    // Form submission handling
-    document.getElementById('membershipForm').addEventListener('submit', function(e) {
-        e.preventDefault();
+    //// Form submission handling
+    //document.getElementById('membershipForm').addEventListener('submit', function(e) {
+    //    e.preventDefault();
 
-        const password = document.getElementById('password').value;
-        const confirmPassword = document.getElementById('confirmPassword').value;
-        const privacyPolicy = document.getElementById('privacyPolicy').checked;
-        const errorMessage = document.getElementById('errorMessage');
-        const errorText = document.getElementById('errorText');
-        const successMessage = document.getElementById('successMessage');
+    //    const password = document.getElementById('password').value;
+    //    const confirmPassword = document.getElementById('confirmPassword').value;
+    //    const privacyPolicy = document.getElementById('privacyPolicy').checked;
+    //    const errorMessage = document.getElementById('errorMessage');
+    //    const errorText = document.getElementById('errorText');
+    //    const successMessage = document.getElementById('successMessage');
 
-        // Hide previous messages
-        errorMessage.style.display = 'none';
-        successMessage.style.display = 'none';
+    //    // Hide previous messages
+    //    errorMessage.style.display = 'none';
+    //    successMessage.style.display = 'none';
 
-        // Validation
-        if (!privacyPolicy) {
-            errorText.textContent = 'You must agree to the Privacy Policy to continue.';
-            errorMessage.style.display = 'block';
-            return;
-        }
+    //    // Validation
+    //    if (!privacyPolicy) {
+    //        errorText.textContent = 'You must agree to the Privacy Policy to continue.';
+    //        errorMessage.style.display = 'block';
+    //        return;
+    //    }
 
-        if (password.length < 6) {
-            errorText.textContent = 'Password must be at least 6 characters long.';
-            errorMessage.style.display = 'block';
-            return;
-        }
+    //    if (password.length < 6) {
+    //        errorText.textContent = 'Password must be at least 6 characters long.';
+    //        errorMessage.style.display = 'block';
+    //        return;
+    //    }
 
-        if (password !== confirmPassword) {
-            errorText.textContent = 'Passwords do not match. Please check and try again.';
-            errorMessage.style.display = 'block';
-            return;
-        }
+    //    if (password !== confirmPassword) {
+    //        errorText.textContent = 'Passwords do not match. Please check and try again.';
+    //        errorMessage.style.display = 'block';
+    //        return;
+    //    }
 
-        // Get form data
-        const formData = {
-            memberType: document.querySelector('input[name="memberType"]:checked').value,
-            firstName: document.getElementById('firstName').value,
-            lastName: document.getElementById('lastName').value,
-            phone: document.getElementById('phone').value,
-            email: document.getElementById('email').value,
-            password: password
-        };
+    //    // Get form data
+    //    const formData = {
+    //        memberType: document.querySelector('input[name="memberType"]:checked').value,
+    //        firstName: document.getElementById('firstName').value,
+    //        lastName: document.getElementById('lastName').value,
+    //        phone: document.getElementById('phone').value,
+    //        email: document.getElementById('email').value,
+    //        password: password
+    //    };
 
-        // TODO: Send data to your backend API
-        console.log('Form data:', formData);
+    //    // TODO: Send data to your backend API
+    //    console.log('Form data:', formData);
 
-        // Show success message (for now)
-        successMessage.style.display = 'block';
+    //    // Show success message (for now)
+    //    successMessage.style.display = 'block';
 
-        // Reset form
-        setTimeout(function() {
-            document.getElementById('membershipForm').reset();
-            successMessage.style.display = 'none';
-        }, 5000);
+    //    // Reset form
+    //    setTimeout(function() {
+    //        document.getElementById('membershipForm').reset();
+    //        successMessage.style.display = 'none';
+    //    }, 5000);
 
-        // Scroll to top to show success message
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-    });
+    //    // Scroll to top to show success message
+    //    window.scrollTo({
+    //        top: 0,
+    //        behavior: 'smooth'
+    //    });
+    //});
 
-    // Real-time password match validation
-    document.getElementById('confirmPassword').addEventListener('input', function() {
-        const password = document.getElementById('password').value;
-        const confirmPassword = this.value;
+    //// Real-time password match validation
+    //document.getElementById('confirmPassword').addEventListener('input', function() {
+    //    const password = document.getElementById('password').value;
+    //    const confirmPassword = this.value;
 
-        if (confirmPassword && password !== confirmPassword) {
-            this.style.borderColor = '#e74c3c';
-        } else {
-            this.style.borderColor = '#ddd';
-        }
-    });
-    </script>
+    //    if (confirmPassword && password !== confirmPassword) {
+    //        this.style.borderColor = '#e74c3c';
+    //    } else {
+    //        this.style.borderColor = '#ddd';
+    //    }
+    //});
+   // </script>-->
 </body>
 </html>
 

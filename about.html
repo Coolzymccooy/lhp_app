@@ -65,9 +65,15 @@
     <div class="mobile-nav-overlay"></div>
 
     <!-- Hero Banner -->
-    <section class="page-hero">
-        <div class="hero-bg placeholder-img">Trinity Towers Building - Night View</div>
+    <section class="page-hero" data-bg="asset/vuecinema.jpg">
+        <div class="hero-bg"></div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>About Us</h1>
+            <p>Discover Our Story</p>
+        </div>
     </section>
+
 
     <!-- Welcome Section -->
     <section class="about-welcome">
@@ -157,7 +163,7 @@
                 <div class="footer-col">
                     <h4>FOLLOW US</h4>
                     <div class="footer-social">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://shorturl.at/KxbM3"><i class="fab fa-facebook-f"></i></a>
                         <a href="https://www.instagram.com/rccgtlp1/"><i class="fab fa-instagram"></i></a>
                         <a href="https://www.youtube.com/@rccgtlp1"><i class="fab fa-youtube"></i></a>
                         <a href="#"><i class="fab fa-linkedin-in"></i></a>
@@ -172,5 +178,17 @@
     </footer>
 
     <script src="js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const hero = document.querySelector('.page-hero');
+            if (hero) {
+                const bg = hero.getAttribute('data-bg');
+                const bgDiv = hero.querySelector('.hero-bg');
+                if (bg && bgDiv) {
+                    bgDiv.style.backgroundImage = `url('${bg}')`;
+                }
+            }
+        });
+    </script>
 </body>
 </html>

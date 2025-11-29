@@ -137,41 +137,57 @@
                         </div>
                     </div>
                 </div>
-                <form class="booking-form">
+                <form class="booking-form"
+                      action="https://formspree.io/f/xgvjgzko"
+                      method="POST">
+                    <!-- Optional hidden settings -->
+                    <input type="hidden" name="_subject" value="New Counselling Request - LHP Website">
+                    <input type="hidden" name="_redirect" value="https://lhp-app.vercel.app/thank-you.html">
+                    <!-- Simple spam honeypot (optional but helpful) -->
+                    <input type="text" name="_gotcha" style="display:none">
+
                     <div class="form-row">
                         <div class="form-group">
-                            <label>Full Name *</label>
-                            <input type="text" required>
+                            <label for="full_name">Full Name *</label>
+                            <input id="full_name" type="text" name="full_name" required>
                         </div>
                         <div class="form-group">
-                            <label>Email *</label>
-                            <input type="email" required>
+                            <label for="email">Email *</label>
+                            <input id="email" type="email" name="email" required>
                         </div>
                     </div>
+
                     <div class="form-group">
-                        <label>Phone Number *</label>
-                        <input type="tel" required>
+                        <label for="phone">Phone Number *</label>
+                        <input id="phone" type="tel" name="phone" required>
                     </div>
+
                     <div class="form-group">
-                        <label>Counselling Type *</label>
-                        <select required>
+                        <label for="counselling_type">Counselling Type *</label>
+                        <select id="counselling_type" name="counselling_type" required>
                             <option value="">Select type</option>
-                            <option value="premarital">Pre-Marital Counselling</option>
-                            <option value="marriage">Marriage Counselling</option>
-                            <option value="family">Family Counselling</option>
-                            <option value="individual">Individual Counselling</option>
-                            <option value="spiritual">Spiritual Guidance</option>
-                            <option value="grief">Grief Support</option>
+                            <option value="Pre-Marital Counselling">Pre-Marital Counselling</option>
+                            <option value="Marriage Counselling">Marriage Counselling</option>
+                            <option value="Family Counselling">Family Counselling</option>
+                            <option value="Individual Counselling">Individual Counselling</option>
+                            <option value="Spiritual Guidance">Spiritual Guidance</option>
+                            <option value="Grief Support">Grief Support</option>
                         </select>
                     </div>
+
                     <div class="form-group">
-                        <label>Preferred Date</label>
-                        <input type="date">
+                        <label for="preferred_date">Preferred Date</label>
+                        <input id="preferred_date" type="date" name="preferred_date">
                     </div>
+
                     <div class="form-group">
-                        <label>Brief Description</label>
-                        <textarea rows="4" placeholder="Briefly describe what you'd like to discuss..."></textarea>
+                        <label for="brief_description">Brief Description</label>
+                        <textarea id="brief_description"
+                                  name="brief_description"
+                                  rows="4"
+                                  placeholder="Briefly describe what you'd like to discuss..."></textarea>
                     </div>
+
                     <button type="submit" class="btn-submit">REQUEST APPOINTMENT</button>
                 </form>
             </div>

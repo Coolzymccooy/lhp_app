@@ -94,8 +94,70 @@
             <div class="icare-contact">
                 <h3>Need Help or Want to Volunteer?</h3>
                 <p>Contact our iCare team to request assistance or join our volunteer network.</p>
-                <a href="contact.html" class="btn-submit">CONTACT US</a>
+
+                <form class="icare-form"
+                      action="https://formspree.io/f/mblvnkkz"
+                      method="POST">
+                    <!-- Hidden helpers -->
+                    <input type="hidden" name="_subject" value="New iCare Request / Volunteer - LHP Website">
+                    <input type="hidden" name="_redirect" value="https://lhp-app.vercel.app/thank-you.html">
+                    <input type="text" name="_gotcha" style="display:none">
+
+                    <div class="form-group">
+                        <label for="full_name">Full Name *</label>
+                        <input type="text"
+                               id="full_name"
+                               name="full_name"
+                               required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email *</label>
+                        <input type="email"
+                               id="email"
+                               name="email"
+                               required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel"
+                               id="phone"
+                               name="phone">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="request_type">I am…</label>
+                        <select id="request_type" name="request_type">
+                            <option value="">Select an option</option>
+                            <option value="Need Assistance">In need of assistance</option>
+                            <option value="Want to Volunteer">Willing to volunteer</option>
+                            <option value="Both">Both (need help and want to serve)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="preferred_contact">Preferred Contact Method</label>
+                        <select id="preferred_contact" name="preferred_contact">
+                            <option value="">No preference</option>
+                            <option value="Phone">Phone</option>
+                            <option value="Email">Email</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">How can we support you / How would you like to serve? *</label>
+                        <textarea id="message"
+                                  name="message"
+                                  rows="5"
+                                  required
+                                  placeholder="Share a bit about your situation or how you’d like to volunteer..."></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-submit">SEND TO ICARE TEAM</button>
+                </form>
             </div>
+
         </div>
     </section>
 
