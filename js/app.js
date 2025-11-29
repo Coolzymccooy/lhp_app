@@ -4,6 +4,13 @@
 
 document.addEventListener('DOMContentLoaded', function () {
 
+    document.querySelectorAll('.slide').forEach(slide => {
+        const bg = slide.getAttribute('data-bg');
+        const bgDiv = slide.querySelector('.slide-bg');
+        if (bg && bgDiv) {
+            bgDiv.style.backgroundImage = `url('${bg}')`;
+        }
+    });
     // ========================================
     // MOBILE NAVIGATION
     // ========================================
