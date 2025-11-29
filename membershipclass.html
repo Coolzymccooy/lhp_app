@@ -1,0 +1,496 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Membership Registration - RCCG The Lighthouse Parish, Bury</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        .membership-container {
+            max-width: 600px;
+            margin: 80px auto 60px;
+            padding: 40px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .membership-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+            .membership-header h1 {
+                font-family: 'Montserrat', sans-serif;
+                font-size: 28px;
+                font-weight: 700;
+                color: #2c3e50;
+                margin-bottom: 10px;
+            }
+
+            .membership-header p {
+                color: #7f8c8d;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+
+        .membership-form .form-group {
+            margin-bottom: 20px;
+        }
+
+        .membership-form label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #2c3e50;
+            font-size: 14px;
+        }
+
+            .membership-form label .required {
+                color: #e74c3c;
+                margin-left: 3px;
+            }
+
+        .membership-form input[type="text"],
+        .membership-form input[type="email"],
+        .membership-form input[type="tel"],
+        .membership-form input[type="password"],
+        .membership-form select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            font-family: 'Montserrat', sans-serif;
+            transition: border-color 0.3s;
+        }
+
+            .membership-form input:focus,
+            .membership-form select:focus {
+                outline: none;
+                border-color: #3498db;
+            }
+
+        .radio-group {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 25px;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+            .radio-option input[type="radio"] {
+                width: 18px;
+                height: 18px;
+                cursor: pointer;
+            }
+
+            .radio-option label {
+                margin: 0;
+                cursor: pointer;
+                font-weight: 500;
+            }
+
+        .password-field {
+            position: relative;
+        }
+
+            .password-field input {
+                padding-right: 45px;
+            }
+
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #7f8c8d;
+        }
+
+        .recaptcha-container {
+            margin: 25px 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .privacy-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+            .privacy-checkbox input[type="checkbox"] {
+                width: 18px;
+                height: 18px;
+                cursor: pointer;
+            }
+
+            .privacy-checkbox label {
+                margin: 0;
+                font-size: 13px;
+                color: #555;
+            }
+
+            .privacy-checkbox a {
+                color: #e74c3c;
+                text-decoration: none;
+            }
+
+                .privacy-checkbox a:hover {
+                    text-decoration: underline;
+                }
+
+        .btn-create-account {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 700;
+            font-family: 'Montserrat', sans-serif;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+            .btn-create-account:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            }
+
+            .btn-create-account:disabled {
+                opacity: 0.6;
+                cursor: not-allowed;
+            }
+
+        .back-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+            .back-link a {
+                color: #3498db;
+                text-decoration: none;
+                font-size: 14px;
+            }
+
+                .back-link a:hover {
+                    text-decoration: underline;
+                }
+
+        @media (max-width: 768px) {
+            .membership-container {
+                margin: 40px 20px;
+                padding: 25px;
+            }
+
+            .membership-header h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Social Bar -->
+    <div class="top-bar">
+        <div class="social-icons-top">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://www.instagram.com/rccgtlp1/"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.youtube.com/@rccgtlp1"><i class="fab fa-youtube"></i></a>
+            <a href="0790 863 5374"><i class="fas fa-phone"></i></a>
+            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#"><i class="fab fa-x-twitter"></i></a>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="main-header">
+        <a href="index.html" class="logo logo-link">
+            <img src="asset/lhp_logo1.png" alt="Lighthouse Parish Logo" class="logo-icon-img">
+        </a>
+        <nav class="main-nav">
+            <ul>
+                <li><a href="#">WATCH LIVE SERVICES</a></li>
+                <li class="dropdown">
+                    <a href="#">EXPLORE LHP <i class="fas fa-chevron-down"></i></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="index.html">HOME</a></li>
+                        <li><a href="about.html">ABOUT US</a></li>
+                        <li><a href="groups.html">GROUPS & MINISTRIES</a></li>
+                        <li><a href="contact.html">CONTACT US</a></li>
+                        <li><a href="prayer.html">PRAYER</a></li>
+                        <li><a href="counselling.html">COUNSELLING</a></li>
+                        <li><a href="faq.html">FAQ</a></li>
+                    </ul>
+                </li>
+                <li><a href="membershipclass.html">E-MEMBERSHIP</a></li>
+                <li><a href="icare.html">ICARE</a></li>
+                <li><a href="give.html" class="btn-give">GIVE</a></li>
+            </ul>
+        </nav>
+        <div class="mobile-menu-toggle"><i class="fas fa-bars"></i></div>
+    </header>
+
+    <!-- Mobile Nav -->
+    <div class="mobile-nav">
+        <div class="mobile-nav-close"><i class="fas fa-times"></i></div>
+        <ul>
+            <li><a href="#">WATCH LIVE SERVICES</a></li>
+            <li><a href="about.html">ABOUT US</a></li>
+            <li><a href="groups.html">GROUPS & MINISTRIES</a></li>
+            <li><a href="contact.html">CONTACT US</a></li>
+            <li><a href="prayer.html">PRAYER</a></li>
+            <li><a href="counselling.html">COUNSELLING</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+            <li><a href="membershipclass.html">E-MEMBERSHIP</a></li>
+            <li><a href="icare.html">ICARE</a></li>
+            <li><a href="give.html">GIVE</a></li>
+        </ul>
+    </div>
+    <div class="mobile-nav-overlay"></div>
+
+    <!-- Membership Form Section -->
+    <section class="membership-container">
+        <div class="membership-header">
+            <h1>E-Membership Registration</h1>
+            <p>Welcome to RCCG The Lighthouse Parish, Bury. This e-Membership portal has been built to collate information of both existing and new members in the church.</p>
+        </div>
+
+        <form class="membership-form" id="membershipForm">
+            <!-- Member Type -->
+            <div class="form-group">
+                <label>Member Type<span class="required">*</span></label>
+                <div class="radio-group">
+                    <div class="radio-option">
+                        <input type="radio" id="newMember" name="memberType" value="new" checked>
+                        <label for="newMember">New Member</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="existingMember" name="memberType" value="existing">
+                        <label for="existingMember">Existing Member</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- First Name -->
+            <div class="form-group">
+                <label for="firstName">First Name<span class="required">*</span></label>
+                <input type="text" id="firstName" name="firstName" placeholder="Enter your First Name" required>
+            </div>
+
+            <!-- Last Name -->
+            <div class="form-group">
+                <label for="lastName">Last Name<span class="required">*</span></label>
+                <input type="text" id="lastName" name="lastName" placeholder="Enter your Last Name" required>
+            </div>
+
+            <!-- Phone Number -->
+            <div class="form-group">
+                <label for="phone">Phone Number<span class="required">*</span></label>
+                <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
+            </div>
+
+            <!-- Email -->
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email address">
+            </div>
+
+            <!-- Password -->
+            <div class="form-group">
+                <label for="password">Password<span class="required">*</span></label>
+                <div class="password-field">
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                    <i class="fas fa-eye password-toggle" id="togglePassword"></i>
+                </div>
+            </div>
+
+            <!-- Confirm Password -->
+            <div class="form-group">
+                <label for="confirmPassword">Confirm Password<span class="required">*</span></label>
+                <div class="password-field">
+                    <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm your password" required>
+                    <i class="fas fa-eye password-toggle" id="toggleConfirmPassword"></i>
+                </div>
+            </div>
+
+            <!-- reCAPTCHA (Placeholder) -->
+            <div class="recaptcha-container">
+                <div style="border: 1px solid #ddd; padding: 15px; border-radius: 5px; background: #f9f9f9; text-align: center; color: #777;">
+                    <i class="fas fa-shield-alt"></i> reCAPTCHA Verification
+                    <br><small>(Add your reCAPTCHA site key here)</small>
+                </div>
+            </div>
+
+            <!-- Privacy Policy -->
+            <div class="privacy-checkbox">
+                <input type="checkbox" id="privacyPolicy" name="privacyPolicy" required>
+                <label for="privacyPolicy">
+                    I agree to the <a href="#">Privacy Policy</a>
+                </label>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn-create-account">Create Account</button>
+        </form>
+
+        <div class="back-link">
+            <a href="index.html"><i class="fas fa-arrow-left"></i> Back to Home</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4>ABOUT</h4>
+                    <p>At the Lighthouse Parish, your dreams will become reality, and whatever your status in life, there is always room for more glory. We are a safe community where the Legend within you will be born and nurtured to greatness.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>LOCATE US</h4>
+                    <p>
+                        The Rock Shopping Centre,<br>
+                        Vue Cinema,<br>
+                        The Rock, Bury<br>
+                        BL9 OND.
+                    </p>
+                </div>
+                <div class="footer-col">
+                    <h4>FOLLOW US</h4>
+                    <div class="footer-social">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.instagram.com/rccgtlp1/"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.youtube.com/@rccgtlp1"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-x-twitter"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>2025 RCCG Lighthouse Parish. All rights reserved</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/app.js"></script>
+    <script>
+    // Password toggle functionality
+    document.getElementById('togglePassword').addEventListener('click', function() {
+        const passwordInput = document.getElementById('password');
+        const icon = this;
+
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            passwordInput.type = 'password';
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
+    });
+
+    document.getElementById('toggleConfirmPassword').addEventListener('click', function() {
+        const confirmPasswordInput = document.getElementById('confirmPassword');
+        const icon = this;
+
+        if (confirmPasswordInput.type === 'password') {
+            confirmPasswordInput.type = 'text';
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            confirmPasswordInput.type = 'password';
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
+    });
+
+    // Form submission handling
+    document.getElementById('membershipForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+        const privacyPolicy = document.getElementById('privacyPolicy').checked;
+        const errorMessage = document.getElementById('errorMessage');
+        const errorText = document.getElementById('errorText');
+        const successMessage = document.getElementById('successMessage');
+
+        // Hide previous messages
+        errorMessage.style.display = 'none';
+        successMessage.style.display = 'none';
+
+        // Validation
+        if (!privacyPolicy) {
+            errorText.textContent = 'You must agree to the Privacy Policy to continue.';
+            errorMessage.style.display = 'block';
+            return;
+        }
+
+        if (password.length < 6) {
+            errorText.textContent = 'Password must be at least 6 characters long.';
+            errorMessage.style.display = 'block';
+            return;
+        }
+
+        if (password !== confirmPassword) {
+            errorText.textContent = 'Passwords do not match. Please check and try again.';
+            errorMessage.style.display = 'block';
+            return;
+        }
+
+        // Get form data
+        const formData = {
+            memberType: document.querySelector('input[name="memberType"]:checked').value,
+            firstName: document.getElementById('firstName').value,
+            lastName: document.getElementById('lastName').value,
+            phone: document.getElementById('phone').value,
+            email: document.getElementById('email').value,
+            password: password
+        };
+
+        // TODO: Send data to your backend API
+        console.log('Form data:', formData);
+
+        // Show success message (for now)
+        successMessage.style.display = 'block';
+
+        // Reset form
+        setTimeout(function() {
+            document.getElementById('membershipForm').reset();
+            successMessage.style.display = 'none';
+        }, 5000);
+
+        // Scroll to top to show success message
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+
+    // Real-time password match validation
+    document.getElementById('confirmPassword').addEventListener('input', function() {
+        const password = document.getElementById('password').value;
+        const confirmPassword = this.value;
+
+        if (confirmPassword && password !== confirmPassword) {
+            this.style.borderColor = '#e74c3c';
+        } else {
+            this.style.borderColor = '#ddd';
+        }
+    });
+    </script>
+</body>
+</html>
+
