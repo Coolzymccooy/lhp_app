@@ -3,18 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RCCG LIGHTHOUSE PARISH - Give</title>
+    <title>Thank You - RCCG Lighthouse Parish</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        .thankyou-section {
+            min-height: 70vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .thankyou-card {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 40px 30px;
+            border-radius: 16px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .thankyou-icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+            color: #2ecc71;
+        }
+
+        .thankyou-card h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .thankyou-card p {
+            font-size: 14px;
+            color: #7f8c8d;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .thankyou-meta {
+            font-size: 13px;
+            color: #95a5a6;
+            margin-bottom: 25px;
+        }
+
+        .thankyou-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .btn-primary,
+        .btn-outline {
+            padding: 10px 18px;
+            border-radius: 999px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: #667eea;
+            border: 1px solid #667eea;
+        }
+    </style>
 </head>
 <body>
     <!-- Top Social Bar -->
     <div class="top-bar">
         <div class="social-icons-top">
             <a href="#"><i class="fab fa-facebook-f"></i></a>
-            <a href="#"><i class="fab fa-instagram"></i></a>
-            <a href="#"><i class="fab fa-youtube"></i></a>
+            <a href="https://www.instagram.com/rccgtlp1/"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.youtube.com/@rccgtlp1"><i class="fab fa-youtube"></i></a>
             <a href="#"><i class="fas fa-phone"></i></a>
             <a href="#"><i class="fab fa-linkedin-in"></i></a>
             <a href="#"><i class="fab fa-x-twitter"></i></a>
@@ -30,12 +109,15 @@
             <ul>
                 <li><a href="#">WATCH LIVE SERVICES</a></li>
                 <li class="dropdown">
-                    <a href="#">EXPLORE COD <i class="fas fa-chevron-down"></i></a>
+                    <a href="#">EXPLORE LHP <i class="fas fa-chevron-down"></i></a>
                     <ul class="dropdown-menu">
                         <li><a href="index.html">HOME</a></li>
                         <li><a href="about.html">ABOUT US</a></li>
                         <li><a href="groups.html">GROUPS & MINISTRIES</a></li>
                         <li><a href="contact.html">CONTACT US</a></li>
+                        <li><a href="prayer.html">PRAYER</a></li>
+                        <li><a href="counselling.html">COUNSELLING</a></li>
+                        <li><a href="faq.html">FAQ</a></li>
                     </ul>
                 </li>
                 <li><a href="membershipclass.html">E-MEMBERSHIP</a></li>
@@ -52,6 +134,7 @@
         <ul>
             <li><a href="index.html">HOME</a></li>
             <li><a href="about.html">ABOUT US</a></li>
+            <li><a href="prayer.html">PRAYER</a></li>
             <li><a href="membershipclass.html">E-MEMBERSHIP</a></li>
             <li><a href="icare.html">ICARE</a></li>
             <li><a href="give.html">GIVE</a></li>
@@ -59,61 +142,27 @@
     </div>
     <div class="mobile-nav-overlay"></div>
 
-    <!-- Give Hero -->
-    <section class="give-hero">
-        <div class="hero-bg placeholder-img">Hands Giving - Dark Background</div>
-        <div class="hero-overlay"></div>
-        <div class="hero-content">
-            <h1>GIVING</h1>
-            <p class="hero-quote">FOR WHERE YOUR TREASURE IS, THERE YOUR HEART WILL BE ALSO.</p>
-            <span class="quote-ref">- Matthew 6:21</span>
+    <!-- Thank You Content -->
+    <section class="thankyou-section">
+        <div class="thankyou-card">
+            <div class="thankyou-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h1>Thank You!</h1>
+            <p>Your form has been submitted successfully. Our team has received your details and will review your request as soon as possible.</p>
+            <p class="thankyou-meta">
+                If you submitted a prayer request, counselling request, iCare support, or e-membership registration, someone from the Lighthouse Parish team may reach out for follow-up.
+            </p>
+            <div class="thankyou-actions">
+                <a href="index.html" class="btn-primary">
+                    <i class="fas fa-home"></i> Back to Home
+                </a>
+                <a href="prayer.html" class="btn-outline">
+                    <i class="fas fa-pray"></i> Submit Another Request
+                </a>
+            </div>
         </div>
     </section>
-
-    <!-- Ways to Give -->
-<section class="give-section">
-    <div class="container">
-        <div class="give-content">
-
-            <div class="give-left">
-                <h2>WAYS TO GIVE</h2>
-
-                <div class="give-options">
-
-                    <!-- Gift Aid -->
-                    <a href="/give/giftaid" class="give-card">
-                        <img src="/asset/giftimage.png" alt="Gift Aid">
-                        <h4>Gift Aid</h4>
-                        <p>Increase your giving by 25%</p>
-                    </a>
-
-                    <!-- Bank Transfer -->
-                    <a href="/give/bank-transfer" class="give-card">
-                        <img src="/asset/cardtrnsfer.png" alt="Bank Transfer">
-                        <h4>Bank Transfer</h4>
-                        <p>Sort Code & Account Number</p>
-                    </a>
-
-                    <!-- Card Giving -->
-                    <a href="/give/card" class="give-card">
-                        <img src="/asset/giftcard.png" alt="Card Giving">
-                        <h4>Card Giving</h4>
-                        <p>Visa • Mastercard • PayPal</p>
-                    </a>
-
-                </div>
-            </div>
-
-            <div class="give-right">
-                <img src="/asset/churchonline.png" alt="Secure Online Giving – UK" class="give-hero">
-                 <h4>Secure Online Giving – UK</h4>
-            </div>
-
-        </div>
-    </div>
-</section>
-
-
 
     <!-- Footer -->
     <footer class="main-footer">
@@ -121,7 +170,7 @@
             <div class="footer-grid">
                 <div class="footer-col">
                     <h4>ABOUT</h4>
-                    <p>At the Lighthouse Parish, your dreams will become reality, and whatever your status in life, there is always room for more glory.</p>
+                    <p>At the Lighthouse Parish, your dreams will become reality.</p>
                 </div>
                 <div class="footer-col">
                     <h4>LOCATE US</h4>
@@ -148,7 +197,7 @@
             </div>
         </div>
     </footer>
+
     <script src="js/app.js"></script>
 </body>
 </html>
-
