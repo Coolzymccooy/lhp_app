@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Services - RCCG Lighthouse Parish</title>
+    <style>
+        /* Main container */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff;
+        }
+
+        .live-broadcast-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        /* Main heading */
+        .main-heading {
+            font-size: 48px;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 40px;
+            color: #000000;
+        }
+
+        /* Live video container */
+        .live-video-container {
+            width: 100%;
+            max-width: 980px;
+            margin: 0 auto 60px;
+            background: #f0f0f0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .live-video-container iframe {
+            width: 100%;
+            height: 550px;
+            border: none;
+        }
+
+        /* Previous services section */
+        .previous-services {
+            margin-top: 80px;
+        }
+
+        .section-heading {
+            font-size: 36px;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            color: #000000;
+        }
+
+        .section-subtitle {
+            font-size: 18px;
+            margin-bottom: 50px;
+            color: #333333;
+        }
+
+        /* Video grid */
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .video-item {
+            text-align: center;
+        }
+
+        .service-label {
+            font-size: 16px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            color: #000000;
+        }
+
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+            background: #f0f0f0;
+            border-radius: 8px;
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .main-heading {
+                font-size: 32px;
+            }
+
+            .live-video-container iframe {
+                height: 300px;
+            }
+
+            .section-heading {
+                font-size: 28px;
+            }
+
+            .video-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+     <link rel="stylesheet" href="css/styles-v3.css">          
+    <!--<link rel="stylesheet" href="css/hero-fix.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/hero-slider.css">
+    <link rel="stylesheet" href="css/home-sections.css">
+    <link rel="stylesheet" href="css/pages.css">
+    <link rel="stylesheet" href="css/responsive.css">-->  
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Top Social Bar -->
+    <div class="top-bar">
+        <div class="social-icons-top">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://www.instagram.com/rccgtlp1/"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.youtube.com/@rccgtlp1"><i class="fab fa-youtube"></i></a>
+            <a href="#"><i class="fas fa-phone"></i></a>
+            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#"><i class="fab fa-x-twitter"></i></a>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="main-header">
+        <a href="index.html" class="logo logo-link">
+            <img src="asset/lhp_logo1.png" alt="Lighthouse Parish Logo" class="logo-icon-img">
+        </a>
+        <nav class="main-nav">
+            <ul class="nav-menu">
+                <li><a href="watchlive.html">WATCH LIVE SERVICES</a></li>
+
+                <!-- EXPLORE LHP DROPDOWN/LIST -->
+                <li class="dropdown">
+                    <a href="watchlive.html" class="dropdown-toggle">EXPLORE LHP <i class="fas fa-chevron-down"></i></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="index.html">HOME</a></li>
+                        <li><a href="about.html">ABOUT US</a></li>
+                        <li><a href="groups.html">GROUPS &amp; MINISTRIES</a></li>
+                        <li><a href="contact.html">CONTACT US</a></li>
+                        <li><a href="prayer.html">PRAYER</a></li>
+                        <li><a href="counselling.html">COUNSELLING</a></li>
+                        <li><a href="faq.html">FAQ</a></li>
+                    </ul>
+                </li>
+
+                <li><a href="membershipclass.html">E-MEMBERSHIP</a></li>
+                <li><a href="icare.html">ICARE</a></li>
+                <li><a href="give.html" class="btn-give">GIVE</a></li>
+            </ul>
+        </nav>
+        <div class="mobile-menu-toggle"><i class="fas fa-bars"></i></div>
+    </header>
+
+    <!-- Mobile Nav -->
+    <div class="mobile-nav">
+        <div class="mobile-nav-close"><i class="fas fa-times"></i></div>
+        <ul>
+            <li><a href="index.html">WATCH LIVE SERVICES</a></li>
+            <li><a href="about.html">ABOUT US</a></li>
+            <li><a href="groups.html">GROUPS &amp; MINISTRIES</a></li>
+            <li><a href="contact.html">CONTACT US</a></li>
+            <li><a href="membershipclass.html">E-MEMBERSHIP</a></li>
+            <li><a href="icare.html">ICARE</a></li>
+            <li><a href="give.html">GIVE</a></li>
+        </ul>
+    </div>
+</head>
+<body>
+    <div class="live-broadcast-section">
+    <!-- Main Live Broadcast -->
+    <h1 class="main-heading">Lighthouse Parish Live Broadcast</h1>
+    
+    <div class="live-video-container">
+        <!-- Main live video -->
+        <iframe 
+            src="https://www.youtube.com/embed/EHLL_d1hzX4" 
+            frameborder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+            referrerpolicy="strict-origin-when-cross-origin" 
+            allowfullscreen>
+        </iframe>
+    </div>
+</div>
+
+        <!-- Previous Services Section -->
+        <div class="previous-services">
+            <h2 class="section-heading">Catch Up With Our Previous Services</h2>
+            <p class="section-subtitle">Click the Links below to follow up with our Last week's services. Remain Blessed !!</p>
+
+            <div class="video-grid">
+                <!-- Video Item 1 -->
+                <div class="video-item">
+                    <div class="service-label">Thanksgiving Service</div>
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed/EHLL_d1hzX4" 
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+
+                <!-- Video Item 2 -->
+                <div class="video-item">
+                    <div class="service-label">Family Sunday</div>
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed/59rLAm3rkL4" 
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+
+                <!-- Video Item 3 -->
+                <div class="video-item">
+                    <div class="service-label">Variety Service</div>
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed/mJ4nFgEito0" 
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+
+                <!-- Video Item 4 -->
+                <div class="video-item">
+                    <div class="service-label">Thanksgiving Service</div>
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed/_832_h0dPDM" 
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+
+                <!-- Video Item 5 -->
+                <div class="video-item">
+                    <div class="service-label">Pentecost Sunday</div>
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed/P39VmEFQmgo" 
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+
+                <!-- Video Item 6 -->
+                <div class="video-item">
+                    <div class="service-label">Worship Servic</div>
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed/Qtre5_g6X7Q" 
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+
+                <!-- Video Item 7 -->
+                <div class="video-item">
+                    <div class="service-label">Father's Day</div>
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed/jprrHc8qGb0" 
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+
+                <!-- Video Item 8 -->
+                <div class="video-item">
+                    <div class="service-label">Lighthouse Praise Thanksgiving Sunday Service</div>
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed/feUyHJvfTh8" 
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+
+                <!-- Add more video items as needed -->
+            </div>
+        </div>
+    </div>
+<!-- Footer -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4>ABOUT</h4>
+                    <p>At the Lighthouse Parish, your dreams will become reality.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>LOCATE US</h4>
+                    <p>
+                        The Rock Shopping Centre,<br>
+                        Vue Cinema,<br>
+                        The Rock, Bury<br>
+                        BL9 OND.
+                    </p>
+                </div>
+                <div class="footer-col">
+                    <h4>FOLLOW US</h4>
+                    <div class="footer-social">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://www.instagram.com/rccgtlp1/"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.youtube.com/@rccgtlp1"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-x-twitter"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>2025 RCCG Lighthouse Parish. All rights reserved</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/app.js"></script>
+
+</body>
+</html>
