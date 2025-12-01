@@ -1,0 +1,224 @@
+/* ========================================
+   BASE (Reset, Typography, Utilities)
+   ======================================== */
+
+/* Reset & Base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    line-height: 1.6;
+    color: #333;
+    overflow-x: hidden;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+ul {
+    list-style: none;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* ========================================
+   GLOBAL PLACEHOLDER IMAGES
+   ======================================== */
+
+.placeholder-img {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background:
+        radial-gradient(circle at top left, rgba(255,255,255,0.12) 0, transparent 50%),
+        linear-gradient(135deg, #141727 0%, #222b48 40%, #3b4371 100%);
+    color: rgba(255, 255, 255, 0.85);
+    border-radius: 16px;
+    overflow: hidden;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 20px;
+}
+
+/* Hero background placeholders (big banners) */
+.hero-bg.placeholder-img {
+    min-height: 340px;
+}
+
+/* Map & large content blocks */
+.map-container .placeholder-img,
+.full-width .placeholder-img {
+    min-height: 260px;
+    border-radius: 12px;
+}
+
+/* Smaller card-style placeholders (e.g. give cards, info cards if needed) */
+.give-card .placeholder-img,
+.info-card .placeholder-img {
+    min-height: 140px;
+    border-radius: 12px;
+}
+
+/* ========================================
+   SECTION HEADINGS & COMMON TEXT
+   ======================================== */
+
+.section-title {
+    font-size: 36px;
+    font-weight: 900;
+    font-style: italic;
+    text-align: center;
+    margin-bottom: 20px;
+    letter-spacing: 2px;
+}
+
+.section-title.light {
+    color: #fff;
+}
+
+.underline {
+    width: 100px;
+    height: 3px;
+    background: #1a1a1a;
+    margin: 0 auto 30px;
+}
+
+.underline.dark {
+    background: #1a1a1a;
+    margin: 0 0 30px;
+}
+
+.pink,
+.text-pink {
+    color: #e91e9a;
+}
+
+/* ========================================
+   UTILITY CLASSES
+   ======================================== */
+
+.text-center {
+    text-align: center;
+}
+
+.text-white {
+    color: #fff;
+}
+
+.mt-20 {
+    margin-top: 20px;
+}
+
+.mt-40 {
+    margin-top: 40px;
+}
+
+.mb-20 {
+    margin-bottom: 20px;
+}
+
+.mb-40 {
+    margin-bottom: 40px;
+}
+
+.py-80 {
+    padding-top: 80px;
+    padding-bottom: 80px;
+}
+
+/* ========================================
+   ANIMATIONS
+   ======================================== */
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.animate-on-scroll {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s ease;
+}
+
+.animate-on-scroll.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ========================================
+   BASE RESPONSIVE TWEAKS FOR PLACEHOLDERS
+   ======================================== */
+
+@media (max-width: 768px) {
+    .placeholder-img {
+        font-size: 0.75rem;
+        letter-spacing: 0.12em;
+        padding: 16px;
+    }
+}

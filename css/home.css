@@ -1,0 +1,183 @@
+/* ========================================
+   HOME PAGE ONLY
+   ======================================== */
+
+/* HERO SLIDER (visual styles & hero CTA) */
+
+.title-script {
+    font-family: 'Playfair Display', serif;
+    font-size: 80px;
+    font-style: italic;
+    font-weight: 400;
+    margin-bottom: 10px;
+    animation: fadeInUp 1s ease;
+}
+
+.title-bold {
+    font-size: 48px;
+    font-weight: 800;
+    letter-spacing: 3px;
+    animation: fadeInUp 1s ease 0.3s both;
+}
+
+/* Hero CTA button */
+.btn-join {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 36px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: 50px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.btn-join:hover {
+    background: rgba(255, 255, 255, 0.25);
+    border-color: #fff;
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+}
+
+.btn-join i {
+    font-size: 1.3rem;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* Slider dots kept here as part of hero visuals */
+.slider-dots {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    z-index: 20;
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.5);
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.dot.active {
+    background: #fff;
+}
+
+/* ========================================
+   HOME: WELCOME SECTION
+   ======================================== */
+
+.welcome-section {
+    padding: 80px 20px;
+    text-align: center;
+}
+
+.welcome-text {
+    max-width: 800px;
+    margin: 0 auto;
+    font-size: 18px;
+    line-height: 1.8;
+    color: #555;
+}
+
+/* ========================================
+   HOME: GRADIENT BANNER
+   ======================================== */
+
+.gradient-banner {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.gradient-banner .container {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+/* ========================================
+   HOME: QUICK RESOURCES (reuses layout grid)
+   ======================================== */
+
+/* Visual tweaks could go here if needed; core layout lives in layout.css */
+
+/* ========================================
+   HOME: CONNECT & MINISTRIES
+   ======================================== */
+
+/* Visual tweaks for home cards live here if different from pages;
+   currently shared in layout.css */
+
+/* ========================================
+   HOME: SERVICES
+   ======================================== */
+
+/* If you later have home-only overrides for services, add them here */
+
+/* ========================================
+   HOME: INSTAGRAM LIVE
+   ======================================== */
+
+/* Layout is in layout.css; keep any home-only visual overrides here */
+
+/* ========================================
+   HOME RESPONSIVE TWEAKS
+   ======================================== */
+
+@media (max-width: 768px) {
+    .hero-slider {
+        height: 450px;
+    }
+
+    .title-script {
+        font-size: 50px;
+    }
+
+    .title-bold {
+        font-size: 28px;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-slider {
+        height: 50vh;
+    }
+
+    .title-script {
+        font-size: 40px;
+    }
+
+    .title-bold {
+        font-size: 22px;
+        letter-spacing: 1px;
+    }
+
+    .section-title {
+        font-size: 24px;
+    }
+
+    .gradient-banner .container {
+        flex-direction: column;
+    }
+
+    .btn-outline {
+        width: 100%;
+        text-align: center;
+    }
+}

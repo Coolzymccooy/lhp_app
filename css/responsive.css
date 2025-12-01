@@ -1,0 +1,198 @@
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+
+/* Tablet */
+@media (max-width: 1024px) {
+    .services-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .resources-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .ministry-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .icare-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Mobile Landscape / general 768 breakpoint */
+@media (max-width: 768px) {
+    .main-nav {
+        display: none;
+    }
+
+    .mobile-menu-toggle {
+        display: block;
+    }
+
+    .hero-slider {
+        height: 450px;
+    }
+
+    .title-script {
+        font-size: 50px;
+    }
+
+    .title-bold {
+        font-size: 28px;
+    }
+
+    .section-title {
+        font-size: 28px;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .join-content {
+        grid-template-columns: 1fr;
+    }
+
+    .services-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .contact-wrapper {
+        grid-template-columns: 1fr;
+    }
+
+    .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+    .give-content {
+        grid-template-columns: 1fr;
+    }
+
+    .give-hero h1 {
+        font-size: 48px;
+    }
+
+    .hero-quote {
+        font-size: 20px;
+    }
+
+    .pastors-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .pastor-img-circle {
+        margin: 0 auto 30px;
+    }
+
+    .pastor-details {
+        grid-template-columns: 1fr;
+    }
+
+    .vision-content {
+        grid-template-columns: 1fr;
+    }
+
+    .error-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .error-code {
+        font-size: 120px;
+    }
+}
+
+/* Mobile Portrait / extra tweaks at 768 again */
+@media (max-width: 768px) {
+    .hero-slider {
+        height: 50vh;
+    }
+
+    .title-script {
+        font-size: 40px;
+    }
+
+    .title-bold {
+        font-size: 22px;
+        letter-spacing: 1px;
+    }
+
+    .section-title {
+        font-size: 24px;
+    }
+
+    .gradient-banner .container {
+        flex-direction: column;
+    }
+
+    .btn-outline {
+        width: 100%;
+        text-align: center;
+    }
+
+    .services-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .resources-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .ministry-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .icare-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .give-options {
+        grid-template-columns: 1fr;
+    }
+
+    .give-hero h1 {
+        font-size: 36px;
+        letter-spacing: 5px;
+    }
+
+    .hero-quote {
+        font-size: 16px;
+        padding: 0 20px;
+    }
+
+    .error-left h1 {
+        font-size: 26px;
+    }
+
+    .error-code {
+        font-size: 80px;
+    }
+}
+
+/* Contact page responsive (already focused on layout) */
+@media (max-width: 900px) {
+    .contact-page-section .contact-wrapper {
+        grid-template-columns: 1fr;
+    }
+
+    .contact-info-cards {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+}
+
+@media (max-width: 500px) {
+    .contact-info-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .map-container.full-width {
+        height: 300px;
+    }
+}

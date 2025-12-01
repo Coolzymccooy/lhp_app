@@ -314,6 +314,7 @@ img {
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.8s ease-in-out, visibility 0.8s ease-in-out;
+
 }
 
 .slide.active {
@@ -326,8 +327,7 @@ img {
     position: absolute;
     inset: 0;
     background-size: cover;
-    /* Nudge focus slightly upwards so text + faces are visible */
-    background-position: center 25%;
+    background-position: center center;   /* neutral default */
     background-repeat: no-repeat;
     filter: brightness(0.6);
 }
@@ -347,7 +347,8 @@ img {
 
 /* Fine-tune the “family” hero image */
 .slide[data-bg*="family"] .slide-bg {
-    background-position: center 35%;
+    background-size: cover;
+    background-position: center 70%;  /* or 75% depending on your image */
 }
 
 .slide[data-bg*="family"] .slide-content {
@@ -2699,6 +2700,17 @@ img {
         text-align: center;
     }
 }
+
+/* -------------------------------------------
+   DESKTOP: Make slides tall like mobile
+-------------------------------------------- */
+@media (min-width: 992px) {
+    .slide {
+        min-height: 100vh; /* full height hero like mobile */
+        height: 100vh;
+    }
+}
+
 /* Responsive */
 @media (max-width: 992px) {
     .give-content {
@@ -2754,6 +2766,143 @@ img {
 .hidden {
     display: none !important;
 }
+
+/* ========================================
+   ABOUT PAGE – FINAL FIXES
+   ======================================== */
+
+/* Keep hero banner consistent */
+.page-hero {
+    position: relative;
+    width: 100%;
+    height: 50vh;
+    min-height: 320px;
+    max-height: 480px;
+    overflow: hidden;
+}
+
+.page-hero .hero-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 1;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #fff;
+}
+
+/* About layout stripes + spacing */
+.about-welcome,
+.vision-section {
+    padding: 80px 20px;
+    background: #ffffff;
+}
+
+.pastors-section {
+    padding: 80px 20px;
+    background: #e8e8e8;
+}
+
+.pastors-content {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 50px;
+    align-items: flex-start;
+}
+
+.pastor-img-circle {
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.pastor-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+.pastor-col h4 {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.pastor-col p {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #555;
+}
+
+/* Vision section layout */
+.vision-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+    align-items: flex-start;
+}
+
+.vision-list ul {
+    padding-left: 20px;
+}
+
+.vision-list li {
+    margin-bottom: 15px;
+    line-height: 1.7;
+    list-style: disc;
+}
+
+.vision-list ul ul {
+    margin-top: 10px;
+    padding-left: 20px;
+}
+
+.vision-list ul ul li {
+    list-style: circle;
+}
+
+.vision-img {
+    height: 300px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+/* Responsive tweaks for About page */
+@media (max-width: 768px) {
+    .pastors-content,
+    .vision-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .pastor-img-circle {
+        margin: 0 auto 30px;
+    }
+
+    .pastor-details {
+        grid-template-columns: 1fr;
+    }
+}
+
+
 
 /* ========================================
    PRINT STYLES
