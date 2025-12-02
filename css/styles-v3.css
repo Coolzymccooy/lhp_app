@@ -1678,11 +1678,10 @@ box-sizing: border-box;
     .section-title {
         font-size: 24px;
     }
-      
-    @media (max-width: 768px) {
+
     .services-section {
-    padding: 48px 20px;
-    text-align: center;
+        padding: 48px 20px;
+        text-align: center;
     }
 
     .gradient-banner .container {
@@ -1694,22 +1693,10 @@ box-sizing: border-box;
         text-align: center;
     }
 
-    .services-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .resources-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .ministry-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .icare-grid {
-        grid-template-columns: 1fr;
-    }
-
+    .services-grid,
+    .resources-grid,
+    .ministry-grid,
+    .icare-grid,
     .give-options {
         grid-template-columns: 1fr;
     }
@@ -1731,10 +1718,8 @@ box-sizing: border-box;
     .error-code {
         font-size: 80px;
     }
-    .hero-slider {
-        height: 50vh;
-    }
 }
+
 
 /* ========================================
    UTILITY CLASSES
