@@ -5,13 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RCCG LIGHTHOUSE PARISH - Counselling</title>
     <link rel="stylesheet" href="css/styles-v3.css">          
-    <!--<link rel="stylesheet" href="css/hero-fix.css">
-    <link rel="stylesheet" href="css/base.css">
-    <link rel="stylesheet" href="css/layout.css">
-    <link rel="stylesheet" href="css/hero-slider.css">
-    <link rel="stylesheet" href="css/home-sections.css">
-    <link rel="stylesheet" href="css/pages.css">
-    <link rel="stylesheet" href="css/responsive.css">-->  
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 </head>
@@ -70,10 +63,10 @@
     <div class="mobile-nav-overlay"></div>
 
     <!-- Counselling Hero -->
-    <section class="page-hero small">
-        <div class="hero-bg placeholder-img">Counselling - Support Image</div>
+    <section class="page-hero">
+        <div class="hero-bg" style="background-image: url('asset/counseling.png');"></div>
         <div class="hero-overlay"></div>
-        <div class="hero-text">
+        <div class="hero-content">
             <h1>COUNSELLING</h1>
             <p>We're here to help you through life's challenges</p>
         </div>
@@ -127,7 +120,7 @@
             <div class="booking-content">
                 <div class="booking-info">
                     <h2>BOOK A SESSION</h2>
-                    <div class="underline dark left"></div>
+                    <div class="underline left"></div>
                     <p>Take the first step towards healing and growth. Our counsellors are ready to listen and support you.</p>
                     <div class="booking-details">
                         <div class="detail-item">
@@ -147,10 +140,8 @@
                 <form class="booking-form"
                       action="https://formspree.io/f/xgvjgzko"
                       method="POST">
-                    <!-- Optional hidden settings -->
                     <input type="hidden" name="_subject" value="New Counselling Request - LHP Website">
                     <input type="hidden" name="_redirect" value="thank-you.html">
-                    <!-- Simple spam honeypot (optional but helpful) -->
                     <input type="text" name="_gotcha" style="display:none">
 
                     <div class="form-row">
@@ -205,14 +196,19 @@
     <footer class="main-footer">
         <div class="container">
             <div class="footer-grid">
-                <div class="footer-col"><h4>ABOUT</h4><p>At the Lighthouse Parish, your dreams will become reality.</p></div>
-                <div class="footer-col"><h4>LOCATE US</h4>
-                <p>
-                    The Rock Shopping Centre,<br>
-                    Vue Cinema,<br>
-                    The Rock, Bury<br>
-                    BL9 OND.
-                </p></div>
+                <div class="footer-col">
+                    <h4>ABOUT</h4>
+                    <p>At the Lighthouse Parish, your dreams will become reality.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>LOCATE US</h4>
+                    <p>
+                        The Rock Shopping Centre,<br>
+                        Vue Cinema,<br>
+                        The Rock, Bury<br>
+                        BL9 OND.
+                    </p>
+                </div>
                 <div class="footer-col">
                     <h4>FOLLOW US</h4>
                     <div class="footer-social">
@@ -222,7 +218,9 @@
                     </div>
                 </div>
             </div>
-            <div class="footer-bottom"> <p>2025 RCCG Lighthouse Parish. All rights reserved</p></div>
+            <div class="footer-bottom">
+                <p>2025 RCCG Lighthouse Parish. All rights reserved</p>
+            </div>
         </div>
     </footer>
     <script src="js/app.js"></script>

@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Senior Pastors - RCCG Lighthouse Parish</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --primary-color: #0c3c78;
+      --accent-color: #d4af37;
+      --text-color: #333333;
+      --bg-color: #f7f7f9;
+      --card-bg: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text-color);
+      background: var(--bg-color);
+      line-height: 1.6;
+    }
+
+    .page-wrapper {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2rem 1rem 3rem;
+    }
+
+    .page-title {
+      text-align: center;
+      margin-bottom: 0.25rem;
+      letter-spacing: 0.08em;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--accent-color);
+    }
+
+    .page-subtitle {
+      text-align: center;
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 2rem;
+      color: var(--primary-color);
+      text-transform: uppercase;
+    }
+
+    .intro-text {
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto 2.5rem;
+      font-size: 0.95rem;
+    }
+
+    .pastor-section {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.9fr);
+      gap: 2rem;
+      align-items: flex-start;
+      margin-bottom: 3rem;
+      padding: 2rem;
+      background: var(--card-bg);
+      border-radius: 0.75rem;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+    }
+
+    .pastor-photo-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    .pastor-photo {
+      width: 100%;
+      max-width: 280px;
+      border-radius: 0.75rem;
+      object-fit: cover;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    }
+
+    .pastor-info h2 {
+      margin: 0 0 0.25rem;
+      font-size: 1.5rem;
+      color: var(--primary-color);
+      text-transform: uppercase;
+    }
+
+    .pastor-role {
+      margin: 0 0 1.25rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent-color);
+    }
+
+    .bio-block {
+      margin-bottom: 1.5rem;
+    }
+
+    .bio-block h3 {
+      margin: 0 0 0.35rem;
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--primary-color);
+    }
+
+    .bio-block p {
+      margin: 0 0 0.75rem;
+      font-size: 0.95rem;
+    }
+
+    .bio-list {
+      margin: 0.5rem 0 0;
+      padding-left: 1.2rem;
+      font-size: 0.95rem;
+    }
+
+    .bio-list li {
+      margin-bottom: 0.3rem;
+    }
+
+    .about-footer {
+      margin-top: 2.5rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 2rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(0,0,0,0.06);
+      font-size: 0.95rem;
+    }
+
+    .footer-block h3 {
+      margin: 0 0 0.75rem;
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--primary-color);
+    }
+
+    .footer-block p {
+      margin: 0 0 0.4rem;
+    }
+
+    .footer-socials {
+      margin-top: 0.75rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .footer-socials a {
+      text-decoration: none;
+      font-size: 0.85rem;
+      padding: 0.25rem 0.6rem;
+      border-radius: 999px;
+      border: 1px solid rgba(0,0,0,0.1);
+      color: var(--primary-color);
+    }
+
+    .footer-note {
+      text-align: center;
+      margin-top: 1.5rem;
+      font-size: 0.8rem;
+      color: #777;
+    }
+
+    @media (max-width: 768px) {
+      .pastor-section {
+        grid-template-columns: 1fr;
+        padding: 1.5rem;
+      }
+
+      .pastor-info h2 {
+        font-size: 1.3rem;
+      }
+    }
+  </style>
+
+  <link rel="stylesheet" href="css/styles-v3.css">          
+    <!--<link rel="stylesheet" href="css/hero-fix.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/hero-slider.css">
+    <link rel="stylesheet" href="css/home-sections.css">
+    <link rel="stylesheet" href="css/pages.css">
+    <link rel="stylesheet" href="css/responsive.css">-->  
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Your own header / nav goes here -->
+   <!-- Top Social Bar -->
+    <div class="top-bar">
+        <div class="social-icons-top">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://www.instagram.com/rccgtlp1/"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.youtube.com/@rccgtlp1"><i class="fab fa-youtube"></i></a>
+            <a href="#"><i class="fas fa-phone"></i></a>
+            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#"><i class="fab fa-x-twitter"></i></a>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="main-header">
+        <a href="index.html" class="logo logo-link">
+            <img src="asset/lhp_logo1.png" alt="Lighthouse Parish Logo" class="logo-icon-img">
+        </a>
+        <nav class="main-nav">
+            <ul class="nav-menu">
+                <li><a href="watchlive.html">WATCH LIVE SERVICES</a></li>
+
+                <!-- EXPLORE LHP DROPDOWN/LIST -->
+                <li class="dropdown">
+                    <a href="watchlive.html" class="dropdown-toggle">EXPLORE LHP <i class="fas fa-chevron-down"></i></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="index.html">HOME</a></li>
+                        <li><a href="about.html">ABOUT US</a></li>
+                        <li><a href="groups.html">GROUPS &amp; MINISTRIES</a></li>
+                        <li><a href="contact.html">CONTACT US</a></li>
+                        <li><a href="prayer.html">PRAYER</a></li>
+                        <li><a href="counselling.html">COUNSELLING</a></li>
+                        <li><a href="faq.html">FAQ</a></li>
+                    </ul>
+                </li>
+
+                <li><a href="membershipclass.html">E-MEMBERSHIP</a></li>
+                <li><a href="icare.html">ICARE</a></li>
+                <li><a href="give.html" class="btn-give">GIVE</a></li>
+            </ul>
+        </nav>
+        <div class="mobile-menu-toggle"><i class="fas fa-bars"></i></div>
+    </header>
+
+    <!-- Mobile Nav -->
+    <div class="mobile-nav">
+        <div class="mobile-nav-close"><i class="fas fa-times"></i></div>
+        <ul>
+            <li><a href="index.html">WATCH LIVE SERVICES</a></li>
+            <li><a href="about.html">ABOUT US</a></li>
+            <li><a href="groups.html">GROUPS &amp; MINISTRIES</a></li>
+            <li><a href="contact.html">CONTACT US</a></li>
+            <li><a href="membershipclass.html">E-MEMBERSHIP</a></li>
+            <li><a href="icare.html">ICARE</a></li>
+            <li><a href="give.html">GIVE</a></li>
+        </ul>
+    </div>
+</head>
+<body>
+  <main class="page-wrapper">
+    <div class="page-title">Meet Our Senior Pastors</div>
+    <h1 class="page-subtitle">Get to know our senior pastors</h1>
+    <p class="intro-text">
+      Learn more about the spiritual and professional journeys of our senior pastors,
+      and how God is using them to serve in this house.
+    </p>
+
+    <!-- Pastor 1 -->
+    <section class="pastor-section">
+      <div class="pastor-photo-wrapper">
+        <img
+          src="asset/pastor-olujobi.jpg"
+          alt="Pastor Oluyemi Olujobi"
+          class="pastor-photo"
+        />
+      </div>
+      <div class="pastor-info">
+        <h2>Pastor Oluyemi Olujobi</h2>
+        <p class="pastor-role">Regional Pastor & Senior Pastor</p>
+
+        <div class="bio-block">
+          <h3>Spiritual background</h3>
+          <p>
+            She's a generous giver and believes that there is nothing one cannot give for God. She thrives on prayers and knows that everything the church and individuals do and accomplish can only be through the power of prayer.
+            </p>
+
+            <p>
+            They're building a love community such that anyone who visits the church would be met by the strong reality of God’s love and be enveloped by God’s saving grace, peace, and joy.
+            </p>
+
+            <p>
+            She’s very approachable and friendly, a good communicator with great interpersonal skills reaching out intergenerationally and inter-culturally.
+            </p>
+
+            <p>
+            She encourages the display of individual gifts and talents as she believes that every believer has a God-given ability waiting to be expressed.
+            </p>
+
+        </div>
+
+        <div class="bio-block">
+          <h3>Background of the Church</h3>
+          <p>
+            The church was planted in 2011 by two families The Agbezes and the Olujobi’s. In 2013, the Olujobi’s took over the main leadership
+             responsibility and ministry work commenced in full.
+          </p>
+          <p>
+            The church has been  through many phases and we have used many locations within Bury reaching out mainly to the Bury community those
+             unsaved and saves, as well as everyone else in need of spiritual awakening and encouragement.
+          </p>
+          <p>
+            The church provides for the spiritual, physical and emotional nourishment of the people who accept the ministry and engage the
+            community through outreach and activities.
+          </p>
+        </div>
+
+         <div class="bio-block">
+          <h3>Professional profile</h3>
+          <p>
+            Trained as a social worker and  public health professional, she has worked at
+            senior levels across corporate health, governance and strategy.
+          </p>
+       
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Pastor 2 -->
+    <section class="pastor-section">
+      <div class="pastor-photo-wrapper">
+        <img
+          src="asset/pastorpaul.png"
+          alt="Pastor Paul Olujobi"
+          class="pastor-photo"
+        />
+      </div>
+      <div class="pastor-info">
+        <h2>Pastor Paul Olujobi</h2>
+        <p class="pastor-role">Co-Pastor & Minister</p>
+
+        <div class="bio-block">
+          <h3>Ministry profile</h3>
+          <p>
+            We love you sir ❤️
+          </p>         
+        </div>
+
+        <div class="bio-block">
+          <h3>Professional profile</h3>
+          <p>
+            Trained as a medical nurse and public health professional, he has worked at
+            senior levels across corporate health.
+          </p>
+          
+        </div>
+      </div>
+    </section>    
+
+  </main>
+      <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4>ABOUT</h4>
+                    <p>At the Lighthouse Parish, your dreams will become reality.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>LOCATE US</h4>
+                    <p>
+                        The Rock Shopping Centre,<br>
+                        Vue Cinema,<br>
+                        The Rock, Bury<br>
+                        BL9 OND.
+                    </p>
+                </div>
+                <div class="footer-col">
+                    <h4>FOLLOW US</h4>
+                    <div class="footer-social">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://www.instagram.com/rccgtlp1/"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.youtube.com/@rccgtlp1"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-x-twitter"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>2025 RCCG Lighthouse Parish. All rights reserved</p>
+            </div>
+        </div>
+    </footer>
+    <script src="js/app.js"></script>
+</body>
+</html>
