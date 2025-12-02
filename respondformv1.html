@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Response Form - RCCG Lighthouse Parish</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      margin: 0;
+      background: #f5f5f5;
+      color: #222;
+    }
+
+    .page-wrap {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 40px 16px 80px;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      text-align: center;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .subtitle {
+      text-align: center;
+      margin-bottom: 32px;
+      color: #555;
+      line-height: 1.5;
+    }
+
+    form {
+      background: #fff;
+      border-radius: 8px;
+      padding: 24px 20px;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.06);
+    }
+
+    .form-section-title {
+      font-weight: 600;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+      color: #444;
+    }
+
+    .checkbox-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px 16px;
+      margin-bottom: 24px;
+    }
+
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.95rem;
+    }
+
+    .checkbox-item input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px 20px;
+      margin-bottom: 16px;
+    }
+
+    .form-control {
+      display: flex;
+      flex-direction: column;
+      font-size: 0.9rem;
+    }
+
+    .form-control label {
+      margin-bottom: 4px;
+      font-weight: 500;
+    }
+
+    .form-control span.required {
+      color: #d32f2f;
+      margin-left: 2px;
+    }
+
+    .form-control input,
+    .form-control textarea,
+    .form-control select {
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      padding: 8px 10px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      background: #fafafa;
+    }
+
+    .form-control textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    .form-control input:focus,
+    .form-control textarea:focus,
+    .form-control select:focus {
+      border-color: #1565c0;
+      box-shadow: 0 0 0 2px rgba(21, 101, 192, 0.18);
+      background: #fff;
+    }
+
+    .note {
+      font-size: 0.8rem;
+      color: #777;
+      margin-bottom: 16px;
+    }
+
+    .submit-wrap {
+      margin-top: 24px;
+      text-align: center;
+    }
+
+    button[type="submit"] {
+      background: #1565c0;
+      color: #fff;
+      border: none;
+      border-radius: 999px;
+      padding: 10px 32px;
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s ease, box-shadow 0.15s ease, transform 0.05s ease;
+    }
+
+    button[type="submit"]:hover {
+      background: #0d47a1;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+    }
+
+    button[type="submit"]:active {
+      transform: translateY(1px);
+      box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+    }
+
+    @media (max-width: 640px) {
+      .page-wrap {
+        padding-top: 24px;
+      }
+
+      h1 {
+        font-size: 1.4rem;
+      }
+
+      .checkbox-group {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+   <link rel="stylesheet" href="css/styles-v3.css">          
+    <!--<link rel="stylesheet" href="css/hero-fix.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/hero-slider.css">
+    <link rel="stylesheet" href="css/home-sections.css">
+    <link rel="stylesheet" href="css/pages.css">
+    <link rel="stylesheet" href="css/responsive.css">-->  
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Your own header / nav goes here -->
+   <!-- Top Social Bar -->
+    <div class="top-bar">
+        <div class="social-icons-top">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://www.instagram.com/rccgtlp1/"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.youtube.com/@rccgtlp1"><i class="fab fa-youtube"></i></a>
+            <a href="#"><i class="fas fa-phone"></i></a>
+            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#"><i class="fab fa-x-twitter"></i></a>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="main-header">
+        <a href="index.html" class="logo logo-link">
+            <img src="asset/lhp_logo1.png" alt="Lighthouse Parish Logo" class="logo-icon-img">
+        </a>
+        <nav class="main-nav">
+            <ul class="nav-menu">
+                <li><a href="watchlive.html">WATCH LIVE SERVICES</a></li>
+
+                <!-- EXPLORE LHP DROPDOWN/LIST -->
+                <li class="dropdown">
+                    <a href="watchlive.html" class="dropdown-toggle">EXPLORE LHP <i class="fas fa-chevron-down"></i></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="index.html">HOME</a></li>
+                        <li><a href="about.html">ABOUT US</a></li>
+                        <li><a href="groups.html">GROUPS &amp; MINISTRIES</a></li>
+                        <li><a href="contact.html">CONTACT US</a></li>
+                        <li><a href="prayer.html">PRAYER</a></li>
+                        <li><a href="counselling.html">COUNSELLING</a></li>
+                        <li><a href="faq.html">FAQ</a></li>
+                    </ul>
+                </li>
+
+                <li><a href="membershipclass.html">E-MEMBERSHIP</a></li>
+                <li><a href="icare.html">ICARE</a></li>
+                <li><a href="give.html" class="btn-give">GIVE</a></li>
+            </ul>
+        </nav>
+        <div class="mobile-menu-toggle"><i class="fas fa-bars"></i></div>
+    </header>
+
+    <!-- Mobile Nav -->
+    <div class="mobile-nav">
+        <div class="mobile-nav-close"><i class="fas fa-times"></i></div>
+        <ul>
+            <li><a href="index.html">WATCH LIVE SERVICES</a></li>
+            <li><a href="about.html">ABOUT US</a></li>
+            <li><a href="groups.html">GROUPS &amp; MINISTRIES</a></li>
+            <li><a href="contact.html">CONTACT US</a></li>
+            <li><a href="membershipclass.html">E-MEMBERSHIP</a></li>
+            <li><a href="icare.html">ICARE</a></li>
+            <li><a href="give.html">GIVE</a></li>
+        </ul>
+    </div>
+</head>
+  <main class="page-wrap">
+    <h1>Response Form</h1>
+    <p class="subtitle">
+      We would love to help you with the next steps in your relationship with your Heavenly Father.
+      If God is stirring your heart today, say “YES” and let us know how we can stand with you.
+    </p>
+
+   <form
+  method="POST"
+  action="https://formspree.io/f/xgvjgzzo"
+>
+
+  <!-- Optional hidden settings -->
+  <input type="hidden" name="_subject" value="Response Form - LHP Website">
+  <input type="hidden" name="_redirect" value="thank-you.html">
+
+  <!-- Simple spam honeypot -->
+  <input type="text" name="_gotcha" style="display:none">
+
+  <!-- 1. Reasons / decisions -->
+  <p class="form-section-title">How can we support you today?</p>
+  <div class="checkbox-group">
+    <label class="checkbox-item">
+      <input type="checkbox" name="decision_first_time" value="Yes" />
+      <span>It is my first time here</span>
+    </label>
+
+    <label class="checkbox-item">
+      <input type="checkbox" name="decision_salvation" value="Yes" />
+      <span>I decided to follow Jesus Christ today</span>
+    </label>
+
+    <label class="checkbox-item">
+      <input type="checkbox" name="decision_more_about_jesus" value="Yes" />
+      <span>Tell me more about Jesus Christ</span>
+    </label>
+
+    <label class="checkbox-item">
+      <input type="checkbox" name="decision_membership" value="Yes" />
+      <span>I would like to become a member</span>
+    </label>
+  </div>
+
+  <!-- 2. Basic info -->
+  <div class="form-grid">
+    <div class="form-control">
+      <label for="firstName">First Name</label>
+      <input id="firstName" name="first_name" type="text" />
+    </div>
+
+    <div class="form-control">
+      <label for="lastName">Last Name</label>
+      <input id="lastName" name="last_name" type="text" />
+    </div>
+
+    <div class="form-control">
+      <label for="email">
+        Email<span class="required">*</span>
+      </label>
+      <input id="email" name="email" type="email" required />
+    </div>
+
+    <div class="form-control">
+      <label for="phone">Phone Number</label>
+      <input id="phone" name="phone" type="tel" />
+    </div>
+  </div>
+
+  <!-- 3. Message / prayer -->
+  <div class="form-control" style="margin-bottom: 16px;">
+    <label for="message">
+      Message / Prayer / Comment / Question
+      <span class="required">*</span>
+    </label>
+    <textarea id="message" name="message" required></textarea>
+  </div>
+
+  <!-- 4. Address -->
+  <p class="form-section-title">Address (optional)</p>
+  <div class="form-grid">
+    <div class="form-control">
+      <label for="address1">Address 1</label>
+      <input id="address1" name="address_1" type="text" />
+    </div>
+
+    <div class="form-control">
+      <label for="address2">Address 2</label>
+      <input id="address2" name="address_2" type="text" />
+    </div>
+
+    <div class="form-control">
+      <label for="country">Country</label>
+      <input id="country" name="country" type="text" />
+    </div>
+
+    <div class="form-control">
+      <label for="city">City</label>
+      <input id="city" name="city" type="text" />
+    </div>
+
+    <div class="form-control">
+      <label for="state">State</label>
+      <input id="state" name="state" type="text" />
+    </div>
+
+    <div class="form-control">
+      <label for="postal">Zip / Postal Code</label>
+      <input id="postal" name="postal_code" type="text" />
+    </div>
+  </div>
+
+  <p class="note">
+    By submitting this form you give us permission to contact you regarding your response
+    and to support you in your walk with God.
+  </p>
+
+  <div class="submit-wrap">
+    <button type="submit">Submit</button>
+  </div>
+
+</form>
+
+  </main>
+
+  <!-- Your own footer goes here -->
+     <footer class="main-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4>ABOUT</h4>
+                    <p>At the Lighthouse Parish, your dreams will become reality.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>LOCATE US</h4>
+                    <p>
+                        The Rock Shopping Centre,<br>
+                        Vue Cinema,<br>
+                        The Rock, Bury<br>
+                        BL9 OND.
+                    </p>
+                </div>
+                <div class="footer-col">
+                    <h4>FOLLOW US</h4>
+                    <div class="footer-social">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://www.instagram.com/rccgtlp1/"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.youtube.com/@rccgtlp1"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-x-twitter"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>2025 RCCG Lighthouse Parish. All rights reserved</p>
+            </div>
+        </div>
+    </footer>
+
+<script src="js/app.js"></script>
+</body>
+</html>
