@@ -135,16 +135,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
     forms.forEach(form => {
         form.addEventListener('submit', function (e) {
+            const hasAction = form.hasAttribute('action') && form.getAttribute('action').trim() !== '';
+            const isAiManaged = form.hasAttribute('data-ai-managed');
+
+            if (hasAction || isAiManaged) {
+                return;
+            }
+
             e.preventDefault();
-
-            // Get form data
-            const formData = new FormData(form);
-            const data = Object.fromEntries(formData);
-
-            // Show success message
             alert('Thank you for your submission! We will get back to you soon.');
-
-            // Reset form
             form.reset();
         });
     });
@@ -380,5 +379,4 @@ document.addEventListener('DOMContentLoaded', function () {
         'color: #666; font-size: 12px;');
 
 });
-
 

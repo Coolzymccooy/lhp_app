@@ -1,0 +1,39 @@
+{
+  "entries": [
+    {
+      "title": "Service Times",
+      "text": "Sundays: Sunrise Service 7:30am and Sunshine Service 10:30am. Wednesdays: Carpe Diem 6:30am. Thursdays: Open Heavens 6:00pm. Fridays: Praise Hour 12:00pm.",
+      "url": "faq.html"
+    },
+    {
+      "title": "Church Location",
+      "text": "The church is at The Rock Shopping Centre, Vue Cinema, The Rock, Bury, BL9 OND, Manchester, United Kingdom.",
+      "url": "contact.html"
+    },
+    {
+      "title": "Online Services",
+      "text": "Services are available online through YouTube and the Watch Live page.",
+      "url": "watchlive.html"
+    },
+    {
+      "title": "Prayer Support",
+      "text": "Visitors can submit confidential prayer requests. The prayer team prays daily and can contact people who opt in.",
+      "url": "prayer.html"
+    },
+    {
+      "title": "Counselling",
+      "text": "The church offers free confidential counselling: pre-marital, marriage, family, individual, spiritual guidance and grief support.",
+      "url": "counselling.html"
+    },
+    {
+      "title": "Membership",
+      "text": "New visitors can take next steps through the E-Membership page and membership classes.",
+      "url": "membershipclass.html"
+    },
+    {
+      "title": "Giving",
+      "text": "Online giving is available through the Give page with secure options including card and transfer pathways.",
+      "url": "give.html"
+    }
+  ]
+}

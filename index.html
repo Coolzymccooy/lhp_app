@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RCCG The Lighthouse Parish, Bury</title>   
     <link rel="stylesheet" href="css/styles-v3.css">          
+    <link rel="stylesheet" href="css/ai-features.css">
     <!--<link rel="stylesheet" href="css/hero-fix.css">
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/layout.css">
@@ -184,8 +185,39 @@
                 <a href="#" class="resource-card"><i class="fas fa-building-columns"></i><span>VUE CINEMA</span></a>
                 <a href="groups.html" class="resource-card"><i class="fas fa-users"></i><span>MINISTERS &amp; GROUPS</span></a>
                 <a href="membershipclass.html" class="resource-card"><i class="fas fa-database"></i><span>E-MEMBERSHIP</span></a>
-                <a href="#" class="resource-card"><i class="fas fa-envelope"></i><span>WEEKLY BULLETIN</span></a>
+                <a href="content-copilot.html" class="resource-card"><i class="fas fa-envelope"></i><span>WEEKLY BULLETIN AI COPILOT</span></a>
                 <a href="icare.html" class="resource-card"><i class="fas fa-heart"></i><span>ICARE</span></a>
+            </div>
+        </div>
+    </section>
+
+    <section class="ai-next-step-section">
+        <div class="container">
+            <h2 class="section-title">AI NEXT-STEP GUIDE</h2>
+            <p class="services-intro">Tell us where you are in your faith journey and we'll suggest the best next step.</p>
+            <div class="ai-next-step-card">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="ai_life_stage">I am...</label>
+                        <select id="ai_life_stage">
+                            <option value="new">New to church / faith</option>
+                            <option value="growing">Growing believer</option>
+                            <option value="serving">Ready to serve</option>
+                            <option value="family">Family-focused</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="ai_need">My biggest need today is...</label>
+                        <select id="ai_need">
+                            <option value="community">Community</option>
+                            <option value="prayer">Prayer support</option>
+                            <option value="counselling">Counselling</option>
+                            <option value="learning">Learning & discipleship</option>
+                        </select>
+                    </div>
+                </div>
+                <button class="btn-submit" id="ai-next-step-btn" type="button">GET RECOMMENDATION</button>
+                <div id="ai-next-step-result" class="ai-next-step-result"></div>
             </div>
         </div>
     </section>
@@ -346,5 +378,6 @@
     </footer>
 
     <script src="js/app.js"></script>
+    <script src="js/ai-features.js"></script>
 </body>
 </html>
