@@ -1,0 +1,32 @@
+{
+  "sermons": [
+    {
+      "title": "Thanksgiving Service",
+      "topic": "Gratitude",
+      "summary": "A call to thank God in every season and turn testimonies into worship.",
+      "scriptures": ["Psalm 100", "1 Thessalonians 5:18"],
+      "watchUrl": "https://www.youtube.com/embed/EHLL_d1hzX4"
+    },
+    {
+      "title": "Family Sunday",
+      "topic": "Family & Relationships",
+      "summary": "Practical biblical wisdom for love, communication, and unity in the home.",
+      "scriptures": ["Ephesians 5", "Colossians 3:13"],
+      "watchUrl": "https://www.youtube.com/embed/59rLAm3rkL4"
+    },
+    {
+      "title": "Variety Service",
+      "topic": "Praise, Worship & Word",
+      "summary": "How praise opens hearts for the Word and fuels faith for daily life.",
+      "scriptures": ["Psalm 150", "Romans 10:17"],
+      "watchUrl": "https://www.youtube.com/embed/mJ4nFgEito0"
+    },
+    {
+      "title": "Pentecost Sunday",
+      "topic": "Holy Spirit",
+      "summary": "Living a Spirit-led life with power, character, and bold witness.",
+      "scriptures": ["Acts 2", "Galatians 5:22-23"],
+      "watchUrl": "https://www.youtube.com/embed/P39VmEFQmgo"
+    }
+  ]
+}
