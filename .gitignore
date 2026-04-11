@@ -10,3 +10,24 @@ TestResults/
 
 # Other
 *.log
+npm-debug.log*
+
+# Node
+node_modules/
+dist/
+build/
+
+# Environment — NEVER commit secrets
+.env
+.env.local
+.env.production
+
+# SQLite database (generated at runtime)
+server/data/
+
+# Vite cache
+client/.vite/
+
+# OS
+.DS_Store
+Thumbs.db
