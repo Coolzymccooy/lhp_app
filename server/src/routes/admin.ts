@@ -311,12 +311,12 @@ function generateBulletin(opts: { title: string; date: string; scripture?: strin
   const formattedDate = new Date(date).toLocaleDateString('en-GB', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
   const lines = [
     `# ${title}`,
-    `**RCCG Lighthouse Parish, Bury** | ${formattedDate}`,
+    `**The Lighthouse Church RCCG, Bury** | ${formattedDate}`,
     '',
     '---',
     '',
     '## Welcome',
-    `We welcome you to today's service at RCCG Lighthouse Parish. Whether this is your first time or you've been with us for years, you are loved and valued.`,
+    `We welcome you to today's service at The Lighthouse Church RCCG. Whether this is your first time or you've been with us for years, you are loved and valued.`,
     '',
   ];
 
@@ -342,11 +342,11 @@ function generateBulletin(opts: { title: string; date: string; scripture?: strin
 
   lines.push(
     '## Service Times',
-    '- **Sunday** Sunrise Service — 7:30 AM',
-    '- **Sunday** Sunshine Service — 10:30 AM',
-    '- **Wednesday** Carpe Diem — 6:30 AM',
-    '- **Thursday** Open Heavens — 6:00 PM',
-    '- **Friday** Praise Hour — 12:00 PM',
+    '- **Sunday** Sunday Service — 10:00 AM',
+    '- **Sunday** (1st of month) Thanksgiving Service — 10:00 AM',
+    '- **Wednesday** Virtual Prayer Night — 5:30 PM',
+    '- **Thursday** Digging Deep Word Study — 5:30 PM',
+    '- **Friday** (last of month) Virtual Vigil — 11:00 PM',
     ''
   );
 
