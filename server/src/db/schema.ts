@@ -221,5 +221,21 @@ export function initDb() {
     sermons.forEach(s => insert.run(s.id, s.title, s.topic, s.speaker, s.summary, s.scriptures, s.youtube_url, s.date));
   }
 
+  // Seed admin from environment if configured
+  seedAdmin(db);
+
   console.log('✅ Database initialized');
+}
+
+function seedAdmin(db: Database.Database) {
+  const email = process.env.ADMIN_EMAIL;
+  const password = process.env.ADMIN_PASSWORD;
+  if (!email || !password) return; // nothing to seed
+  const existing = db.prepare('SELECT id FROM admin_users WHERE email = ?').get(email);
+  if (existing) return;
+  const { v4: uuidv4 } = require('uuid');
+  const hash = bcrypt.hashSync(password, 12);
+  db.prepare('INSERT INTO admin_users (id, email, password_hash, name, role) VALUES (?, ?, ?, ?, ?)')
+    .run(uuidv4(), email, hash, 'Church Admin', 'admin');
+  console.log(`[seed] created admin user ${email}`);
 }
