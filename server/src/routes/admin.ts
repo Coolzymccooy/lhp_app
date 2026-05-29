@@ -21,6 +21,7 @@ router.get('/stats', (_req: AuthRequest, res: Response) => {
     contact: db.prepare('SELECT COUNT(*) as total, SUM(CASE WHEN status="new" THEN 1 ELSE 0 END) as new_count FROM contact_messages').get(),
     membership: db.prepare('SELECT COUNT(*) as total, SUM(CASE WHEN status="new" THEN 1 ELSE 0 END) as new_count FROM memberships').get(),
     responses: db.prepare('SELECT COUNT(*) as total FROM service_responses').get(),
+    icare: db.prepare('SELECT COUNT(*) as total, SUM(CASE WHEN status="new" THEN 1 ELSE 0 END) as new_count FROM icare_requests').get(),
   };
   res.json({ success: true, stats });
 });
@@ -100,6 +101,20 @@ router.get('/responses', (_req: AuthRequest, res: Response) => {
   const db = getDb();
   const rows = db.prepare('SELECT * FROM service_responses ORDER BY created_at DESC').all();
   res.json({ success: true, data: rows });
+});
+
+// ── iCare Requests ────────────────────────────────────────────────────────────
+router.get('/icare', (_req: AuthRequest, res: Response) => {
+  const db = getDb();
+  const rows = db.prepare('SELECT * FROM icare_requests ORDER BY created_at DESC').all();
+  res.json({ success: true, data: rows });
+});
+
+router.patch('/icare/:id', (req: AuthRequest, res: Response) => {
+  const { status, notes } = req.body as StatusBody;
+  const db = getDb();
+  db.prepare("UPDATE icare_requests SET status = ?, notes = ?, updated_at = datetime('now') WHERE id = ?").run(status, notes ?? '', req.params.id);
+  res.json({ success: true });
 });
 
 // ── Sermons CRUD ──────────────────────────────────────────────────────────────

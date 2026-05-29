@@ -1,8 +1,15 @@
 import Database from 'better-sqlite3';
 import path from 'path';
+import fs from 'fs';
 import bcrypt from 'bcryptjs';
 
-const DB_PATH = path.join(__dirname, '../../data/lhp.db');
+// Ensure data directory exists
+const dataDir = path.join(process.cwd(), 'server', 'data');
+if (!fs.existsSync(dataDir)) {
+  fs.mkdirSync(dataDir, { recursive: true });
+}
+
+const DB_PATH = path.join(dataDir, 'lhp.db');
 
 let db: Database.Database;
 
@@ -99,6 +106,20 @@ export function initDb() {
       message TEXT,
       status TEXT NOT NULL DEFAULT 'new',
       created_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+
+    CREATE TABLE IF NOT EXISTS icare_requests (
+      id TEXT PRIMARY KEY,
+      full_name TEXT NOT NULL,
+      email TEXT NOT NULL,
+      phone TEXT,
+      interest TEXT NOT NULL DEFAULT 'help',
+      preferred_contact TEXT,
+      message TEXT,
+      status TEXT NOT NULL DEFAULT 'new',
+      notes TEXT,
+      created_at TEXT NOT NULL DEFAULT (datetime('now')),
+      updated_at TEXT NOT NULL DEFAULT (datetime('now'))
     );
 
     CREATE TABLE IF NOT EXISTS sermons (

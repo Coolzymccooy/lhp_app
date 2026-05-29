@@ -6,6 +6,7 @@ import { getDb } from '../db/schema';
 import { validate } from '../middleware/validate';
 import { triageRequest } from '../services/triage';
 import { vapidPublicKey } from '../services/webPush';
+import { sendSubmissionEmail } from '../services/email';
 
 const router = Router();
 
@@ -128,6 +129,27 @@ router.post('/respond', validate(responseSchema), (req: Request, res: Response) 
   `).run(uuidv4(), data.first_name, data.last_name ?? '', data.email, data.phone ?? '', JSON.stringify(data.responses), data.message ?? '');
 
   res.json({ success: true, message: 'Thank you for responding! Our pastoral team will reach out to you.' });
+});
+
+// ── iCare / Volunteer Request ─────────────────────────────────────────────────
+const icareSchema = z.object({
+  full_name: z.string().min(1, 'Full name is required'),
+  email: z.string().email('Valid email required'),
+  phone: z.string().optional(),
+  interest: z.enum(['help', 'volunteer']).default('help'),
+  preferred_contact: z.string().optional(),
+  message: z.string().optional(),
+});
+
+router.post('/icare', validate(icareSchema), (req: Request, res: Response) => {
+  const data = req.body as z.infer<typeof icareSchema>;
+  const db = getDb();
+  db.prepare(`
+    INSERT INTO icare_requests (id, full_name, email, phone, interest, preferred_contact, message)
+    VALUES (?, ?, ?, ?, ?, ?, ?)
+  `).run(uuidv4(), data.full_name, data.email, data.phone ?? '', data.interest, data.preferred_contact ?? '', data.message ?? '');
+  void sendSubmissionEmail('icare', data as unknown as Record<string, unknown>);
+  res.json({ success: true, message: 'Thank you — our iCare team will be in touch soon.' });
 });
 
 // ── Prayer Wall (public) ──────────────────────────────────────────────────────
