@@ -31,6 +31,7 @@ router.post('/prayer', validate(prayerSchema), (req: Request, res: Response) => 
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `).run(uuidv4(), data.first_name, data.last_name ?? '', data.email, data.phone ?? '', data.category, data.prayer_request, data.contact_me ? 1 : 0, urgency, aiCategory);
 
+  void sendSubmissionEmail('prayer', data as unknown as Record<string, unknown>);
   res.json({
     success: true,
     message: 'Your prayer request has been received. Our prayer team will lift you up today.',
@@ -58,6 +59,7 @@ router.post('/counselling', validate(counsellingSchema), (req: Request, res: Res
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
   `).run(uuidv4(), data.full_name, data.email, data.phone, data.counselling_type, data.preferred_date ?? '', data.description ?? '', urgency, aiCategory);
 
+  void sendSubmissionEmail('counselling', data as unknown as Record<string, unknown>);
   res.json({
     success: true,
     message: 'Your counselling request has been received. A member of our team will contact you within 48 hours.',
@@ -84,6 +86,7 @@ router.post('/contact', validate(contactSchema), (req: Request, res: Response) =
     VALUES (?, ?, ?, ?, ?, ?, ?)
   `).run(uuidv4(), data.first_name, data.last_name ?? '', data.email, data.phone ?? '', data.subject ?? '', data.message);
 
+  void sendSubmissionEmail('contact', data as unknown as Record<string, unknown>);
   res.json({ success: true, message: 'Thank you for reaching out. We\'ll get back to you soon!' });
 });
 
@@ -106,6 +109,7 @@ router.post('/membership', validate(membershipSchema), (req: Request, res: Respo
     VALUES (?, ?, ?, ?, ?, ?)
   `).run(uuidv4(), data.member_type, data.first_name, data.last_name, data.phone, data.email ?? '');
 
+  void sendSubmissionEmail('membership', data as unknown as Record<string, unknown>);
   res.json({ success: true, message: 'Registration received! We\'ll be in touch about the next Membership Class.' });
 });
 
@@ -128,6 +132,7 @@ router.post('/respond', validate(responseSchema), (req: Request, res: Response) 
     VALUES (?, ?, ?, ?, ?, ?, ?)
   `).run(uuidv4(), data.first_name, data.last_name ?? '', data.email, data.phone ?? '', JSON.stringify(data.responses), data.message ?? '');
 
+  void sendSubmissionEmail('respond', data as unknown as Record<string, unknown>);
   res.json({ success: true, message: 'Thank you for responding! Our pastoral team will reach out to you.' });
 });
 
