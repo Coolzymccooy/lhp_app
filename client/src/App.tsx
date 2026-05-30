@@ -38,6 +38,7 @@ import AnalyticsPage from './pages/admin/AnalyticsPage';
 import AttendancePage from './pages/admin/AttendancePage';
 import EventsAdminPage from './pages/admin/EventsAdminPage';
 import GalleryAdminPage from './pages/admin/GalleryAdminPage';
+import QRCodesPage from './pages/admin/QRCodesPage';
 import PrayerWallAdminPage from './pages/admin/PrayerWallAdminPage';
 import BulletinPage from './pages/admin/BulletinPage';
 import PushNotificationsPage from './pages/admin/PushNotificationsPage';
@@ -141,6 +142,7 @@ export default function App() {
           <Route path="attendance" element={<AttendancePage />} />
           <Route path="events" element={<EventsAdminPage />} />
           <Route path="gallery" element={<GalleryAdminPage />} />
+          <Route path="qr" element={<QRCodesPage />} />
           <Route path="prayer-wall" element={<PrayerWallAdminPage />} />
           <Route path="bulletins" element={<BulletinPage />} />
           <Route path="push" element={<PushNotificationsPage />} />
