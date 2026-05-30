@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { MapPin, Phone, Mail } from 'lucide-react';
+import { site } from '../../content/site';
 
 function YoutubeSvg({ className }: { className?: string }) {
   return (
@@ -32,10 +33,10 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           {/* Brand */}
           <div>
-            <h3 className="text-white text-xl font-bold mb-3">RCCG Lighthouse</h3>
-            <p className="text-primary font-semibold mb-4">Parish, Bury</p>
+            <h3 className="text-white text-xl font-bold mb-3">{site.shortName}</h3>
+            <p className="text-primary font-semibold mb-4">RCCG · {site.locality}</p>
             <p className="text-sm leading-relaxed text-gray-400">
-              A Spirit-filled community in the heart of Bury, Manchester. Making heaven and taking as many people as possible.
+              {site.tagline}.
             </p>
             <div className="flex gap-4 mt-6">
               <a href="https://youtube.com/@lighthouseparishbury" target="_blank" rel="noreferrer" className="w-10 h-10 bg-gray-800 hover:bg-primary rounded-full flex items-center justify-center transition-colors" aria-label="YouTube">
@@ -54,11 +55,12 @@ export default function Footer() {
           <div>
             <h4 className="text-white font-bold mb-4 uppercase text-xs tracking-widest">Service Times</h4>
             <ul className="space-y-2 text-sm">
-              <li><span className="text-primary font-semibold">Sunday</span> Sunrise — 7:30am</li>
-              <li><span className="text-primary font-semibold">Sunday</span> Sunshine — 10:30am</li>
-              <li><span className="text-primary font-semibold">Wednesday</span> Carpe Diem — 6:30am</li>
-              <li><span className="text-primary font-semibold">Thursday</span> Open Heavens — 6:00pm</li>
-              <li><span className="text-primary font-semibold">Friday</span> Praise Hour — 12:00pm</li>
+              {site.services.map(s => (
+                <li key={`${s.day}-${s.name}`}>
+                  <span className="text-primary font-semibold">{s.day}</span> {s.name} — {s.time}
+                  {('note' in s && s.note) ? ` (${s.note})` : ''}
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -86,7 +88,7 @@ export default function Footer() {
               </div>
               <div className="flex items-center gap-3">
                 <Mail className="w-4 h-4 text-primary flex-shrink-0" />
-                <a href="mailto:info@lighthouseparish.org" className="hover:text-primary transition-colors">info@lighthouseparish.org</a>
+                <a href={`mailto:${site.email}`} className="hover:text-primary transition-colors">{site.email}</a>
               </div>
               <div className="flex items-center gap-3">
                 <Phone className="w-4 h-4 text-primary flex-shrink-0" />
@@ -97,7 +99,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-gray-800 mt-12 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-gray-500">
-          <p>&copy; {new Date().getFullYear()} RCCG Lighthouse Parish, Bury. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} {site.name}, Bury. All rights reserved.</p>
           <Link to="/admin/login" className="text-gray-600 hover:text-gray-400 text-xs transition-colors">Admin</Link>
         </div>
       </div>
