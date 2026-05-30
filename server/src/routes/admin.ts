@@ -1,7 +1,9 @@
 import { Router, Response, Request } from 'express';
 import { getDb } from '../db/schema';
 import { requireAuth, AuthRequest } from '../middleware/auth';
+import { validate } from '../middleware/validate';
 import { v4 as uuidv4 } from 'uuid';
+import { z } from 'zod';
 import Stripe from 'stripe';
 import { webpush, vapidPublicKey, vapidPrivateKey } from '../services/webPush';
 
@@ -23,6 +25,7 @@ router.get('/stats', (_req: AuthRequest, res: Response) => {
     responses: db.prepare(`SELECT COUNT(*) as total FROM service_responses`).get(),
     icare: db.prepare(`SELECT COUNT(*) as total, SUM(CASE WHEN status='new' THEN 1 ELSE 0 END) as new_count FROM icare_requests`).get(),
     firstTimers: db.prepare(`SELECT COUNT(*) as total, SUM(CASE WHEN status='new' THEN 1 ELSE 0 END) as new_count FROM first_timers`).get(),
+    attendance: db.prepare(`SELECT COUNT(*) as total FROM attendance`).get(),
   };
   res.json({ success: true, stats });
 });
@@ -377,6 +380,109 @@ function generateBulletin(opts: { title: string; date: string; scripture?: strin
 
   return lines.join('\n');
 }
+
+// ── Church Attendance ────────────────────────────────────────────────────────
+const attendanceSchema = z.object({
+  service_date: z.string().min(1, 'Service date is required'),
+  service_type: z.string().default('Sunday Service'),
+  men: z.number().int().min(0).default(0),
+  women: z.number().int().min(0).default(0),
+  youth: z.number().int().min(0).default(0),
+  teens: z.number().int().min(0).default(0),
+  children: z.number().int().min(0).default(0),
+  notes: z.string().optional(),
+});
+
+router.get('/attendance', (_req: AuthRequest, res: Response) => {
+  const db = getDb();
+  const rows = db.prepare(`SELECT * FROM attendance ORDER BY service_date DESC, created_at DESC`).all();
+  res.json({ success: true, data: rows });
+});
+
+router.post('/attendance', validate(attendanceSchema), (req: AuthRequest, res: Response) => {
+  const { service_date, service_type, men, women, youth, teens, children, notes } = req.body as z.infer<typeof attendanceSchema>;
+  const db = getDb();
+  const total = men + women + youth + teens + children;
+  const id = uuidv4();
+  db.prepare(`
+    INSERT INTO attendance (id, service_date, service_type, men, women, youth, teens, children, total, notes)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `).run(id, service_date, service_type, men, women, youth, teens, children, total, notes ?? '');
+  res.json({ success: true, id });
+});
+
+router.patch('/attendance/:id', validate(attendanceSchema), (req: AuthRequest, res: Response) => {
+  const { service_date, service_type, men, women, youth, teens, children, notes } = req.body as z.infer<typeof attendanceSchema>;
+  const db = getDb();
+  const total = men + women + youth + teens + children;
+  db.prepare(`
+    UPDATE attendance SET
+      service_date = ?, service_type = ?, men = ?, women = ?, youth = ?, teens = ?, children = ?, total = ?, notes = ?, updated_at = datetime('now')
+    WHERE id = ?
+  `).run(service_date, service_type, men, women, youth, teens, children, total, notes ?? '', req.params.id);
+  res.json({ success: true });
+});
+
+router.delete('/attendance/:id', (req: AuthRequest, res: Response) => {
+  const db = getDb();
+  db.prepare('DELETE FROM attendance WHERE id = ?').run(req.params.id);
+  res.json({ success: true });
+});
+
+router.get('/attendance/analytics', (_req: AuthRequest, res: Response) => {
+  const db = getDb();
+
+  // Get last 16 services
+  const totalServices = (db.prepare('SELECT COUNT(*) as count FROM attendance').get() as { count: number }).count;
+  const services = db.prepare(`
+    SELECT * FROM (
+      SELECT * FROM attendance ORDER BY service_date DESC LIMIT 16
+    ) ORDER BY service_date ASC
+  `).all() as Array<{ service_date: string; service_type: string; men: number; women: number; youth: number; teens: number; children: number; total: number }>;
+
+  // Get monthly aggregates (last 12 months)
+  const monthly = db.prepare(`
+    SELECT
+      strftime('%Y-%m', service_date) as month,
+      SUM(men) as men,
+      SUM(women) as women,
+      SUM(youth) as youth,
+      SUM(teens) as teens,
+      SUM(children) as children,
+      SUM(total) as total,
+      COUNT(*) as services_count
+    FROM attendance
+    GROUP BY month
+    ORDER BY month ASC
+  `).all() as Array<{ month: string; men: number; women: number; youth: number; teens: number; children: number; total: number; services_count: number }>;
+
+  // Keep only last 12 months
+  const last12 = monthly.slice(Math.max(0, monthly.length - 12));
+
+  // Compute summary
+  const latestService = services.length > 0 ? services[services.length - 1] : null;
+  const latestTotal = latestService?.total ?? 0;
+
+  const last4Services = services.slice(Math.max(0, services.length - 4));
+  const avg4 = last4Services.length > 0
+    ? Math.round(last4Services.reduce((sum, s) => sum + s.total, 0) / last4Services.length)
+    : 0;
+
+  const categoryTotalsAllTime = {
+    men: (db.prepare('SELECT SUM(men) as total FROM attendance').get() as { total: number }).total ?? 0,
+    women: (db.prepare('SELECT SUM(women) as total FROM attendance').get() as { total: number }).total ?? 0,
+    youth: (db.prepare('SELECT SUM(youth) as total FROM attendance').get() as { total: number }).total ?? 0,
+    teens: (db.prepare('SELECT SUM(teens) as total FROM attendance').get() as { total: number }).total ?? 0,
+    children: (db.prepare('SELECT SUM(children) as total FROM attendance').get() as { total: number }).total ?? 0,
+  };
+
+  res.json({
+    success: true,
+    services,
+    monthly: last12,
+    summary: { latestTotal, avg4, categoryTotalsAllTime },
+  });
+});
 
 // ── Stripe Checkout ───────────────────────────────────────────────────────────
 router.post('/create-checkout', requireAuth, (req: AuthRequest, res: Response) => {

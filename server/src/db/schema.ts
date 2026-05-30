@@ -35,7 +35,7 @@ export function resetDb(): void {
     const tables = [
       'admin_users', 'prayer_requests', 'counselling_sessions', 'contact_messages',
       'memberships', 'service_responses', 'icare_requests', 'first_timers', 'sermons', 'prayer_wall',
-      'events', 'rsvps', 'push_subscriptions', 'bulletins'
+      'events', 'rsvps', 'push_subscriptions', 'bulletins', 'attendance'
     ];
     tables.forEach(table => {
       try {
@@ -236,6 +236,21 @@ export function initDb() {
       updated_at TEXT NOT NULL DEFAULT (datetime('now'))
     );
 
+    CREATE TABLE IF NOT EXISTS attendance (
+      id TEXT PRIMARY KEY,
+      service_date TEXT NOT NULL,
+      service_type TEXT NOT NULL DEFAULT 'Sunday Service',
+      men INTEGER NOT NULL DEFAULT 0,
+      women INTEGER NOT NULL DEFAULT 0,
+      youth INTEGER NOT NULL DEFAULT 0,
+      teens INTEGER NOT NULL DEFAULT 0,
+      children INTEGER NOT NULL DEFAULT 0,
+      total INTEGER NOT NULL DEFAULT 0,
+      notes TEXT,
+      created_at TEXT NOT NULL DEFAULT (datetime('now')),
+      updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+
     CREATE INDEX IF NOT EXISTS idx_prayer_status ON prayer_requests(status);
     CREATE INDEX IF NOT EXISTS idx_prayer_urgency ON prayer_requests(ai_urgency);
     CREATE INDEX IF NOT EXISTS idx_counselling_status ON counselling_sessions(status);
@@ -244,6 +259,7 @@ export function initDb() {
     CREATE INDEX IF NOT EXISTS idx_prayer_wall_approved ON prayer_wall(approved);
     CREATE INDEX IF NOT EXISTS idx_events_date ON events(date);
     CREATE INDEX IF NOT EXISTS idx_rsvps_event ON rsvps(event_id);
+    CREATE INDEX IF NOT EXISTS idx_attendance_date ON attendance(service_date);
   `);
 
   // Seed default admin if none exists

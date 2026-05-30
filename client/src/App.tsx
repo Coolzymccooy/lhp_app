@@ -34,6 +34,7 @@ import DashboardLayout from './pages/admin/DashboardLayout';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import SermonsAdminPage from './pages/admin/SermonsPage';
 import AnalyticsPage from './pages/admin/AnalyticsPage';
+import AttendancePage from './pages/admin/AttendancePage';
 import EventsAdminPage from './pages/admin/EventsAdminPage';
 import PrayerWallAdminPage from './pages/admin/PrayerWallAdminPage';
 import BulletinPage from './pages/admin/BulletinPage';
@@ -134,6 +135,7 @@ export default function App() {
           <Route path="responses" element={<SubmissionsPage config={RESPONSES_CONFIG} />} />
           <Route path="first-timers" element={<SubmissionsPage config={FIRST_TIMERS_CONFIG} />} />
           <Route path="analytics" element={<AnalyticsPage />} />
+          <Route path="attendance" element={<AttendancePage />} />
           <Route path="events" element={<EventsAdminPage />} />
           <Route path="prayer-wall" element={<PrayerWallAdminPage />} />
           <Route path="bulletins" element={<BulletinPage />} />
