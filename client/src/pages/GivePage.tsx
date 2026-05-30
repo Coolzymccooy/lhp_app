@@ -30,6 +30,18 @@ const GIVING_METHODS = [
     color: 'bg-green-50 border-green-200',
     iconColor: 'text-green-600 bg-green-100',
   },
+  {
+    title: 'Gift Aid',
+    desc: 'UK taxpayers can increase their giving by 25% at no extra cost through Gift Aid. Ask our finance team for a Gift Aid declaration form.',
+    details: [
+      { label: 'Eligibility', value: 'UK taxpayers' },
+      { label: 'Boost', value: '+25% on your gift' },
+      { label: 'How', value: 'Complete a one-off declaration' },
+    ],
+    icon: Heart,
+    color: 'bg-pink-50 border-pink-200',
+    iconColor: 'text-pink-600 bg-pink-100',
+  },
 ];
 
 const FUND_CATEGORIES = [
