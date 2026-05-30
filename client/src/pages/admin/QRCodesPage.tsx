@@ -14,6 +14,8 @@ const FORMS: Form[] = [
   { label: 'E-Membership', path: '/membership', desc: 'Scan to register / join.' },
   { label: 'Contact Us', path: '/contact', desc: 'Scan to send us a message.' },
   { label: 'iCare / Volunteer', path: '/icare', desc: 'Scan to request support or volunteer.' },
+  { label: 'Give / Donate', path: '/give', desc: 'Scan to give an offering or donation.' },
+  { label: 'Watch Live', path: '/watch-live', desc: 'Scan to watch our service / livestream.' },
 ];
 
 export default function QRCodesPage() {
@@ -39,7 +41,7 @@ export default function QRCodesPage() {
       {/* Header */}
       <div>
         <h2 className="text-2xl font-bold text-gray-900">QR Codes</h2>
-        <p className="text-sm text-gray-600 mt-1">Printable codes — people scan to open a form and submit their details.</p>
+        <p className="text-sm text-gray-600 mt-1">Printable codes — people scan to open a form, give, or watch live.</p>
       </div>
 
       {/* Tip */}
