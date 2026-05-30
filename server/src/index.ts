@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
+import fs from 'fs';
 import { initDb } from './db/schema';
 import { initWebPush } from './services/webPush';
 import authRouter from './routes/auth';
@@ -47,11 +48,18 @@ app.get('/api/health', (_req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-// ── Serve built client (single-origin) ────────────────────────────────────────
-const clientDist = path.join(__dirname, '../../client/dist');
+// Serve built client (single-origin)
+const clientDist = path.resolve(path.join(__dirname, '../../client/dist'));
+const indexHtmlPath = path.join(clientDist, 'index.html');
+const indexHtmlContent = fs.readFileSync(indexHtmlPath, 'utf-8');
+
 app.use(express.static(clientDist));
-app.get(/^(?!\/api).*/, (_req, res) => {
-  res.sendFile(path.join(clientDist, 'index.html'));
+
+// SPA fallback: serve index.html for any route that hasn't been handled by static or API
+app.use((_req, res) => {
+  if (!res.headersSent) {
+    res.type('html').send(indexHtmlContent);
+  }
 });
 
 // Global error handler
