@@ -187,7 +187,15 @@ export default function HomePage() {
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {QUICK_RESOURCES.map(({ icon: Icon, label, to, external }) => (
-              external ? (
+              label === 'AI Copilot' ? (
+                <button key={label} type="button" onClick={() => window.dispatchEvent(new Event('lhp:open-ai'))}
+                  className="group flex flex-col items-center gap-3 p-5 bg-gray-900 border border-gray-800 rounded-2xl hover:border-amber-500/50 hover:bg-gray-800 transition-all text-center cursor-pointer">
+                  <div className="w-12 h-12 rounded-full bg-amber-500/10 flex items-center justify-center group-hover:bg-amber-500/20 transition-colors">
+                    <Icon className="w-6 h-6 text-amber-400" />
+                  </div>
+                  <span className="text-sm font-semibold text-gray-300 group-hover:text-white transition-colors leading-tight">{label}</span>
+                </button>
+              ) : external ? (
                 <a key={label} href={to} target="_blank" rel="noreferrer"
                   className="group flex flex-col items-center gap-3 p-5 bg-gray-900 border border-gray-800 rounded-2xl hover:border-amber-500/50 hover:bg-gray-800 transition-all text-center">
                   <div className="w-12 h-12 rounded-full bg-amber-500/10 flex items-center justify-center group-hover:bg-amber-500/20 transition-colors">

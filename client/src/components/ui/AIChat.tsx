@@ -30,6 +30,13 @@ export default function AIChat() {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
+  // Allow other parts of the site (e.g. the "AI Copilot" quick-resource card) to open the chat.
+  useEffect(() => {
+    const handler = () => setOpen(true);
+    window.addEventListener('lhp:open-ai', handler);
+    return () => window.removeEventListener('lhp:open-ai', handler);
+  }, []);
+
   async function send(text?: string) {
     const query = (text ?? input).trim();
     if (!query || loading) return;
