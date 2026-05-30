@@ -1,6 +1,17 @@
 import { ChevronRight, Clock, MapPin, Users } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
+const SERVICE_TEAMS = [
+  { name: 'Worship Team', desc: 'Lead the congregation in worship through music and song.' },
+  { name: 'Media Team', desc: 'Handle sound, lighting, video, and live streaming.' },
+  { name: 'Technical & Social Media', desc: 'Manage the website, online platforms, and our social media presence.' },
+  { name: 'Ushering', desc: 'Welcome guests and ensure services run smoothly.' },
+  { name: 'Prayer Team', desc: 'Intercede for the church and minister to those in need.' },
+  { name: "Children's Workers", desc: 'Teach and care for children during services.' },
+  { name: 'Parking Team', desc: 'Direct traffic and assist with parking.' },
+  { name: 'Hospitality', desc: 'Provide refreshments and fellowship opportunities.' },
+];
+
 const GROUPS = [
   {
     name: "Children's Ministry",
@@ -139,6 +150,25 @@ export default function GroupsPage() {
               </div>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* Service Teams */}
+      <section className="section-pad bg-white">
+        <div className="container-max">
+          <div className="text-center mb-12">
+            <p className="text-primary font-bold text-sm uppercase tracking-widest mb-2">Serve</p>
+            <h2 className="text-3xl font-bold text-gray-900">Service Teams</h2>
+            <p className="text-gray-500 mt-3 max-w-xl mx-auto">There's a place for everyone to serve. Join one of our teams.</p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {SERVICE_TEAMS.map(t => (
+              <div key={t.name} className="bg-gray-50 rounded-2xl p-5 border border-gray-100 hover:border-pink-200 hover:shadow-md transition-all">
+                <h3 className="font-bold text-gray-900 text-sm mb-1">{t.name}</h3>
+                <p className="text-gray-500 text-xs leading-relaxed">{t.desc}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
