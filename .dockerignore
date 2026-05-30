@@ -1,0 +1,23 @@
+# Install fresh inside the image; never copy host (Windows) artifacts in.
+node_modules
+client/node_modules
+server/node_modules
+client/dist
+server/dist
+
+# Local data must never bake into the image — it lives on the persistent volume.
+data
+uploads
+*.db
+*.db-shm
+*.db-wal
+
+# Secrets + VCS + misc
+.env
+.env.*
+!.env.example
+.git
+.gitignore
+*.log
+.DS_Store
+.claude
