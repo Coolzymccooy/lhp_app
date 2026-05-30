@@ -488,7 +488,10 @@ router.get('/attendance/analytics', (_req: AuthRequest, res: Response) => {
 });
 
 // ── Gallery Images ────────────────────────────────────────────────────────────
-const galleryDir = path.join(__dirname, '../../uploads/gallery');
+// Persisted under DATA_DIR/uploads/gallery in production (see index.ts static mount).
+const galleryDir = process.env.DATA_DIR
+  ? path.join(process.env.DATA_DIR, 'uploads', 'gallery')
+  : path.join(__dirname, '../../uploads/gallery');
 fs.mkdirSync(galleryDir, { recursive: true });
 
 const upload = multer({

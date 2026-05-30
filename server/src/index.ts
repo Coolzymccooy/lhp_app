@@ -59,9 +59,11 @@ const indexHtmlPath = path.join(clientDist, 'index.html');
 const indexHtmlContent = fs.readFileSync(indexHtmlPath, 'utf-8');
 
 // Serve uploaded files BEFORE the SPA catch-all.
-// Uploads live in server/uploads (same convention as server/data); from
-// server/dist that is one level up ('../uploads'), matching the gallery route's save dir.
-const uploadsDir = path.join(__dirname, '../uploads');
+// In production set DATA_DIR to a persistent volume so uploads survive redeploys;
+// locally this defaults to server/uploads (matches the gallery route's save dir).
+const uploadsDir = process.env.DATA_DIR
+  ? path.join(process.env.DATA_DIR, 'uploads')
+  : path.join(__dirname, '../uploads');
 fs.mkdirSync(uploadsDir, { recursive: true });
 app.use('/uploads', express.static(uploadsDir));
 

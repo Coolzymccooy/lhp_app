@@ -1,0 +1,55 @@
+# Render Blueprint — deploys The Lighthouse Church app as ONE Node web service
+# (Express serves the built React client + /api + SQLite + uploaded images).
+# Docs: https://render.com/docs/blueprint-spec
+#
+# This is a Node WEB SERVICE, not a Static Site. Do not deploy it on Vercel/Netlify:
+# it is a long-running server with a SQLite database and local file uploads, which
+# serverless/static hosts cannot persist.
+services:
+  - type: web
+    name: lhp-app
+    runtime: node
+    region: frankfurt          # closest Render region to the UK
+    plan: starter              # Starter (paid) is required for the persistent disk below.
+                               # On the free plan, remove the `disk:` block — but then the
+                               # database and uploaded images RESET on every redeploy/restart.
+    branch: master
+    autoDeploy: true
+    buildCommand: npm run deploy:build   # installs client+server deps (incl. devDeps) then builds
+    startCommand: npm start              # node server/dist/index.js (serves SPA + /api)
+    healthCheckPath: /api/health
+    disk:
+      name: lhp-data
+      mountPath: /var/data     # DATA_DIR points here → /var/data/data/lhp.db + /var/data/uploads
+      sizeGB: 1
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATA_DIR
+        value: /var/data       # persistent location for the SQLite DB + uploaded images
+      - key: NOTIFY_EMAIL
+        value: Rccgtlp1@yahoo.com
+      - key: JWT_SECRET
+        generateValue: true     # Render generates a strong secret automatically
+      # Secrets — set these in the Render dashboard (Environment tab); never commit them.
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: SMTP_HOST
+        sync: false
+      - key: SMTP_PORT
+        sync: false
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASS
+        sync: false
+      - key: SMTP_FROM
+        sync: false
+      - key: YOUTUBE_CHANNEL_ID
+        sync: false
+      - key: STRIPE_SECRET_KEY
+        sync: false
+# Render injects PORT automatically; the server reads process.env.PORT.

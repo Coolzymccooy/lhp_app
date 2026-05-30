@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "concurrently -n client,server -c cyan,yellow \"npm run dev --prefix client\" \"npm run dev --prefix server\"",
     "build": "npm run build --prefix client && npm run build --prefix server",
-    "install:all": "npm install && npm install --prefix client && npm install --prefix server",
+    "install:all": "npm install --include=dev && npm install --include=dev --prefix client && npm install --include=dev --prefix server",
+    "deploy:build": "npm run install:all && npm run build",
     "start": "node server/dist/index.js"
   },
   "devDependencies": {

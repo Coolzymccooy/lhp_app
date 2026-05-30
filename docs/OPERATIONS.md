@@ -33,21 +33,42 @@ Outbound email uses SMTP. The simplest option is to use the church's own Yahoo a
 **Offline operation:** If SMTP is not configured, submissions are still saved and shown in the admin dashboard; only the outbound email is skipped.
 
 ## Hosting
-Because the app uses SQLite, it must be hosted where the database file persists across server restarts (a persistent disk).
+This is a **single Node web service**: Express serves the built React client, the `/api`
+endpoints, the SQLite database, and uploaded gallery images. It must run on a host that
+keeps a **persistent disk** — **not** a static/serverless host.
 
-**Recommended:**
-- **Render** Web Service + persistent disk (~£6/month)
-  1. Create a Web Service pointing to this repo
-  2. Add a persistent disk mounted at `server/data` (where `lhp.db` lives)
-  3. Build command: `npm run build`
-  4. Start command: `npm start`
-  5. Point your domain DNS (A/CNAME record for `lighthousechurchburyrccg.co.uk`) to the Render app
+> ⚠️ **Vercel and Netlify will NOT work** for this app — they are static/serverless and
+> cannot run a long-lived server or persist SQLite + uploaded files. Use Render (below),
+> Railway, or Fly.io.
 
-**Alternatives:**
-- **Railway** or **Fly.io** (also offer persistent volumes)
-- **Managed PostgreSQL** instead of SQLite (easier scaling; requires code change to use a different database driver)
+### Deploy on Render (recommended) — via the included Blueprint
+A `render.yaml` Blueprint is committed at the repo root. It configures everything:
+- **Web Service**, build `npm run deploy:build` (installs all deps incl. devDeps, then builds),
+  start `npm start`, health check `/api/health`.
+- A **1 GB persistent disk** mounted at `/var/data`, with `DATA_DIR=/var/data` so the
+  database (`/var/data/data/lhp.db`) and uploaded images (`/var/data/uploads`) survive
+  redeploys.
 
-**Important:** Free tier hosting with ephemeral disks (Heroku free tier, Vercel) **will wipe the SQLite database on each restart**. Avoid these unless you switch to managed PostgreSQL.
+Steps:
+1. In Render: **New → Blueprint**, connect `github.com/Coolzymccooy/lhp_app`, pick branch `master`. Render reads `render.yaml`.
+2. When prompted, fill the secret env vars (marked `sync: false`): `ANTHROPIC_API_KEY`,
+   `ADMIN_EMAIL`, `ADMIN_PASSWORD`, and (optionally) the `SMTP_*` values. `JWT_SECRET` is auto-generated.
+3. Deploy. (Delete any earlier **Static Site** service for this repo — that was the wrong type and is what failed.)
+4. Point your domain DNS (A/CNAME for `lighthousechurchburyrccg.co.uk`) at the Render app.
+
+The Blueprint uses the **Starter** plan because the persistent disk requires a paid instance
+(~£6/mo). To trial on the **free** plan instead, remove the `disk:` block and set `plan: free`
+in `render.yaml` — but note the database and uploaded images will reset on every redeploy/restart.
+
+### Manual setup (any Node host)
+- **Build command:** `npm run deploy:build`
+- **Start command:** `npm start`
+- **Env:** `NODE_ENV=production`, `DATA_DIR=<persistent-mount>`, `JWT_SECRET`, `NOTIFY_EMAIL`,
+  `ADMIN_EMAIL`, `ADMIN_PASSWORD`, optional `ANTHROPIC_API_KEY` / `SMTP_*` / `YOUTUBE_CHANNEL_ID` / `STRIPE_SECRET_KEY`.
+- Mount a persistent volume and point `DATA_DIR` at it.
+
+**Alternatives:** Railway or Fly.io (persistent volumes); or swap SQLite for managed PostgreSQL
+for easier horizontal scaling (requires a DB-driver change).
 
 ## Running locally
 1. **Build everything:**

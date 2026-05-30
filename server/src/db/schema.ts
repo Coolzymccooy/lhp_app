@@ -3,11 +3,15 @@ import path from 'path';
 import fs from 'fs';
 import bcrypt from 'bcryptjs';
 
-// Use in-memory database for tests, file-based for production
+// Use in-memory database for tests, file-based otherwise.
+// In production set DATA_DIR to a persistent volume (e.g. a Render disk) so the
+// database survives restarts/redeploys; locally it defaults to server/data.
 const DB_PATH = process.env.NODE_ENV === 'test'
   ? ':memory:'
   : (() => {
-      const dataDir = path.join(process.cwd(), 'server', 'data');
+      const dataDir = process.env.DATA_DIR
+        ? path.join(process.env.DATA_DIR, 'data')
+        : path.join(process.cwd(), 'server', 'data');
       if (!fs.existsSync(dataDir)) {
         fs.mkdirSync(dataDir, { recursive: true });
       }
