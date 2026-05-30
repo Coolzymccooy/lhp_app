@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeAll, vi } from 'vitest';
+import { describe, it, expect, beforeAll, beforeEach, afterAll, vi } from 'vitest';
 import express from 'express';
 import request from 'supertest';
 
@@ -8,7 +8,7 @@ vi.mock('../services/email', () => ({
 process.env.JWT_SECRET = 'test-secret';
 
 import formsRouter from './forms';
-import { initDb } from '../db/schema';
+import { initDb, closeDb, resetDb } from '../db/schema';
 import { sendSubmissionEmail } from '../services/email';
 
 function app() {
@@ -20,6 +20,8 @@ function app() {
 
 describe('form routes send email notifications', () => {
   beforeAll(() => { initDb(); });
+  beforeEach(() => { resetDb(); });
+  afterAll(() => { closeDb(); });
 
   it('contact triggers an email', async () => {
     const res = await request(app()).post('/api/forms/contact').send({

@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeAll, vi } from 'vitest';
+import { describe, it, expect, beforeAll, beforeEach, afterAll, vi } from 'vitest';
 import express from 'express';
 import request from 'supertest';
 
@@ -9,7 +9,7 @@ vi.mock('../services/email', () => ({
 process.env.JWT_SECRET = 'test-secret';
 
 import formsRouter from './forms';
-import { initDb } from '../db/schema';
+import { initDb, closeDb, resetDb } from '../db/schema';
 import { sendSubmissionEmail } from '../services/email';
 
 function makeApp() {
@@ -21,6 +21,8 @@ function makeApp() {
 
 describe('POST /api/forms/icare', () => {
   beforeAll(() => { initDb(); });
+  beforeEach(() => { resetDb(); });
+  afterAll(() => { closeDb(); });
 
   it('rejects invalid payloads with 400', async () => {
     const res = await request(makeApp()).post('/api/forms/icare').send({ full_name: '' });

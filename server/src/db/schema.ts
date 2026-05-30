@@ -16,10 +16,40 @@ let db: Database.Database;
 export function getDb(): Database.Database {
   if (!db) {
     db = new Database(DB_PATH);
-    db.pragma('journal_mode = WAL');
+    // Use DELETE journal mode in tests to avoid WAL lock contention
+    if (process.env.NODE_ENV !== 'test') {
+      db.pragma('journal_mode = WAL');
+    }
     db.pragma('foreign_keys = ON');
   }
   return db;
+}
+
+/** For testing: reset the database to a clean state. */
+export function resetDb(): void {
+  if (db) {
+    // Drop all test data but keep schema
+    const tables = [
+      'admin_users', 'prayer_requests', 'counselling_sessions', 'contact_messages',
+      'memberships', 'service_responses', 'icare_requests', 'sermons', 'prayer_wall',
+      'events', 'rsvps', 'push_subscriptions', 'bulletins'
+    ];
+    tables.forEach(table => {
+      try {
+        db.exec(`DELETE FROM ${table}`);
+      } catch {
+        // Table may not exist yet
+      }
+    });
+  }
+}
+
+/** For testing: close the database connection. */
+export function closeDb(): void {
+  if (db) {
+    db.close();
+    db = null as unknown as Database.Database;
+  }
 }
 
 export function initDb() {
