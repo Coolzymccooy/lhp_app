@@ -6,6 +6,9 @@ import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod';
 import Stripe from 'stripe';
 import { webpush, vapidPublicKey, vapidPrivateKey } from '../services/webPush';
+import multer from 'multer';
+import fs from 'fs';
+import path from 'path';
 
 const router = Router();
 
@@ -482,6 +485,65 @@ router.get('/attendance/analytics', (_req: AuthRequest, res: Response) => {
     monthly: last12,
     summary: { latestTotal, avg4, categoryTotalsAllTime },
   });
+});
+
+// ── Gallery Images ────────────────────────────────────────────────────────────
+const galleryDir = path.join(__dirname, '../../uploads/gallery');
+fs.mkdirSync(galleryDir, { recursive: true });
+
+const upload = multer({
+  storage: multer.diskStorage({
+    destination: (_req, _file, cb) => cb(null, galleryDir),
+    filename: (_req, file, cb) => cb(null, `${uuidv4()}${path.extname(file.originalname).toLowerCase()}`),
+  }),
+  limits: { fileSize: 8 * 1024 * 1024 },
+  fileFilter: (_req, file, cb) => cb(null, /^image\/(jpe?g|png|webp|gif)$/.test(file.mimetype)),
+});
+
+router.post('/gallery', upload.single('image'), (req: AuthRequest, res: Response) => {
+  if (!req.file) {
+    res.status(400).json({ success: false, error: 'No image file provided' });
+    return;
+  }
+
+  const { caption, album } = req.body as { caption?: string; album?: string };
+  const db = getDb();
+  const id = uuidv4();
+  const url = `/uploads/gallery/${req.file.filename}`;
+
+  db.prepare(`
+    INSERT INTO gallery_images (id, url, caption, album)
+    VALUES (?, ?, ?, ?)
+  `).run(id, url, caption ?? '', album ?? '');
+
+  res.json({ success: true, id, url });
+});
+
+router.get('/gallery', (_req: AuthRequest, res: Response) => {
+  const db = getDb();
+  const rows = db.prepare('SELECT * FROM gallery_images ORDER BY created_at DESC').all();
+  res.json({ success: true, data: rows });
+});
+
+router.delete('/gallery/:id', (req: AuthRequest, res: Response) => {
+  const db = getDb();
+  const row = db.prepare('SELECT url FROM gallery_images WHERE id = ?').get(req.params.id) as { url: string } | undefined;
+
+  if (!row) {
+    res.status(404).json({ success: false, error: 'Image not found' });
+    return;
+  }
+
+  // Delete file (best-effort, ignore errors)
+  const filePath = path.join(__dirname, '../../' + row.url);
+  try {
+    fs.unlinkSync(filePath);
+  } catch {
+    // Ignore errors
+  }
+
+  db.prepare('DELETE FROM gallery_images WHERE id = ?').run(req.params.id);
+  res.json({ success: true });
 });
 
 // ── Stripe Checkout ───────────────────────────────────────────────────────────

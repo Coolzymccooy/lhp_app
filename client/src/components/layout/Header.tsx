@@ -12,6 +12,7 @@ const NAV_LINKS = [
       { label: 'About Us', to: '/about' },
       { label: 'Groups & Ministries', to: '/groups' },
       { label: 'Events', to: '/events' },
+      { label: 'Gallery', to: '/gallery' },
       { label: 'FAQ', to: '/faq' },
       { label: 'Senior Pastors', to: '/senior-pastors' },
     ],

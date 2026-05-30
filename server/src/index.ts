@@ -58,6 +58,11 @@ const clientDist = path.resolve(path.join(__dirname, '../../client/dist'));
 const indexHtmlPath = path.join(clientDist, 'index.html');
 const indexHtmlContent = fs.readFileSync(indexHtmlPath, 'utf-8');
 
+// Serve uploaded files BEFORE the SPA catch-all
+const uploadsDir = path.join(__dirname, '../../uploads');
+fs.mkdirSync(uploadsDir, { recursive: true });
+app.use('/uploads', express.static(uploadsDir));
+
 app.use(express.static(clientDist));
 
 // SPA fallback: serve index.html for any route that hasn't been handled by static or API

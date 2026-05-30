@@ -35,7 +35,7 @@ export function resetDb(): void {
     const tables = [
       'admin_users', 'prayer_requests', 'counselling_sessions', 'contact_messages',
       'memberships', 'service_responses', 'icare_requests', 'first_timers', 'sermons', 'prayer_wall',
-      'events', 'rsvps', 'push_subscriptions', 'bulletins', 'attendance'
+      'events', 'rsvps', 'push_subscriptions', 'bulletins', 'attendance', 'gallery_images'
     ];
     tables.forEach(table => {
       try {
@@ -251,6 +251,14 @@ export function initDb() {
       updated_at TEXT NOT NULL DEFAULT (datetime('now'))
     );
 
+    CREATE TABLE IF NOT EXISTS gallery_images (
+      id TEXT PRIMARY KEY,
+      url TEXT NOT NULL,
+      caption TEXT,
+      album TEXT,
+      created_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+
     CREATE INDEX IF NOT EXISTS idx_prayer_status ON prayer_requests(status);
     CREATE INDEX IF NOT EXISTS idx_prayer_urgency ON prayer_requests(ai_urgency);
     CREATE INDEX IF NOT EXISTS idx_counselling_status ON counselling_sessions(status);
@@ -260,6 +268,7 @@ export function initDb() {
     CREATE INDEX IF NOT EXISTS idx_events_date ON events(date);
     CREATE INDEX IF NOT EXISTS idx_rsvps_event ON rsvps(event_id);
     CREATE INDEX IF NOT EXISTS idx_attendance_date ON attendance(service_date);
+    CREATE INDEX IF NOT EXISTS idx_gallery_created ON gallery_images(created_at);
   `);
 
   // Seed default admin if none exists

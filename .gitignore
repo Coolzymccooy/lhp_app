@@ -25,6 +25,10 @@ build/
 # SQLite database (generated at runtime)
 server/data/
 
+# Uploaded files
+server/uploads/
+uploads/
+
 # Vite cache
 client/.vite/
 

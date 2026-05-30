@@ -272,6 +272,13 @@ router.post('/push-subscribe', validate(pushSubscribeSchema), (req: Request, res
   res.json({ success: true });
 });
 
+// ── Gallery (public) ──────────────────────────────────────────────────────────
+router.get('/gallery', (_req: Request, res: Response) => {
+  const db = getDb();
+  const rows = db.prepare('SELECT id, url, caption, album, created_at FROM gallery_images ORDER BY created_at DESC LIMIT 200').all();
+  res.json({ success: true, data: rows });
+});
+
 // ── Stripe Online Giving (public) ─────────────────────────────────────────────
 const checkoutSchema = z.object({
   amount: z.number().positive(),

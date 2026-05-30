@@ -27,6 +27,7 @@ import ConnectPage from './pages/ConnectPage';
 import RespondPage from './pages/RespondPage';
 import EventsPage from './pages/EventsPage';
 import PrayerWallPage from './pages/PrayerWallPage';
+import GalleryPage from './pages/GalleryPage';
 
 // Admin pages
 import LoginPage from './pages/admin/LoginPage';
@@ -36,6 +37,7 @@ import SermonsAdminPage from './pages/admin/SermonsPage';
 import AnalyticsPage from './pages/admin/AnalyticsPage';
 import AttendancePage from './pages/admin/AttendancePage';
 import EventsAdminPage from './pages/admin/EventsAdminPage';
+import GalleryAdminPage from './pages/admin/GalleryAdminPage';
 import PrayerWallAdminPage from './pages/admin/PrayerWallAdminPage';
 import BulletinPage from './pages/admin/BulletinPage';
 import PushNotificationsPage from './pages/admin/PushNotificationsPage';
@@ -112,6 +114,7 @@ export default function App() {
         <Route path="/first-time" element={<PublicLayout><ConnectPage /></PublicLayout>} />
         <Route path="/respond" element={<PublicLayout><RespondPage /></PublicLayout>} />
         <Route path="/events" element={<PublicLayout><EventsPage /></PublicLayout>} />
+        <Route path="/gallery" element={<PublicLayout><GalleryPage /></PublicLayout>} />
         <Route path="/prayer-wall" element={<PublicLayout><PrayerWallPage /></PublicLayout>} />
 
         {/* Admin auth */}
@@ -137,6 +140,7 @@ export default function App() {
           <Route path="analytics" element={<AnalyticsPage />} />
           <Route path="attendance" element={<AttendancePage />} />
           <Route path="events" element={<EventsAdminPage />} />
+          <Route path="gallery" element={<GalleryAdminPage />} />
           <Route path="prayer-wall" element={<PrayerWallAdminPage />} />
           <Route path="bulletins" element={<BulletinPage />} />
           <Route path="push" element={<PushNotificationsPage />} />
