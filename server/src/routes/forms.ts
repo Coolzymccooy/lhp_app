@@ -157,6 +157,30 @@ router.post('/icare', validate(icareSchema), (req: Request, res: Response) => {
   res.json({ success: true, message: 'Thank you — our iCare team will be in touch soon.' });
 });
 
+// ── First-Time Guest ──────────────────────────────────────────────────────────
+const firstTimerSchema = z.object({
+  full_name: z.string().min(1, 'Full name is required'),
+  email: z.string().email('Valid email required'),
+  phone: z.string().optional(),
+  age_group: z.string().optional(),
+  how_heard: z.string().optional(),
+  visit_date: z.string().optional(),
+  interests: z.string().optional(),
+  prayer_request: z.string().optional(),
+  wants_followup: z.boolean().optional().default(true),
+});
+
+router.post('/first-timer', validate(firstTimerSchema), (req: Request, res: Response) => {
+  const data = req.body as z.infer<typeof firstTimerSchema>;
+  const db = getDb();
+  db.prepare(`
+    INSERT INTO first_timers (id, full_name, email, phone, age_group, how_heard, visit_date, interests, prayer_request, wants_followup)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `).run(uuidv4(), data.full_name, data.email, data.phone ?? '', data.age_group ?? '', data.how_heard ?? '', data.visit_date ?? '', data.interests ?? '', data.prayer_request ?? '', data.wants_followup ? 1 : 0);
+  void sendSubmissionEmail('first_timer', data as unknown as Record<string, unknown>);
+  res.json({ success: true, message: 'Welcome to The Lighthouse Church! We\'re so glad you came — someone from our team will reach out soon.' });
+});
+
 // ── Prayer Wall (public) ──────────────────────────────────────────────────────
 const prayerWallSchema = z.object({
   name: z.string().min(1).max(100),

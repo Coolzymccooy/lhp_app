@@ -88,6 +88,22 @@ export const RESPONSES_CONFIG: Config = {
   detailKeys: ['message'],
 };
 
+export const FIRST_TIMERS_CONFIG: Config = {
+  endpoint: '/admin/first-timers',
+  title: 'First-Time Guests',
+  columns: [
+    { key: 'full_name', label: 'Name' },
+    { key: 'email', label: 'Email' },
+    { key: 'phone', label: 'Phone' },
+    { key: 'age_group', label: 'Age Group' },
+    { key: 'how_heard', label: 'How Heard' },
+    { key: 'wants_followup', label: 'Follow-up', render: (v) => v ? 'Yes' : 'No' },
+    { key: 'status', label: 'Status' },
+    { key: 'created_at', label: 'Date', render: (v) => new Date(String(v)).toLocaleDateString('en-GB') },
+  ],
+  detailKeys: ['visit_date', 'interests', 'prayer_request', 'notes'],
+};
+
 function StatusBadge({ status }: { status: string }) {
   const cls = STATUS_COLORS[status] ?? STATUS_COLORS.new;
   return <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold border ${cls}`}>{status.replace('_', ' ')}</span>;

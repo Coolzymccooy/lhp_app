@@ -1,86 +1,99 @@
-import nodemailer, { Transporter } from 'nodemailer';
+import nodemailer from 'nodemailer';
 
-export type SubmissionKind =
-  | 'contact' | 'prayer' | 'counselling' | 'membership' | 'respond' | 'icare';
+export type SubmissionKind = 'prayer' | 'counselling' | 'contact' | 'membership' | 'respond' | 'icare' | 'first_timer';
 
-const KIND_LABELS: Record<SubmissionKind, string> = {
-  contact: 'Contact Message',
+export const KIND_LABELS: Record<SubmissionKind, string> = {
   prayer: 'Prayer Request',
-  counselling: 'Counselling Request',
+  counselling: 'Counselling Session',
+  contact: 'Contact Message',
   membership: 'Membership Registration',
   respond: 'Service Response',
-  icare: 'iCare / Volunteer Request',
+  icare: 'iCare Request',
+  first_timer: 'First-Time Guest',
 };
 
-const NOTIFY_EMAIL = process.env.NOTIFY_EMAIL ?? 'Rccgtlp1@yahoo.com';
+let transporter: nodemailer.Transporter | null = null;
 
-export interface BuiltEmail {
-  subject: string;
-  text: string;
-  html: string;
-}
+function getTransporter(): nodemailer.Transporter {
+  if (transporter) return transporter;
 
-function formatValue(value: unknown): string {
-  if (Array.isArray(value)) return value.join(', ');
-  if (value === null || value === undefined || value === '') return '—';
-  if (typeof value === 'object') return JSON.stringify(value);
-  return String(value);
-}
+  const smtpHost = process.env.SMTP_HOST;
+  const smtpPort = process.env.SMTP_PORT ? parseInt(process.env.SMTP_PORT, 10) : 587;
+  const smtpUser = process.env.SMTP_USER;
+  const smtpPass = process.env.SMTP_PASS;
 
-export function buildSubmissionEmail(kind: SubmissionKind, data: Record<string, unknown>): BuiltEmail {
-  const label = KIND_LABELS[kind];
-  const rows = Object.entries(data)
-    .filter(([k]) => !k.startsWith('_'))
-    .map(([k, v]) => `${k.replace(/_/g, ' ')}: ${formatValue(v)}`);
-  const text = [`New ${label} from the website`, '', ...rows].join('\n');
-  const html = `<h2>New ${label}</h2><table>${Object.entries(data)
-    .filter(([k]) => !k.startsWith('_'))
-    .map(([k, v]) => `<tr><td><strong>${k.replace(/_/g, ' ')}</strong></td><td>${formatValue(v)}</td></tr>`)
-    .join('')}</table>`;
-  return { subject: `[LHP Website] New ${label}`, text, html };
-}
-
-let transport: Transporter | null | undefined;
-
-/** Test seam — inject a fake transport (or null to force no-op). */
-export function __setTransportForTests(t: Transporter | null): void {
-  transport = t;
-}
-
-function getTransport(): Transporter | null {
-  if (transport !== undefined) return transport; // includes explicit null from tests
-  const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS } = process.env;
-  if (!SMTP_HOST || !SMTP_USER || !SMTP_PASS) {
-    transport = null;
-    return null;
+  if (!smtpHost || !smtpUser || !smtpPass) {
+    // Return a no-op transporter for development
+    return {
+      sendMail: async () => ({ messageId: 'dev-mode-no-op' }),
+    } as unknown as nodemailer.Transporter;
   }
-  transport = nodemailer.createTransport({
-    host: SMTP_HOST,
-    port: parseInt(SMTP_PORT ?? '587', 10),
-    secure: parseInt(SMTP_PORT ?? '587', 10) === 465,
-    auth: { user: SMTP_USER, pass: SMTP_PASS },
+
+  transporter = nodemailer.createTransport({
+    host: smtpHost,
+    port: smtpPort,
+    secure: smtpPort === 465,
+    auth: {
+      user: smtpUser,
+      pass: smtpPass,
+    },
   });
-  return transport;
+
+  return transporter;
 }
 
-/** Sends a notification. Returns true on success, false if skipped/failed. Never throws. */
-export async function sendSubmissionEmail(kind: SubmissionKind, data: Record<string, unknown>): Promise<boolean> {
-  const t = getTransport();
-  if (!t) {
-    console.warn(`[email] SMTP not configured — skipping ${kind} notification`);
-    return false;
-  }
+export async function sendSubmissionEmail(
+  kind: SubmissionKind,
+  data: Record<string, unknown>
+): Promise<void> {
+  const transporter = getTransporter();
+  const toEmail = process.env.CHURCH_EMAIL || 'Rccgtlp1@yahoo.com';
+  const fromEmail = process.env.SMTP_FROM_EMAIL || 'noreply@lighthousechurchburyrccg.co.uk';
+
+  const subject = `New Submission: ${KIND_LABELS[kind]}`;
+  const htmlBody = formatSubmissionEmail(kind, data);
+
   try {
-    const { subject, text, html } = buildSubmissionEmail(kind, data);
-    await t.sendMail({
-      from: process.env.SMTP_FROM ?? 'noreply@lighthousechurchburyrccg.co.uk',
-      to: NOTIFY_EMAIL,
-      replyTo: typeof data.email === 'string' ? data.email : undefined,
-      subject, text, html,
+    await transporter.sendMail({
+      from: fromEmail,
+      to: toEmail,
+      subject,
+      html: htmlBody,
     });
-    return true;
   } catch (err) {
-    console.error(`[email] failed to send ${kind} notification:`, err);
-    return false;
+    // Log but don't throw — submissions still succeed even if email fails
+    console.error(`[email] Failed to send ${kind} notification:`, err);
   }
+}
+
+function formatSubmissionEmail(kind: SubmissionKind, data: Record<string, unknown>): string {
+  const lines: string[] = [
+    `<h2>${KIND_LABELS[kind]}</h2>`,
+    '<table style="border-collapse: collapse; width: 100%; margin-top: 10px;">',
+  ];
+
+  for (const [key, value] of Object.entries(data)) {
+    if (value === null || value === undefined || value === '') continue;
+    const displayKey = key
+      .replace(/_/g, ' ')
+      .split(' ')
+      .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+      .join(' ');
+    const displayValue = typeof value === 'boolean'
+      ? (value ? 'Yes' : 'No')
+      : String(value);
+    lines.push(
+      `<tr style="border-bottom: 1px solid #eee;">`,
+      `<td style="padding: 8px; font-weight: bold; width: 30%;">${displayKey}</td>`,
+      `<td style="padding: 8px;">${displayValue}</td>`,
+      `</tr>`
+    );
+  }
+
+  lines.push('</table>');
+  lines.push('<p style="margin-top: 20px; color: #666; font-size: 12px;">');
+  lines.push('This is an automated notification from the Lighthouse Church website.');
+  lines.push('</p>');
+
+  return lines.join('\n');
 }

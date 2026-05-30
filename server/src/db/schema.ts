@@ -34,7 +34,7 @@ export function resetDb(): void {
     // Drop all test data but keep schema
     const tables = [
       'admin_users', 'prayer_requests', 'counselling_sessions', 'contact_messages',
-      'memberships', 'service_responses', 'icare_requests', 'sermons', 'prayer_wall',
+      'memberships', 'service_responses', 'icare_requests', 'first_timers', 'sermons', 'prayer_wall',
       'events', 'rsvps', 'push_subscriptions', 'bulletins'
     ];
     tables.forEach(table => {
@@ -217,6 +217,23 @@ export function initDb() {
       announcements TEXT,
       content TEXT NOT NULL,
       created_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+
+    CREATE TABLE IF NOT EXISTS first_timers (
+      id TEXT PRIMARY KEY,
+      full_name TEXT NOT NULL,
+      email TEXT NOT NULL,
+      phone TEXT,
+      age_group TEXT,
+      how_heard TEXT,
+      visit_date TEXT,
+      interests TEXT,
+      prayer_request TEXT,
+      wants_followup INTEGER NOT NULL DEFAULT 1,
+      status TEXT NOT NULL DEFAULT 'new',
+      notes TEXT,
+      created_at TEXT NOT NULL DEFAULT (datetime('now')),
+      updated_at TEXT NOT NULL DEFAULT (datetime('now'))
     );
 
     CREATE INDEX IF NOT EXISTS idx_prayer_status ON prayer_requests(status);

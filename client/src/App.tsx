@@ -23,6 +23,7 @@ import ContactPage from './pages/ContactPage';
 import FAQPage from './pages/FAQPage';
 import MembershipPage from './pages/MembershipPage';
 import ICarePage from './pages/iCarePage';
+import ConnectPage from './pages/ConnectPage';
 import RespondPage from './pages/RespondPage';
 import EventsPage from './pages/EventsPage';
 import PrayerWallPage from './pages/PrayerWallPage';
@@ -44,6 +45,7 @@ import {
   CONTACT_CONFIG,
   MEMBERSHIP_CONFIG,
   RESPONSES_CONFIG,
+  FIRST_TIMERS_CONFIG,
 } from './pages/admin/SubmissionsPage';
 
 // Auth store
@@ -104,6 +106,9 @@ export default function App() {
         <Route path="/faq" element={<PublicLayout><FAQPage /></PublicLayout>} />
         <Route path="/membership" element={<PublicLayout><MembershipPage /></PublicLayout>} />
         <Route path="/icare" element={<PublicLayout><ICarePage /></PublicLayout>} />
+        <Route path="/connect" element={<PublicLayout><ConnectPage /></PublicLayout>} />
+        <Route path="/welcome" element={<PublicLayout><ConnectPage /></PublicLayout>} />
+        <Route path="/first-time" element={<PublicLayout><ConnectPage /></PublicLayout>} />
         <Route path="/respond" element={<PublicLayout><RespondPage /></PublicLayout>} />
         <Route path="/events" element={<PublicLayout><EventsPage /></PublicLayout>} />
         <Route path="/prayer-wall" element={<PublicLayout><PrayerWallPage /></PublicLayout>} />
@@ -127,6 +132,7 @@ export default function App() {
           <Route path="contact" element={<SubmissionsPage config={CONTACT_CONFIG} />} />
           <Route path="memberships" element={<SubmissionsPage config={MEMBERSHIP_CONFIG} />} />
           <Route path="responses" element={<SubmissionsPage config={RESPONSES_CONFIG} />} />
+          <Route path="first-timers" element={<SubmissionsPage config={FIRST_TIMERS_CONFIG} />} />
           <Route path="analytics" element={<AnalyticsPage />} />
           <Route path="events" element={<EventsAdminPage />} />
           <Route path="prayer-wall" element={<PrayerWallAdminPage />} />
