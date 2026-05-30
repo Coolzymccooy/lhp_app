@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { Menu, X, ChevronDown } from 'lucide-react';
 import logoUrl from '/assets/lhp_logo1.png';
+import { site } from '../../content/site';
 
 const NAV_LINKS = [
   { label: 'Watch Live', to: '/watch-live' },
@@ -38,10 +39,10 @@ export default function Header() {
       <div className="container-max flex items-center justify-between h-16 md:h-20 px-4 md:px-8">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-3 flex-shrink-0">
-          <img src={logoUrl} alt="RCCG Lighthouse Parish" className="h-10 md:h-12 w-auto object-contain" />
+          <img src={logoUrl} alt={site.name} className="h-10 md:h-12 w-auto object-contain" />
           <div className="hidden sm:block">
-            <div className="font-bold text-sm leading-tight text-gray-900">RCCG Lighthouse</div>
-            <div className="text-xs text-primary font-semibold">Parish, Bury</div>
+            <div className="font-bold text-sm leading-tight text-gray-900">{site.shortName} RCCG</div>
+            <div className="text-xs text-primary font-semibold">{site.locality}</div>
           </div>
         </Link>
 
