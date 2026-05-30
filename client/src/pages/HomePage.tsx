@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { MapPin, Clock, Heart, Users, BookOpen, Phone, ChevronRight, Monitor, CreditCard, Film, Globe, Bot } from 'lucide-react';
+import { site } from '../content/site';
 
 function YoutubeSvg({ className }: { className?: string }) {
   return (
@@ -30,13 +31,7 @@ const MINISTRIES = [
   { name: 'iCare Ministry', img: '/assets/counseling.webp', desc: 'Pastoral care & visitation', to: '/icare' },
 ];
 
-const SERVICES = [
-  { day: 'Sunday', name: 'Sunrise Service', time: '7:30 AM' },
-  { day: 'Sunday', name: 'Sunshine Service', time: '10:30 AM' },
-  { day: 'Wednesday', name: 'Carpe Diem', time: '6:30 AM' },
-  { day: 'Thursday', name: 'Open Heavens', time: '6:00 PM' },
-  { day: 'Friday', name: 'Praise Hour', time: '12:00 PM' },
-];
+const SERVICES = site.services;
 
 const QUICK_RESOURCES = [
   { icon: Users, label: 'Meet Our Senior Pastors', to: '/about', external: false },
@@ -72,8 +67,8 @@ export default function HomePage() {
       <section className="bg-gradient-brand py-8 px-4">
         <div className="container-max flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="text-white text-center sm:text-left">
-            <h2 className="text-2xl font-bold">Welcome to Lighthouse Parish</h2>
-            <p className="text-white/80 text-sm mt-1">Bury, Manchester · Everyone is welcome here</p>
+            <h2 className="text-2xl font-bold">Welcome to {site.shortName}</h2>
+            <p className="text-white/80 text-sm mt-1">{site.locality} · {site.tagline}</p>
           </div>
           <div className="flex flex-wrap gap-3 justify-center">
             <Link to="/watch-live" className="px-5 py-2.5 bg-white text-purple-700 font-bold rounded-full text-sm hover:bg-gray-50 transition-colors flex items-center gap-2 shadow">
@@ -101,6 +96,7 @@ export default function HomePage() {
                 <div className="flex items-center justify-center gap-1.5 text-gray-500 text-sm">
                   <Clock className="w-4 h-4" /> {s.time}
                 </div>
+                {('note' in s && s.note) ? <div className="text-gray-400 text-xs mt-1">{s.note}</div> : null}
               </div>
             ))}
           </div>
