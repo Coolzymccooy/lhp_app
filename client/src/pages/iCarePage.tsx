@@ -1,5 +1,8 @@
 import { Heart, Home, Users, Phone, HandHelping, Flower2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import api from '../api/client';
+import toast from 'react-hot-toast';
 
 const SERVICES = [
   { icon: Heart, title: 'Hospital & Home Visits', desc: 'Our iCare team visits members who are sick in hospital or recovering at home, bringing prayer, encouragement, and the presence of God.' },
@@ -17,6 +20,23 @@ const STEPS = [
 ];
 
 export default function iCarePage() {
+  const [form, setForm] = useState({ full_name: '', email: '', phone: '', interest: 'help', preferred_contact: 'Email', message: '' });
+  const [submitting, setSubmitting] = useState(false);
+
+  async function submitICare(e: React.FormEvent) {
+    e.preventDefault();
+    setSubmitting(true);
+    try {
+      const { data } = await api.post('/forms/icare', form);
+      toast.success(data.message ?? 'Thank you — our iCare team will be in touch soon.');
+      setForm({ full_name: '', email: '', phone: '', interest: 'help', preferred_contact: 'Email', message: '' });
+    } catch {
+      toast.error('Something went wrong. Please try again or call us.');
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
   return (
     <main className="pt-20">
       {/* Hero */}
@@ -111,6 +131,33 @@ export default function iCarePage() {
               Request iCare Support
             </Link>
           </div>
+        </div>
+      </section>
+
+      {/* Help or Volunteer Form */}
+      <section className="section-pad bg-white">
+        <div className="container-max max-w-2xl mx-auto">
+          <div className="text-center mb-8">
+            <p className="text-primary font-bold text-sm uppercase tracking-widest mb-2">Get in Touch</p>
+            <h2 className="text-3xl font-bold text-gray-900">Need Help or Want to Volunteer?</h2>
+            <p className="text-gray-500 mt-3">Contact our iCare team to request support or to join our volunteers.</p>
+          </div>
+          <form onSubmit={submitICare} className="grid gap-4 bg-gray-50 p-6 rounded-2xl border border-gray-100">
+            <input required placeholder="Full Name *" value={form.full_name} onChange={e => setForm({ ...form, full_name: e.target.value })} className="border border-gray-300 rounded-xl px-4 py-3 text-sm" />
+            <input required type="email" placeholder="Email *" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} className="border border-gray-300 rounded-xl px-4 py-3 text-sm" />
+            <input placeholder="Phone Number" value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })} className="border border-gray-300 rounded-xl px-4 py-3 text-sm" />
+            <select value={form.interest} onChange={e => setForm({ ...form, interest: e.target.value })} className="border border-gray-300 rounded-xl px-4 py-3 text-sm bg-white">
+              <option value="help">I need support</option>
+              <option value="volunteer">I'm willing to volunteer</option>
+            </select>
+            <select value={form.preferred_contact} onChange={e => setForm({ ...form, preferred_contact: e.target.value })} className="border border-gray-300 rounded-xl px-4 py-3 text-sm bg-white">
+              <option>Email</option><option>Phone</option><option>Either</option>
+            </select>
+            <textarea rows={4} placeholder="How can we help? (optional)" value={form.message} onChange={e => setForm({ ...form, message: e.target.value })} className="border border-gray-300 rounded-xl px-4 py-3 text-sm" />
+            <button type="submit" disabled={submitting} className="px-8 py-3.5 bg-primary text-white font-bold rounded-full hover:bg-pink-700 transition-colors disabled:opacity-60">
+              {submitting ? 'Sending…' : 'Send to iCare Team'}
+            </button>
+          </form>
         </div>
       </section>
     </main>
