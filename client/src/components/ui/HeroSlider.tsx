@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
+import { site } from '../../content/site';
 
 interface Slide {
   image: string;
@@ -16,9 +17,9 @@ interface Slide {
 const SLIDES: Slide[] = [
   {
     image: '/assets/arise.webp',
-    eyebrow: 'RCCG Lighthouse Parish · Bury, Manchester',
+    eyebrow: `${site.name} · ${site.locality}`,
     title: 'Arise and Shine',
-    subtitle: 'A Spirit-filled community in the heart of Bury. Come as you are — everyone is welcome.',
+    subtitle: site.tagline,
     cta: { label: 'Join Us Sunday', to: '/watch-live' },
     ctaSecondary: { label: 'About Us', to: '/about' },
     position: 'center top',
@@ -26,9 +27,9 @@ const SLIDES: Slide[] = [
   },
   {
     image: '/assets/auditoriumpic1.webp',
-    eyebrow: 'Sunday Sunshine Service',
+    eyebrow: 'Sunday Service',
     title: 'Experience the\nPresence',
-    subtitle: 'Join us every Sunday at 10:30am · The Rock Shopping Centre, Bury',
+    subtitle: 'Join us every Sunday at 10:00am · The Rock Shopping Centre, Bury',
     cta: { label: 'Watch Live', to: '/watch-live' },
     ctaSecondary: { label: 'Get Directions', to: '/contact' },
     position: 'center center',
@@ -38,7 +39,7 @@ const SLIDES: Slide[] = [
     image: '/assets/family.webp',
     eyebrow: 'Ministries for every age',
     title: 'Built for Every\nFamily',
-    subtitle: 'Children, teens, young adults, and beyond — find your place in the Lighthouse family.',
+    subtitle: 'Children, teens, young adults, and beyond — find your place in the Lighthouse Church family.',
     cta: { label: 'Explore Groups', to: '/groups' },
     ctaSecondary: { label: 'E-Membership', to: '/membership' },
     position: 'center center',
@@ -49,11 +50,9 @@ const SLIDES: Slide[] = [
 export default function HeroSlider() {
   const [current, setCurrent] = useState(0);
   const [prev, setPrev] = useState<number | null>(null);
-  const [direction, setDirection] = useState<'left' | 'right'>('right');
 
-  const go = useCallback((next: number, dir: 'left' | 'right' = 'right') => {
+  const go = useCallback((next: number, _dir: 'left' | 'right' = 'right') => {
     setPrev(current);
-    setDirection(dir);
     setCurrent((next + SLIDES.length) % SLIDES.length);
   }, [current]);
 
