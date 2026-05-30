@@ -20,6 +20,12 @@ export const site = {
     youtube: 'https://www.youtube.com/@rccgtlp1',
     x: 'https://x.com/rccgtlp1',
   },
+  fellowshipImages: {
+    youngAdults: '/assets/youngadults.webp',
+    teens: '/assets/teenfellowship.webp',
+    men: '/assets/mensfellowship.webp',
+    women: '/assets/womenfellowship.webp',
+  },
 } as const;
 
 export type ServiceTime = (typeof site.services)[number];
