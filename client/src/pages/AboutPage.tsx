@@ -1,6 +1,15 @@
 import { CheckCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
+const OFFERINGS = [
+  { title: 'Food Bank', desc: 'Non-perishable food for members and anyone in the community who needs it.' },
+  { title: 'Pastoral & Welfare Support', desc: 'Face-to-face and telephone support for practical and spiritual needs.' },
+  { title: 'Parenting & Marriage Support', desc: 'Free parenting classes and advice on marital and family issues.' },
+  { title: 'Summer Mentoring', desc: 'Mentoring classes for girls, running in August.' },
+  { title: 'Youth Church', desc: 'A vibrant space for our young people to grow in faith and community.' },
+  { title: "Sarah's Heart ❤️", desc: 'For couples waiting on God for the fruit of the womb — spiritual and emotional support, plus information on available medical options and signposting.' },
+];
+
 const VALUES = [
   { title: 'Faith', desc: 'We believe in the power of God\'s Word and trust Him in every circumstance.' },
   { title: 'Family', desc: 'We are a Christ-centred family where everyone belongs and is loved unconditionally.' },
@@ -115,6 +124,24 @@ export default function AboutPage() {
                 </div>
               ))}
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* What We Offer */}
+      <section className="section-pad bg-gray-50">
+        <div className="container-max">
+          <div className="text-center mb-12">
+            <p className="text-primary font-bold text-sm uppercase tracking-widest mb-2">Our Community</p>
+            <h2 className="text-3xl font-bold text-gray-900">What We Offer</h2>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {OFFERINGS.map(o => (
+              <div key={o.title} className="bg-white rounded-2xl p-6 border border-gray-100 hover:border-pink-200 hover:shadow-md transition-all">
+                <h3 className="font-bold text-gray-900 mb-2">{o.title}</h3>
+                <p className="text-gray-500 text-sm leading-relaxed">{o.desc}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
