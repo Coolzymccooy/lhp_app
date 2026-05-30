@@ -236,6 +236,32 @@ router.post('/events', (req: AuthRequest, res: Response) => {
   res.json({ success: true, id });
 });
 
+router.put('/events/:id', (req: AuthRequest, res: Response) => {
+  const { title, description, date, time, location, type, image_url } = req.body as {
+    title?: string; description?: string; date?: string; time?: string;
+    location?: string; type?: string; image_url?: string;
+  };
+  const db = getDb();
+  const existing = db.prepare('SELECT id FROM events WHERE id = ?').get(req.params.id);
+  if (!existing) {
+    res.status(404).json({ success: false, error: 'Event not found' });
+    return;
+  }
+  // COALESCE keeps the current value for any field the client omits.
+  db.prepare(`
+    UPDATE events SET
+      title = COALESCE(?, title),
+      description = COALESCE(?, description),
+      date = COALESCE(?, date),
+      time = COALESCE(?, time),
+      location = COALESCE(?, location),
+      type = COALESCE(?, type),
+      image_url = COALESCE(?, image_url)
+    WHERE id = ?
+  `).run(title, description, date, time, location, type, image_url, req.params.id);
+  res.json({ success: true });
+});
+
 router.delete('/events/:id', (req: AuthRequest, res: Response) => {
   const db = getDb();
   db.prepare('DELETE FROM events WHERE id = ?').run(req.params.id);
