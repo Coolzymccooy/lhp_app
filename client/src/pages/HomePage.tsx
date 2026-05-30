@@ -1,7 +1,19 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { MapPin, Clock, Heart, Users, BookOpen, Phone, ChevronRight, Monitor, CreditCard, Film, Globe, Bot } from 'lucide-react';
 import { site } from '../content/site';
+import api from '../api/client';
+
+interface Event {
+  id: string;
+  title: string;
+  description: string;
+  date: string;
+  time: string;
+  location: string;
+  type: string;
+  image_url: string;
+}
 
 function YoutubeSvg({ className }: { className?: string }) {
   return (
@@ -19,7 +31,6 @@ function InstagramSvg({ className }: { className?: string }) {
   );
 }
 import HeroSlider from '../components/ui/HeroSlider';
-import api from '../api/client';
 import toast from 'react-hot-toast';
 
 // NOTE: Replace these with a racially diverse photo set when the church supplies them — just drop files in /public/assets and update site.fellowshipImages.
@@ -49,6 +60,15 @@ export default function HomePage() {
   const [lifeStage, setLifeStage] = useState('');
   const [need, setNeed] = useState('');
   const [nextStep, setNextStep] = useState<{ message: string; url: string } | null>(null);
+  const [upcomingEvents, setUpcomingEvents] = useState<Event[]>([]);
+
+  useEffect(() => {
+    api.get('/forms/events')
+      .then(r => setUpcomingEvents((r.data.data ?? []).slice(0, 3)))
+      .catch(() => {
+        // Silently fail if events cannot be loaded
+      });
+  }, []);
 
   async function getNextStep() {
     if (!lifeStage || !need) return;
@@ -177,6 +197,63 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Upcoming Events Section */}
+      {upcomingEvents.length > 0 && (
+        <section className="section-pad bg-white">
+          <div className="container-max">
+            <div className="text-center mb-12">
+              <p className="text-primary font-bold text-sm uppercase tracking-widest mb-2">What's Coming Up</p>
+              <h2 className="text-4xl font-bold text-gray-900">Upcoming Events</h2>
+              <p className="text-gray-500 mt-3 max-w-xl mx-auto">Join us for worship, fellowship, and special gatherings throughout the month.</p>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+              {upcomingEvents.map(event => {
+                const eventDate = new Date(event.date);
+                const dayNum = eventDate.getDate();
+                const monthStr = eventDate.toLocaleString('default', { month: 'short' }).toUpperCase();
+                return (
+                  <div key={event.id} className="bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                    {event.image_url && (
+                      <div className="aspect-[4/3] overflow-hidden">
+                        <img src={event.image_url} alt={event.title} className="w-full h-full object-cover" loading="lazy" />
+                      </div>
+                    )}
+                    <div className="p-5">
+                      <div className="flex items-center gap-2 mb-3">
+                        <div className="inline-flex flex-col items-center justify-center bg-primary text-white rounded-lg px-2.5 py-1">
+                          <span className="text-xs font-bold">{dayNum}</span>
+                          <span className="text-xs font-semibold">{monthStr}</span>
+                        </div>
+                        <h3 className="font-bold text-gray-900 text-lg flex-1">{event.title}</h3>
+                      </div>
+                      <p className="text-gray-600 text-sm line-clamp-2 mb-3">{event.description}</p>
+                      <div className="space-y-2 mb-4 text-sm text-gray-600">
+                        <div className="flex items-center gap-2">
+                          <Clock className="w-4 h-4 text-primary flex-shrink-0" />
+                          <span>{event.time}</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <MapPin className="w-4 h-4 text-primary flex-shrink-0" />
+                          <span className="line-clamp-1">{event.location}</span>
+                        </div>
+                      </div>
+                      <Link to="/events" className="inline-flex items-center gap-1 text-primary font-semibold text-sm hover:underline">
+                        Details & RSVP <ChevronRight className="w-4 h-4" />
+                      </Link>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            <div className="text-center">
+              <Link to="/events" className="inline-block px-8 py-3.5 bg-primary text-white font-bold rounded-full hover:bg-pink-700 transition-colors shadow">
+                View All Events
+              </Link>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Quick Resources */}
       <section className="section-pad bg-gray-950">

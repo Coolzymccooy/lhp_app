@@ -290,6 +290,9 @@ export function initDb() {
   // Seed admin from environment if configured
   seedAdmin(db);
 
+  // Seed sample events
+  seedEvents(db);
+
   console.log('✅ Database initialized');
 }
 
@@ -304,4 +307,22 @@ function seedAdmin(db: Database.Database) {
   db.prepare('INSERT INTO admin_users (id, email, password_hash, name, role) VALUES (?, ?, ?, ?, ?)')
     .run(uuidv4(), email, hash, 'Church Admin', 'admin');
   console.log(`[seed] created admin user ${email}`);
+}
+
+function seedEvents(db: Database.Database) {
+  const existing = db.prepare("SELECT id FROM events WHERE title = 'Lighthouse Praise'").get();
+  if (existing) return;
+  const { v4: uuidv4 } = require('uuid');
+  db.prepare(`INSERT INTO events (id, title, description, date, time, location, type, image_url) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`)
+    .run(
+      uuidv4(),
+      'Lighthouse Praise',
+      'A powerful night of praise, worship and the Word. Come and experience God\'s presence with the whole church family — bring a friend!',
+      '2026-07-25',
+      '5:00 PM',
+      'The Rock Shopping Centre, Vue Cinema, Bury, BL9 0ND',
+      'special',
+      '/assets/auditoriumpic1.webp'
+    );
+  console.log('[seed] created sample event: Lighthouse Praise');
 }
