@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Plus, Trash2, X, Calendar, Users, Pencil } from 'lucide-react';
+import { Plus, Trash2, X, Calendar, Users, Pencil, Upload, Info } from 'lucide-react';
 import api from '../../api/client';
 import toast from 'react-hot-toast';
 
@@ -36,6 +36,7 @@ export default function EventsAdminPage() {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [form, setForm] = useState(EMPTY_FORM);
   const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const [rsvpEvent, setRsvpEvent] = useState<Event | null>(null);
   const [rsvps, setRsvps] = useState<Rsvp[]>([]);
   const [rsvpLoading, setRsvpLoading] = useState(false);
@@ -77,6 +78,25 @@ export default function EventsAdminPage() {
     setShowAdd(false);
     setEditingId(null);
     setForm(EMPTY_FORM);
+  }
+
+  async function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    try {
+      const fd = new FormData();
+      fd.append('image', file);
+      // Let axios set the multipart boundary automatically — don't override Content-Type.
+      const { data } = await api.post('/admin/upload', fd);
+      setForm(f => ({ ...f, image_url: data.url }));
+      toast.success('Image uploaded');
+    } catch {
+      toast.error('Upload failed — use a JPG/PNG/WebP image under 8MB');
+    } finally {
+      setUploading(false);
+      e.target.value = ''; // allow re-selecting the same file
+    }
   }
 
   async function handleSave(e: React.FormEvent) {
@@ -238,8 +258,41 @@ export default function EventsAdminPage() {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1">Image URL</label>
-                <input value={form.image_url} onChange={e => setForm(f => ({ ...f, image_url: e.target.value }))} placeholder="https://..." className="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
+                <label className="flex items-center gap-1.5 text-sm font-semibold text-gray-700 mb-1.5">
+                  Event Image
+                  <span className="group relative inline-flex">
+                    <Info className="w-3.5 h-3.5 text-gray-400 cursor-help" />
+                    <span className="pointer-events-none absolute left-1/2 -translate-x-1/2 bottom-full mb-2 z-10 w-72 rounded-lg bg-gray-900 text-white text-xs leading-relaxed p-3 opacity-0 group-hover:opacity-100 transition-opacity shadow-lg">
+                      Easiest: tap <b>Upload image</b> and pick a photo from your phone or computer (JPG, PNG or WebP, up to 8MB). It’s saved automatically and resized to fit the card — you don’t need a link.<br /><br />
+                      Advanced: if your photo is already online, paste its web address (URL) in the box below — it must end in .jpg, .png or .webp. Leave everything blank to use the default banner.
+                    </span>
+                  </span>
+                </label>
+
+                {/* Preview of the current image */}
+                {form.image_url && (
+                  <img
+                    src={form.image_url}
+                    alt="Event preview"
+                    className="w-full h-32 object-cover rounded-xl border border-gray-200 mb-2"
+                    onError={e => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
+                  />
+                )}
+
+                {/* Upload button (the easy path for non-technical admins) */}
+                <label className={`flex items-center justify-center gap-2 w-full py-2.5 border-2 border-dashed rounded-xl text-sm font-semibold cursor-pointer transition-colors ${uploading ? 'border-gray-200 text-gray-400' : 'border-primary/40 text-primary hover:bg-pink-50'}`}>
+                  <Upload className="w-4 h-4" />
+                  {uploading ? 'Uploading…' : form.image_url ? 'Replace image' : 'Upload image'}
+                  <input type="file" accept="image/*" className="hidden" onChange={handleFile} disabled={uploading} />
+                </label>
+
+                {/* Advanced: paste a URL instead */}
+                <input
+                  value={form.image_url}
+                  onChange={e => setForm(f => ({ ...f, image_url: e.target.value }))}
+                  placeholder="…or paste an image link (https://…)"
+                  className="mt-2 w-full border border-gray-300 rounded-xl px-4 py-2 text-xs text-gray-600 focus:outline-none focus:ring-2 focus:ring-primary/30"
+                />
               </div>
               <div className="flex gap-3 pt-2">
                 <button type="button" onClick={closeModal} className="flex-1 py-2.5 border border-gray-300 text-gray-700 font-semibold rounded-xl text-sm hover:bg-gray-50 transition-colors">Cancel</button>

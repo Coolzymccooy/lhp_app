@@ -529,6 +529,31 @@ const upload = multer({
   fileFilter: (_req, file, cb) => cb(null, /^image\/(jpe?g|png|webp|gif)$/.test(file.mimetype)),
 });
 
+// Generic image upload (used by the Events form so admins can pick a file
+// instead of pasting a URL). Saved under DATA_DIR/uploads/events, served at
+// /uploads/events/... by the static mount in index.ts. Returns the public URL.
+const eventImgDir = process.env.DATA_DIR
+  ? path.join(process.env.DATA_DIR, 'uploads', 'events')
+  : path.join(__dirname, '../../uploads/events');
+fs.mkdirSync(eventImgDir, { recursive: true });
+
+const uploadImage = multer({
+  storage: multer.diskStorage({
+    destination: (_req, _file, cb) => cb(null, eventImgDir),
+    filename: (_req, file, cb) => cb(null, `${uuidv4()}${path.extname(file.originalname).toLowerCase()}`),
+  }),
+  limits: { fileSize: 8 * 1024 * 1024 },
+  fileFilter: (_req, file, cb) => cb(null, /^image\/(jpe?g|png|webp|gif)$/.test(file.mimetype)),
+});
+
+router.post('/upload', uploadImage.single('image'), (req: AuthRequest, res: Response) => {
+  if (!req.file) {
+    res.status(400).json({ success: false, error: 'No image file provided' });
+    return;
+  }
+  res.json({ success: true, url: `/uploads/events/${req.file.filename}` });
+});
+
 router.post('/gallery', upload.single('image'), (req: AuthRequest, res: Response) => {
   if (!req.file) {
     res.status(400).json({ success: false, error: 'No image file provided' });
