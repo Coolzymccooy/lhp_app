@@ -58,8 +58,8 @@ export default function AIChat() {
       </button>
 
       {/* Chat panel */}
-      <div className={`fixed bottom-24 right-6 z-50 w-80 sm:w-96 bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden transition-all duration-300 origin-bottom-right ${open ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'}`}
-        style={{ maxHeight: '75vh' }}>
+      <div className={`fixed bottom-24 right-6 z-50 sm:w-96 bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden transition-all duration-300 origin-bottom-right ${open ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'}`}
+        style={{ width: 'calc(100vw - 3rem)', maxWidth: '24rem', maxHeight: '75vh' }}>
         {/* Header */}
         <div className="bg-gradient-brand px-4 py-3 flex items-center gap-3">
           <div className="w-9 h-9 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0">

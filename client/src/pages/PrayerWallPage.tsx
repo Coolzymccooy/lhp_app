@@ -65,7 +65,7 @@ export default function PrayerWallPage() {
     <main className="pt-20">
       {/* Hero */}
       <div className="relative h-56 md:h-64 overflow-hidden">
-        <img src="/assets/auditoriumpic1.webp" alt="Prayer Wall" className="img-cover" style={{ objectPosition: 'center 30%' }} />
+        <img src="/assets/womenfellowship.webp" alt="Prayer Wall" className="img-cover" style={{ objectPosition: 'center 30%' }} />
         <div className="absolute inset-0 bg-gradient-to-r from-black/80 to-black/40" />
         <div className="absolute inset-0 flex items-center">
           <div className="container-max px-6">

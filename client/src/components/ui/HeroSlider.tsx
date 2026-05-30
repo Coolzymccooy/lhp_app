@@ -11,6 +11,7 @@ interface Slide {
   cta: { label: string; to: string };
   ctaSecondary?: { label: string; to: string };
   position?: string;
+  fit?: 'cover' | 'contain';
   accent: string; // tailwind color for accent dot
 }
 
@@ -22,7 +23,8 @@ const SLIDES: Slide[] = [
     subtitle: site.tagline,
     cta: { label: 'Join Us Sunday', to: '/watch-live' },
     ctaSecondary: { label: 'About Us', to: '/about' },
-    position: 'center top',
+    position: 'center center',
+    fit: 'contain',
     accent: '#e91e9a',
   },
   {
@@ -71,7 +73,7 @@ export default function HeroSlider() {
   const slide = SLIDES[current];
 
   return (
-    <section className="relative w-full h-[88vh] min-h-[560px] max-h-[860px] overflow-hidden bg-black">
+    <section className="relative w-full h-[88vh] min-h-[480px] max-h-[860px] overflow-hidden bg-black">
       {/* Background slides */}
       {SLIDES.map((s, i) => {
         const isActive = i === current;
@@ -90,7 +92,7 @@ export default function HeroSlider() {
               src={s.image}
               alt={s.title}
               className="img-cover"
-              style={{ objectPosition: s.position ?? 'center center' }}
+              style={{ objectFit: s.fit ?? 'cover', objectPosition: s.position ?? 'center center' }}
               loading={i === 0 ? 'eager' : 'lazy'}
             />
             {/* Multi-layer gradient for depth */}
@@ -116,7 +118,7 @@ export default function HeroSlider() {
                 WebkitBackdropFilter: 'blur(18px)',
                 border: '1px solid rgba(255,255,255,0.14)',
                 borderRadius: '24px',
-                padding: '2.5rem 2.5rem 2rem',
+                padding: 'clamp(1.25rem, 4vw, 2.5rem)',
                 boxShadow: '0 8px 48px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.15)',
               }}
             >

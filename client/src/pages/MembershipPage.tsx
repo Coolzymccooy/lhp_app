@@ -47,7 +47,7 @@ export default function MembershipPage() {
     <main className="pt-20">
       {/* Hero */}
       <div className="relative h-64 md:h-80 overflow-hidden">
-        <img src="/assets/auditoriumpic1.webp" alt="Membership" className="img-cover" style={{ objectPosition: 'center 40%' }} />
+        <img src="/assets/family.webp" alt="Membership" className="img-cover" style={{ objectPosition: 'center 40%' }} />
         <div className="absolute inset-0 bg-gradient-to-r from-black/80 to-black/40" />
         <div className="absolute inset-0 flex items-center">
           <div className="container-max px-6">

@@ -17,7 +17,7 @@ const GROUPS = [
     name: "Children's Ministry",
     ageRange: 'Ages 0–12',
     img: '/assets/family.webp',
-    imgPos: 'center 40%',
+    imgPos: 'center 30%',
     desc: 'A vibrant, safe, and Spirit-filled environment where children discover who Jesus is through fun, worship, and age-appropriate Bible teaching. We believe children are not the church of tomorrow — they are the church of today.',
     meetings: 'Every Sunday during Sunshine Service (10:30 AM)',
     lead: 'Children\'s Ministry Team',
@@ -50,7 +50,7 @@ const GROUPS = [
     name: "Men's Fellowship",
     ageRange: 'Men 18+',
     img: '/assets/mensfellowship.webp',
-    imgPos: 'center 35%',
+    imgPos: 'center 25%',
     desc: 'Brotherhood built on prayer, accountability, and the Word. Men\'s Fellowship equips men to lead with integrity in the home, workplace, and church — iron sharpening iron.',
     meetings: 'Monthly meetings + prayer sessions',
     lead: 'Men\'s Ministry Team',
@@ -61,7 +61,7 @@ const GROUPS = [
     name: "Women's Fellowship",
     ageRange: 'Women 18+',
     img: '/assets/womenfellowship.webp',
-    imgPos: 'center 30%',
+    imgPos: 'center 25%',
     desc: 'A nurturing space for women to grow in faith, build deep friendships, and discover their God-given purpose. Through mentoring, events, and prayer, Women\'s Fellowship empowers every woman to flourish.',
     meetings: 'Monthly gatherings + special events',
     lead: 'Women\'s Ministry Team',
@@ -72,7 +72,7 @@ const GROUPS = [
     name: 'iCare Ministry',
     ageRange: 'All ages',
     img: '/assets/counseling.webp',
-    imgPos: 'center 40%',
+    imgPos: 'center 35%',
     desc: 'Our pastoral care ministry that visits the sick, supports the bereaved, checks on the lonely, and ensures no one in our congregation walks through life\'s hardest moments alone.',
     meetings: 'Ongoing visitation & support',
     lead: 'Pastoral Care Team',
@@ -87,7 +87,7 @@ export default function GroupsPage() {
     <main className="pt-20">
       {/* Hero */}
       <div className="relative h-64 md:h-80 overflow-hidden">
-        <img src="/assets/youngadults.webp" alt="Groups & Ministries" className="img-cover" style={{ objectPosition: 'center 25%' }} />
+        <img src="/assets/youngadults.webp" alt="Groups & Ministries" className="img-cover" style={{ objectPosition: 'center 20%' }} />
         <div className="absolute inset-0 bg-gradient-to-r from-black/80 to-black/40" />
         <div className="absolute inset-0 flex items-center">
           <div className="container-max px-6">

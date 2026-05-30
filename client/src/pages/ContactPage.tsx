@@ -31,7 +31,7 @@ export default function ContactPage() {
   return (
     <main className="pt-20">
       <div className="relative h-56 overflow-hidden">
-        <img src="/assets/auditoriumpic1.webp" alt="Contact Us" className="img-cover" style={{ objectPosition: 'center 60%' }} />
+        <img src="/assets/vuecinema.webp" alt="Contact Us" className="img-cover" style={{ objectPosition: 'center 60%' }} />
         <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/30" />
         <div className="absolute inset-0 flex items-center">
           <div className="container-max px-6">

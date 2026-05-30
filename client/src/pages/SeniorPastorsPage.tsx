@@ -6,8 +6,8 @@ const PASTORS = [
   {
     name: 'Pastor Yemi Olujobi',
     title: 'Pastor in Charge',
-    img: '/assets/seniorpsts.webp',
-    imgPos: 'center 20%',
+    img: '/assets/pastor-olujobi.webp',
+    imgPos: 'center 18%',
     bio: [
       'Pastor Yemi Olujobi is a Pastor in Charge of The Lighthouse Church RCCG, Bury. She is a woman of deep prayer, generous spirit, and extraordinary compassion — known for her approachable nature and her gift of encouraging others to discover and walk in their God-given potential.',
       'She is a social worker and public health professional with extensive experience at senior levels in corporate health, governance, and strategy. She brings this professional rigour into her pastoral leadership, ensuring the church serves its community with both spiritual and practical excellence.',
@@ -18,8 +18,8 @@ const PASTORS = [
   {
     name: 'Pastor Paul Olujobi',
     title: 'Pastor in Charge',
-    img: '/assets/pastor-olujobi.webp',
-    imgPos: 'center 30%',
+    img: '/assets/pastorpaul.png',
+    imgPos: 'center 22%',
     bio: [
       'Pastor Paul Olujobi serves as a Pastor in Charge of The Lighthouse Church RCCG. He is a gifted preacher and teacher of the Word, whose sermons are marked by clarity, depth, and genuine pastoral warmth. The congregation\'s love for him is evident — "We love you sir ❤️" is a frequent refrain from those he has impacted.',
       'By profession, Pastor Paul is a medical nurse and public health professional, combining a heart for physical healing with a calling to minister spiritual wholeness. His background in healthcare shapes his pastoral approach — attentive, compassionate, and committed to the holistic wellbeing of every member.',

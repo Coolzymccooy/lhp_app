@@ -62,18 +62,18 @@ export default function WatchLivePage() {
 
       {/* Live / Latest Video */}
       <section className="section-pad bg-gray-900">
-        <div className="container-max max-w-4xl mx-auto">
+        <div className="container-max max-w-3xl mx-auto">
           <div className="text-center mb-8">
             <div className="inline-flex items-center gap-2 bg-red-600 text-white px-4 py-1.5 rounded-full text-sm font-bold mb-4">
-              <span className="w-2 h-2 bg-white rounded-full animate-pulse" /> LIVE SUNDAYS 10:30 AM
+              <span className="w-2 h-2 bg-white rounded-full animate-pulse" /> LIVE SUNDAYS 10:00 AM
             </div>
             <h2 className="text-3xl font-bold text-white">
               {latest.videoId ? 'Latest Video' : 'Live Stream'}
             </h2>
             <p className="text-gray-400 mt-2 text-sm">
               {latest.videoId
-                ? 'Showing our most recent upload — join live every Sunday at 10:30 AM'
-                : 'Join us every Sunday at 10:30 AM for our Sunshine Service'}
+                ? 'Showing our most recent upload — join live every Sunday at 10:00 AM'
+                : 'Join us every Sunday at 10:00 AM for our Sunday Service'}
             </p>
           </div>
 

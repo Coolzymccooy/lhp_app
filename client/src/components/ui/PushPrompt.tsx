@@ -25,9 +25,12 @@ export default function PushPrompt() {
       return;
     }
     if (permission === 'denied') return;
-    // Show prompt after 10 seconds
-    const t = setTimeout(() => setVisible(true), 10000);
-    return () => clearTimeout(t);
+    // Only show the prompt if the server actually has push configured (VAPID key).
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    api.get('/forms/vapid-public-key')
+      .then(() => { timer = setTimeout(() => setVisible(true), 10000); })
+      .catch(() => { /* push not configured — never prompt */ });
+    return () => { if (timer) clearTimeout(timer); };
   }, []);
 
   async function handleSubscribe() {
