@@ -112,6 +112,11 @@ export default function BulletinPage() {
         </button>
       </div>
 
+      <div className="mb-6 rounded-xl border border-pink-200 bg-pink-50 p-4 text-sm text-gray-700">
+        <p className="font-bold text-gray-900 mb-1">How this works</p>
+        <p>Enter the bulletin title, service date, theme, memory scripture, and any announcements, then click <strong>Generate Bulletin</strong>. The tool instantly assembles a formatted first-draft Sunday bulletin (welcome, service order, service times, announcements) that you can review, edit, print, or save. It's a starting point — always review before publishing.</p>
+      </div>
+
       {loading ? (
         <div className="text-center py-16 text-gray-400">Loading…</div>
       ) : bulletins.length === 0 ? (
