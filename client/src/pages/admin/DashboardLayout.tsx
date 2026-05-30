@@ -19,13 +19,15 @@ const NAV = [
 ];
 
 export default function DashboardLayout() {
-  const { admin, token, checkAuth, logout } = useAuthStore();
+  const { admin, token, logout } = useAuthStore();
   const navigate = useNavigate();
 
+  // App already validates the token via checkAuth() on load. Do NOT call
+  // checkAuth() here — it flips `loading`, which unmounts/remounts this layout
+  // through RequireAuth and creates an infinite render/request loop.
   useEffect(() => {
-    if (!token) { navigate('/admin/login'); return; }
-    checkAuth();
-  }, []);
+    if (!token) navigate('/admin/login');
+  }, [token, navigate]);
 
   if (!admin && !token) return null;
 
