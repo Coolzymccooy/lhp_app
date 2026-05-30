@@ -1,14 +1,15 @@
 import { Mail, Quote } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { site } from '../content/site';
 
 const PASTORS = [
   {
     name: 'Pastor Yemi Olujobi',
-    title: 'Regional Pastor & Senior Pastor',
+    title: 'Pastor in Charge',
     img: '/assets/seniorpsts.webp',
     imgPos: 'center 20%',
     bio: [
-      'Pastor Yemi Olujobi is the Regional Pastor and Senior Pastor of RCCG Lighthouse Parish, Bury. She is a woman of deep prayer, generous spirit, and extraordinary compassion — known for her approachable nature and her gift of encouraging others to discover and walk in their God-given potential.',
+      'Pastor Yemi Olujobi is a Pastor in Charge of The Lighthouse Church RCCG, Bury. She is a woman of deep prayer, generous spirit, and extraordinary compassion — known for her approachable nature and her gift of encouraging others to discover and walk in their God-given potential.',
       'She is a social worker and public health professional with extensive experience at senior levels in corporate health, governance, and strategy. She brings this professional rigour into her pastoral leadership, ensuring the church serves its community with both spiritual and practical excellence.',
       'Together with her husband Pastor Paul, she co-founded RCCG Lighthouse Parish in 2011 alongside the Agbese family. In 2013, the Olujobis took on the full mantle of leadership. Under her guidance, the church has grown into a thriving, multi-generational congregation that is a genuine beacon of light in Bury and beyond.',
     ],
@@ -16,11 +17,11 @@ const PASTORS = [
   },
   {
     name: 'Pastor Paul Olujobi',
-    title: 'Co-Pastor & Minister',
+    title: 'Pastor in Charge',
     img: '/assets/pastor-olujobi.webp',
     imgPos: 'center 30%',
     bio: [
-      'Pastor Paul Olujobi serves as Co-Pastor and Minister of RCCG Lighthouse Parish. He is a gifted preacher and teacher of the Word, whose sermons are marked by clarity, depth, and genuine pastoral warmth. The congregation\'s love for him is evident — "We love you sir ❤️" is a frequent refrain from those he has impacted.',
+      'Pastor Paul Olujobi serves as a Pastor in Charge of The Lighthouse Church RCCG. He is a gifted preacher and teacher of the Word, whose sermons are marked by clarity, depth, and genuine pastoral warmth. The congregation\'s love for him is evident — "We love you sir ❤️" is a frequent refrain from those he has impacted.',
       'By profession, Pastor Paul is a medical nurse and public health professional, combining a heart for physical healing with a calling to minister spiritual wholeness. His background in healthcare shapes his pastoral approach — attentive, compassionate, and committed to the holistic wellbeing of every member.',
       'He co-founded Lighthouse Parish in 2011 and has been instrumental in shaping the church\'s culture of prayer, authentic worship, and community service. He leads Sunday services with energy and conviction, and his preaching consistently calls the church to a deeper walk with God.',
     ],
@@ -48,7 +49,7 @@ export default function SeniorPastorsPage() {
           <div className="container-max px-6">
             <p className="text-primary font-bold text-sm uppercase tracking-widest mb-2">Leadership</p>
             <h1 className="text-4xl md:text-5xl font-bold text-white">Our Pastors</h1>
-            <p className="text-white/80 mt-2">Servant leaders called to guide our church family</p>
+            <p className="text-white/80 mt-2">Pastors in Charge · {site.designation}</p>
           </div>
         </div>
       </div>
