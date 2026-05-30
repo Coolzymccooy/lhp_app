@@ -9,9 +9,9 @@ const GIVING_METHODS = [
     desc: 'The easiest way to give regularly. Set up a standing order or one-off transfer directly to our church account.',
     details: [
       { label: 'Bank', value: 'Barclays Bank' },
-      { label: 'Account Name', value: 'RCCG Lighthouse Parish Bury' },
-      { label: 'Sort Code', value: '20-XX-XX' },
-      { label: 'Account Number', value: 'XXXXXXXX' },
+      { label: 'Account Name', value: 'The Redeemed Christian Church of God The Lighthouse Parish, Bury' },
+      { label: 'Sort Code', value: '20-55-41' },
+      { label: 'Account Number', value: '23061337' },
       { label: 'Reference', value: 'TITHE / OFFERING / MISSIONS' },
     ],
     icon: TrendingUp,

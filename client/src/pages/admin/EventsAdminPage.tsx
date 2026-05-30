@@ -37,6 +37,7 @@ export default function EventsAdminPage() {
   const [form, setForm] = useState(EMPTY_FORM);
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [showImgHelp, setShowImgHelp] = useState(false);
   const [rsvpEvent, setRsvpEvent] = useState<Event | null>(null);
   const [rsvps, setRsvps] = useState<Rsvp[]>([]);
   const [rsvpLoading, setRsvpLoading] = useState(false);
@@ -258,16 +259,25 @@ export default function EventsAdminPage() {
                 </select>
               </div>
               <div>
-                <label className="flex items-center gap-1.5 text-sm font-semibold text-gray-700 mb-1.5">
-                  Event Image
-                  <span className="group relative inline-flex">
-                    <Info className="w-3.5 h-3.5 text-gray-400 cursor-help" />
-                    <span className="pointer-events-none absolute left-1/2 -translate-x-1/2 bottom-full mb-2 z-10 w-72 rounded-lg bg-gray-900 text-white text-xs leading-relaxed p-3 opacity-0 group-hover:opacity-100 transition-opacity shadow-lg">
-                      Easiest: tap <b>Upload image</b> and pick a photo from your phone or computer (JPG, PNG or WebP, up to 8MB). It’s saved automatically and resized to fit the card — you don’t need a link.<br /><br />
-                      Advanced: if your photo is already online, paste its web address (URL) in the box below — it must end in .jpg, .png or .webp. Leave everything blank to use the default banner.
-                    </span>
-                  </span>
-                </label>
+                <div className="flex items-center gap-1.5 mb-1.5">
+                  <label className="text-sm font-semibold text-gray-700">Event Image</label>
+                  <button
+                    type="button"
+                    onClick={() => setShowImgHelp(s => !s)}
+                    aria-label="How to add an image"
+                    title="How to add an image"
+                    className="text-gray-400 hover:text-primary transition-colors"
+                  >
+                    <Info className="w-4 h-4" />
+                  </button>
+                </div>
+                {showImgHelp && (
+                  <div className="mb-2 rounded-lg bg-blue-50 border border-blue-200 text-blue-900 text-xs leading-relaxed p-3">
+                    <b>Easiest:</b> tap <b>Upload image</b> below and pick a photo from your phone or computer (JPG, PNG or WebP, up to 8MB). It’s saved automatically and resized to fit the card — you don’t need a link.
+                    <br /><br />
+                    <b>Advanced:</b> if your photo is already online, paste its web address (URL) in the box below — it must end in .jpg, .png or .webp. Leave everything blank to use the default banner.
+                  </div>
+                )}
 
                 {/* Preview of the current image */}
                 {form.image_url && (
