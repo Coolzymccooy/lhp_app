@@ -3,13 +3,16 @@ import path from 'path';
 import fs from 'fs';
 import bcrypt from 'bcryptjs';
 
-// Ensure data directory exists
-const dataDir = path.join(process.cwd(), 'server', 'data');
-if (!fs.existsSync(dataDir)) {
-  fs.mkdirSync(dataDir, { recursive: true });
-}
-
-const DB_PATH = path.join(dataDir, 'lhp.db');
+// Use in-memory database for tests, file-based for production
+const DB_PATH = process.env.NODE_ENV === 'test'
+  ? ':memory:'
+  : (() => {
+      const dataDir = path.join(process.cwd(), 'server', 'data');
+      if (!fs.existsSync(dataDir)) {
+        fs.mkdirSync(dataDir, { recursive: true });
+      }
+      return path.join(dataDir, 'lhp.db');
+    })();
 
 let db: Database.Database;
 
