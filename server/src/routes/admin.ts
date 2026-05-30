@@ -16,12 +16,12 @@ type StatusBody = { status: string; notes?: string };
 router.get('/stats', (_req: AuthRequest, res: Response) => {
   const db = getDb();
   const stats = {
-    prayer: db.prepare('SELECT COUNT(*) as total, SUM(CASE WHEN status="new" THEN 1 ELSE 0 END) as new_count, SUM(CASE WHEN ai_urgency="urgent" THEN 1 ELSE 0 END) as urgent FROM prayer_requests').get(),
-    counselling: db.prepare('SELECT COUNT(*) as total, SUM(CASE WHEN status="new" THEN 1 ELSE 0 END) as new_count FROM counselling_sessions').get(),
-    contact: db.prepare('SELECT COUNT(*) as total, SUM(CASE WHEN status="new" THEN 1 ELSE 0 END) as new_count FROM contact_messages').get(),
-    membership: db.prepare('SELECT COUNT(*) as total, SUM(CASE WHEN status="new" THEN 1 ELSE 0 END) as new_count FROM memberships').get(),
-    responses: db.prepare('SELECT COUNT(*) as total FROM service_responses').get(),
-    icare: db.prepare('SELECT COUNT(*) as total, SUM(CASE WHEN status="new" THEN 1 ELSE 0 END) as new_count FROM icare_requests').get(),
+    prayer: db.prepare(`SELECT COUNT(*) as total, SUM(CASE WHEN status='new' THEN 1 ELSE 0 END) as new_count, SUM(CASE WHEN ai_urgency='urgent' THEN 1 ELSE 0 END) as urgent FROM prayer_requests`).get(),
+    counselling: db.prepare(`SELECT COUNT(*) as total, SUM(CASE WHEN status='new' THEN 1 ELSE 0 END) as new_count FROM counselling_sessions`).get(),
+    contact: db.prepare(`SELECT COUNT(*) as total, SUM(CASE WHEN status='new' THEN 1 ELSE 0 END) as new_count FROM contact_messages`).get(),
+    membership: db.prepare(`SELECT COUNT(*) as total, SUM(CASE WHEN status='new' THEN 1 ELSE 0 END) as new_count FROM memberships`).get(),
+    responses: db.prepare(`SELECT COUNT(*) as total FROM service_responses`).get(),
+    icare: db.prepare(`SELECT COUNT(*) as total, SUM(CASE WHEN status='new' THEN 1 ELSE 0 END) as new_count FROM icare_requests`).get(),
   };
   res.json({ success: true, stats });
 });
