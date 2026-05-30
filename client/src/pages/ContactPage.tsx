@@ -77,6 +77,7 @@ export default function ContactPage() {
           {/* Form */}
           <div className="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm">
             <h2 className="text-2xl font-bold text-gray-900 mb-6">Send Us a Message</h2>
+            <p className="text-gray-500 text-sm mb-4">Your message goes straight to our church office team, who aim to respond within 2 working days.</p>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
