@@ -11,9 +11,15 @@ const chatSchema = z.object({
 });
 
 router.post('/chat', validate(chatSchema), (req: Request, res: Response) => {
-  const { query } = req.body as { query: string };
-  const result = chatResponse(query);
-  res.json({ success: true, ...result });
+  void (async () => {
+    const { query } = req.body as { query: string };
+    try {
+      const result = await chatResponse(query);
+      res.json({ success: true, ...result });
+    } catch {
+      res.json({ success: true, answer: 'Sorry, I had trouble just then. Please try again, or use the Contact page.', url: '/contact' });
+    }
+  })();
 });
 
 const nextStepSchema = z.object({
