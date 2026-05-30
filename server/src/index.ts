@@ -24,13 +24,18 @@ const allowedOrigins = [
   process.env.CLIENT_URL ?? 'http://localhost:5173',
   'http://lighthousechurchburyrccg.co.uk',
   'https://lighthousechurchburyrccg.co.uk',
+  'https://www.lighthousechurchburyrccg.co.uk',
   'http://localhost:5173',
   'http://localhost:3000',
+  `http://localhost:${process.env.PORT ?? '5000'}`,
 ];
 app.use(cors({
   origin: (origin, callback) => {
+    // Allow same-origin/no-origin and allow-listed origins with CORS headers.
+    // For any other origin, deny CORS headers WITHOUT throwing — throwing here
+    // would turn every cross-origin (and same-origin asset) request into a 500.
     if (!origin || allowedOrigins.includes(origin)) callback(null, true);
-    else callback(new Error('Not allowed by CORS'));
+    else callback(null, false);
   },
   credentials: true,
 }));
