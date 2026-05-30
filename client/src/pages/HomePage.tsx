@@ -26,7 +26,7 @@ import toast from 'react-hot-toast';
 const MINISTRIES = [
   { name: "Children's Ministry", img: '/assets/family.webp', desc: 'Fun, safe, Spirit-filled for ages 0–12', to: '/groups' },
   { name: 'Teen Fellowship', img: site.fellowshipImages.teens, desc: 'Discipleship & community for ages 13–17', to: '/groups' },
-  { name: 'Young Adults', img: site.fellowshipImages.youngAdults, desc: 'Faith, friends & purpose for 18–35s', to: '/groups' },
+  { name: 'Young Adults', img: site.fellowshipImages.youngAdults, desc: 'Faith Igniters · for 18–35s', to: '/groups' },
   { name: "Men's Fellowship", img: site.fellowshipImages.men, desc: 'Brotherhood, prayer & accountability', to: '/groups' },
   { name: "Women's Fellowship", img: site.fellowshipImages.women, desc: 'Community, mentoring & sisterhood', to: '/groups' },
   { name: 'iCare Ministry', img: '/assets/counseling.webp', desc: 'Pastoral care & visitation', to: '/icare' },
