@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer';
 
-export type SubmissionKind = 'prayer' | 'counselling' | 'contact' | 'membership' | 'respond' | 'icare' | 'first_timer';
+export type SubmissionKind = 'prayer' | 'counselling' | 'contact' | 'membership' | 'respond' | 'icare' | 'first_timer' | 'gift_aid';
 
 export const KIND_LABELS: Record<SubmissionKind, string> = {
   prayer: 'Prayer Request',
@@ -10,6 +10,7 @@ export const KIND_LABELS: Record<SubmissionKind, string> = {
   respond: 'Service Response',
   icare: 'iCare Request',
   first_timer: 'First-Time Guest',
+  gift_aid: 'Gift Aid Declaration',
 };
 
 let transporter: nodemailer.Transporter | null = null;

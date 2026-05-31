@@ -104,6 +104,20 @@ export const FIRST_TIMERS_CONFIG: Config = {
   detailKeys: ['visit_date', 'interests', 'prayer_request', 'notes'],
 };
 
+export const GIFT_AID_CONFIG: Config = {
+  endpoint: '/admin/gift-aid',
+  title: 'Gift Aid Declarations',
+  columns: [
+    { key: 'first_name', label: 'Name', render: (v, r) => `${v} ${r.last_name ?? ''}`.trim() },
+    { key: 'postcode', label: 'Postcode' },
+    { key: 'email', label: 'Email' },
+    { key: 'taxpayer_confirmed', label: 'UK Taxpayer', render: (v) => (v ? 'Confirmed' : 'No') },
+    { key: 'status', label: 'Status' },
+    { key: 'created_at', label: 'Date', render: (v) => new Date(String(v)).toLocaleDateString('en-GB') },
+  ],
+  detailKeys: ['address', 'phone', 'donation_scope', 'notes'],
+};
+
 function StatusBadge({ status }: { status: string }) {
   const cls = STATUS_COLORS[status] ?? STATUS_COLORS.new;
   return <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold border ${cls}`}>{status.replace('_', ' ')}</span>;

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Outlet, NavLink, useNavigate, Link } from 'react-router-dom';
 import { useAuthStore } from '../../store/authStore';
-import { LayoutDashboard, Heart, Users, MessageSquare, UserCheck, CalendarCheck, BookOpen, LogOut, ChevronRight, TrendingUp, Calendar, Shield, FileText, Bell, UserPlus, BarChart3, Image, QrCode } from 'lucide-react';
+import { LayoutDashboard, Heart, Users, MessageSquare, UserCheck, CalendarCheck, BookOpen, LogOut, ChevronRight, TrendingUp, Calendar, Shield, FileText, Bell, UserPlus, BarChart3, Image, QrCode, PoundSterling } from 'lucide-react';
 
 const NAV = [
   { label: 'Dashboard', to: '/admin', icon: LayoutDashboard, end: true },
@@ -13,6 +13,7 @@ const NAV = [
   { label: 'Memberships', to: '/admin/memberships', icon: UserCheck },
   { label: 'Service Responses', to: '/admin/responses', icon: CalendarCheck },
   { label: 'First-Time Guests', to: '/admin/first-timers', icon: UserPlus },
+  { label: 'Gift Aid', to: '/admin/gift-aid', icon: PoundSterling },
   { label: 'Sermons', to: '/admin/sermons', icon: BookOpen },
   { label: 'Events', to: '/admin/events', icon: Calendar },
   { label: 'Gallery', to: '/admin/gallery', icon: Image },

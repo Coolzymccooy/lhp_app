@@ -28,6 +28,7 @@ router.get('/stats', (_req: AuthRequest, res: Response) => {
     responses: db.prepare(`SELECT COUNT(*) as total FROM service_responses`).get(),
     icare: db.prepare(`SELECT COUNT(*) as total, SUM(CASE WHEN status='new' THEN 1 ELSE 0 END) as new_count FROM icare_requests`).get(),
     firstTimers: db.prepare(`SELECT COUNT(*) as total, SUM(CASE WHEN status='new' THEN 1 ELSE 0 END) as new_count FROM first_timers`).get(),
+    giftAid: db.prepare(`SELECT COUNT(*) as total, SUM(CASE WHEN status='new' THEN 1 ELSE 0 END) as new_count FROM gift_aid_declarations`).get(),
     attendance: db.prepare(`SELECT COUNT(*) as total FROM attendance`).get(),
   };
   res.json({ success: true, stats });
@@ -135,6 +136,20 @@ router.patch('/first-timers/:id', (req: AuthRequest, res: Response) => {
   const { status, notes } = req.body as StatusBody;
   const db = getDb();
   db.prepare("UPDATE first_timers SET status = ?, notes = ?, updated_at = datetime('now') WHERE id = ?").run(status, notes ?? '', req.params.id);
+  res.json({ success: true });
+});
+
+// ── Gift Aid Declarations ───────────────────────────────────────────────────
+router.get('/gift-aid', (_req: AuthRequest, res: Response) => {
+  const db = getDb();
+  const rows = db.prepare('SELECT * FROM gift_aid_declarations ORDER BY created_at DESC').all();
+  res.json({ success: true, data: rows });
+});
+
+router.patch('/gift-aid/:id', (req: AuthRequest, res: Response) => {
+  const { status, notes } = req.body as StatusBody;
+  const db = getDb();
+  db.prepare("UPDATE gift_aid_declarations SET status = ?, notes = ?, updated_at = datetime('now') WHERE id = ?").run(status, notes ?? '', req.params.id);
   res.json({ success: true });
 });
 

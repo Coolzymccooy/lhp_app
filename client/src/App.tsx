@@ -50,6 +50,7 @@ import {
   MEMBERSHIP_CONFIG,
   RESPONSES_CONFIG,
   FIRST_TIMERS_CONFIG,
+  GIFT_AID_CONFIG,
 } from './pages/admin/SubmissionsPage';
 
 // Auth store
@@ -138,6 +139,7 @@ export default function App() {
           <Route path="memberships" element={<SubmissionsPage config={MEMBERSHIP_CONFIG} />} />
           <Route path="responses" element={<SubmissionsPage config={RESPONSES_CONFIG} />} />
           <Route path="first-timers" element={<SubmissionsPage config={FIRST_TIMERS_CONFIG} />} />
+          <Route path="gift-aid" element={<SubmissionsPage config={GIFT_AID_CONFIG} />} />
           <Route path="analytics" element={<AnalyticsPage />} />
           <Route path="attendance" element={<AttendancePage />} />
           <Route path="events" element={<EventsAdminPage />} />

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Heart, Shield, TrendingUp, Gift, CreditCard } from 'lucide-react';
+import { Heart, Shield, TrendingUp, Gift, CreditCard, CheckCircle2 } from 'lucide-react';
 import api from '../api/client';
 import toast from 'react-hot-toast';
 
@@ -32,11 +32,11 @@ const GIVING_METHODS = [
   },
   {
     title: 'Gift Aid',
-    desc: 'UK taxpayers can increase their giving by 25% at no extra cost through Gift Aid. Ask our finance team for a Gift Aid declaration form.',
+    desc: 'UK taxpayers can increase their giving by 25% at no extra cost through Gift Aid. Complete our quick online declaration below — it takes one minute.',
     details: [
       { label: 'Eligibility', value: 'UK taxpayers' },
       { label: 'Boost', value: '+25% on your gift' },
-      { label: 'How', value: 'Complete a one-off declaration' },
+      { label: 'How', value: 'Declaration below ↓' },
     ],
     icon: Heart,
     color: 'bg-pink-50 border-pink-200',
@@ -130,6 +130,133 @@ function OnlineGiveSection() {
             {loading ? 'Redirecting…' : `Give ${custom ? `£${custom}` : amount ? `£${amount}` : ''} Securely`}
           </button>
           <p className="text-center text-xs text-gray-400">Powered by Stripe · Your card details are never stored</p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+const GIFT_AID_BENEFITS = [
+  'Adds 25p to every £1 you give — at no cost to you',
+  'Covers gifts you make today, in the future, and the past 4 years',
+  'One declaration covers all your future giving — no need to repeat it',
+];
+
+function GiftAidSection() {
+  const [form, setForm] = useState({ first_name: '', last_name: '', email: '', phone: '', address: '', postcode: '' });
+  const [confirmed, setConfirmed] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [done, setDone] = useState(false);
+
+  function update(key: keyof typeof form, value: string) {
+    setForm(f => ({ ...f, [key]: value }));
+  }
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!form.first_name || !form.last_name || !form.address || !form.postcode) {
+      toast.error('Please add your name, home address and postcode');
+      return;
+    }
+    if (!confirmed) {
+      toast.error('Please tick the box to confirm you are a UK taxpayer');
+      return;
+    }
+    setLoading(true);
+    try {
+      await api.post('/forms/gift-aid', { ...form, taxpayer_confirmed: true });
+      setDone(true);
+      toast.success('Gift Aid declaration received — thank you!');
+    } catch {
+      toast.error('Could not submit your declaration. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <section id="gift-aid" className="section-pad bg-white scroll-mt-24">
+      <div className="container-max max-w-5xl mx-auto">
+        <div className="text-center mb-10">
+          <p className="text-primary font-bold text-sm uppercase tracking-widest mb-2">Make Your Giving Go Further</p>
+          <h2 className="text-3xl font-bold text-gray-900">Gift Aid Declaration</h2>
+          <p className="text-gray-500 mt-3 max-w-2xl mx-auto">
+            If you’re a UK taxpayer, Gift Aid lets us reclaim an extra <span className="font-semibold text-gray-700">25%</span> from HMRC on your donations — completely free to you. Just complete this short declaration.
+          </p>
+        </div>
+
+        <div className="grid lg:grid-cols-2 gap-8 items-start">
+          {/* Benefits */}
+          <div className="bg-pink-50 border border-pink-200 rounded-2xl p-8">
+            <h3 className="text-xl font-bold text-gray-900 mb-5">How Gift Aid helps</h3>
+            <ul className="space-y-3">
+              {GIFT_AID_BENEFITS.map(b => (
+                <li key={b} className="flex items-start gap-3 text-sm text-gray-700">
+                  <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                  <span>{b}</span>
+                </li>
+              ))}
+            </ul>
+            <p className="text-xs text-gray-500 mt-6 leading-relaxed">
+              You must be a UK taxpayer and pay at least as much Income Tax and/or Capital Gains Tax in the tax year as the amount of Gift Aid claimed on all your donations. Please let us know if your circumstances change.
+            </p>
+          </div>
+
+          {/* Form / success */}
+          <div className="bg-white border border-gray-100 rounded-2xl shadow-sm p-8">
+            {done ? (
+              <div className="text-center py-8">
+                <div className="w-14 h-14 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <CheckCircle2 className="w-8 h-8 text-green-600" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Declaration received</h3>
+                <p className="text-gray-500 text-sm">Thank you! We can now reclaim an extra 25% on your eligible gifts. There’s nothing more you need to do.</p>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-1">First name *</label>
+                    <input value={form.first_name} onChange={e => update('first_name', e.target.value)} className="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-1">Last name *</label>
+                    <input value={form.last_name} onChange={e => update('last_name', e.target.value)} className="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-1">Home address *</label>
+                  <input value={form.address} onChange={e => update('address', e.target.value)} placeholder="House number and street" className="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
+                  <p className="text-xs text-gray-400 mt-1">Required by HMRC to identify you as a taxpayer.</p>
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-1">Postcode *</label>
+                    <input value={form.postcode} onChange={e => update('postcode', e.target.value)} className="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-1">Phone</label>
+                    <input value={form.phone} onChange={e => update('phone', e.target.value)} className="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-1">Email</label>
+                  <input type="email" value={form.email} onChange={e => update('email', e.target.value)} className="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
+                </div>
+
+                <label className="flex items-start gap-3 bg-gray-50 border border-gray-200 rounded-xl p-4 cursor-pointer">
+                  <input type="checkbox" checked={confirmed} onChange={e => setConfirmed(e.target.checked)} className="mt-0.5 w-4 h-4 accent-primary flex-shrink-0" />
+                  <span className="text-xs text-gray-600 leading-relaxed">
+                    I want to Gift Aid my donation and any donations I make in the future or have made in the past 4 years to <b>The Redeemed Christian Church of God, The Lighthouse Parish, Bury</b>. I am a UK taxpayer and understand that if I pay less Income Tax and/or Capital Gains Tax than the amount of Gift Aid claimed on all my donations in that tax year, it is my responsibility to pay any difference.
+                  </span>
+                </label>
+
+                <button type="submit" disabled={loading} className="w-full py-3.5 bg-primary text-white font-bold rounded-xl hover:bg-pink-700 transition-colors disabled:opacity-60 text-sm">
+                  {loading ? 'Submitting…' : 'Submit Gift Aid Declaration'}
+                </button>
+              </form>
+            )}
+          </div>
         </div>
       </div>
     </section>
@@ -239,6 +366,8 @@ export default function GivePage() {
       </section>
 
       <OnlineGiveSection />
+
+      <GiftAidSection />
 
       {/* Questions */}
       <section className="section-pad bg-white">

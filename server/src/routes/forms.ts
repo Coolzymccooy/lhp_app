@@ -181,6 +181,32 @@ router.post('/first-timer', validate(firstTimerSchema), (req: Request, res: Resp
   res.json({ success: true, message: 'Welcome to The Lighthouse Church! We\'re so glad you came — someone from our team will reach out soon.' });
 });
 
+// ── Gift Aid Declaration ──────────────────────────────────────────────────────
+// HMRC requires the donor's name, home address + postcode, and a confirmation
+// they are a UK taxpayer. We store the declaration so the church can claim 25%.
+const giftAidSchema = z.object({
+  first_name: z.string().min(1, 'First name is required'),
+  last_name: z.string().min(1, 'Last name is required'),
+  email: z.string().email('Valid email required').optional().or(z.literal('')),
+  phone: z.string().optional(),
+  address: z.string().min(5, 'Your home address is required for Gift Aid'),
+  postcode: z.string().min(4, 'Your postcode is required for Gift Aid'),
+  taxpayer_confirmed: z.literal(true),
+});
+
+router.post('/gift-aid', validate(giftAidSchema), (req: Request, res: Response) => {
+  const data = req.body as z.infer<typeof giftAidSchema>;
+  const db = getDb();
+  const scope = 'Today, the past 4 years, and all future donations';
+  db.prepare(`
+    INSERT INTO gift_aid_declarations (id, first_name, last_name, email, phone, address, postcode, taxpayer_confirmed, donation_scope)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `).run(uuidv4(), data.first_name, data.last_name, data.email ?? '', data.phone ?? '', data.address, data.postcode, data.taxpayer_confirmed ? 1 : 0, scope);
+
+  void sendSubmissionEmail('gift_aid', { ...data, donation_scope: scope } as unknown as Record<string, unknown>);
+  res.json({ success: true, message: 'Thank you! Your Gift Aid declaration has been received — we can now reclaim an extra 25% on your eligible gifts at no cost to you.' });
+});
+
 // ── Prayer Wall (public) ──────────────────────────────────────────────────────
 const prayerWallSchema = z.object({
   name: z.string().min(1).max(100),

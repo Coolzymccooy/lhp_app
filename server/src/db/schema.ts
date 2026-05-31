@@ -39,7 +39,7 @@ export function resetDb(): void {
     const tables = [
       'admin_users', 'prayer_requests', 'counselling_sessions', 'contact_messages',
       'memberships', 'service_responses', 'icare_requests', 'first_timers', 'sermons', 'prayer_wall',
-      'events', 'rsvps', 'push_subscriptions', 'bulletins', 'attendance', 'gallery_images'
+      'events', 'rsvps', 'push_subscriptions', 'bulletins', 'attendance', 'gallery_images', 'gift_aid_declarations'
     ];
     tables.forEach(table => {
       try {
@@ -234,6 +234,22 @@ export function initDb() {
       interests TEXT,
       prayer_request TEXT,
       wants_followup INTEGER NOT NULL DEFAULT 1,
+      status TEXT NOT NULL DEFAULT 'new',
+      notes TEXT,
+      created_at TEXT NOT NULL DEFAULT (datetime('now')),
+      updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+
+    CREATE TABLE IF NOT EXISTS gift_aid_declarations (
+      id TEXT PRIMARY KEY,
+      first_name TEXT NOT NULL,
+      last_name TEXT NOT NULL,
+      email TEXT,
+      phone TEXT,
+      address TEXT NOT NULL,
+      postcode TEXT NOT NULL,
+      taxpayer_confirmed INTEGER NOT NULL DEFAULT 0,
+      donation_scope TEXT,
       status TEXT NOT NULL DEFAULT 'new',
       notes TEXT,
       created_at TEXT NOT NULL DEFAULT (datetime('now')),
