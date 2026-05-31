@@ -9,6 +9,7 @@ interface Config {
   title: string;
   columns: { key: string; label: string; render?: (v: unknown, row: Submission) => React.ReactNode }[];
   detailKeys?: string[];
+  deletable?: boolean;
 }
 
 const STATUS_COLORS: Record<string, string> = {
@@ -116,6 +117,7 @@ export const GIFT_AID_CONFIG: Config = {
     { key: 'created_at', label: 'Date', render: (v) => new Date(String(v)).toLocaleDateString('en-GB') },
   ],
   detailKeys: ['address', 'phone', 'donation_scope', 'notes'],
+  deletable: true,
 };
 
 function StatusBadge({ status }: { status: string }) {
@@ -146,6 +148,19 @@ export function SubmissionsPage({ config }: { config: Config }) {
     try {
       await api.patch(`${config.endpoint}/${selected.id}`, { status, notes });
       setRows(rs => rs.map(r => r.id === selected.id ? { ...r, status, notes } : r));
+      setSelected(null);
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  async function remove() {
+    if (!selected) return;
+    if (!confirm('Permanently delete this record? This cannot be undone.')) return;
+    setSaving(true);
+    try {
+      await api.delete(`${config.endpoint}/${selected.id}`);
+      setRows(rs => rs.filter(r => r.id !== selected.id));
       setSelected(null);
     } finally {
       setSaving(false);
@@ -224,7 +239,12 @@ export function SubmissionsPage({ config }: { config: Config }) {
                 <textarea value={notes} onChange={e => setNotes(e.target.value)} rows={3} className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 resize-none" placeholder="Add internal notes..." />
               </div>
             </div>
-            <div className="p-6 border-t border-gray-100 flex gap-3 justify-end">
+            <div className="p-6 border-t border-gray-100 flex gap-3 justify-end items-center">
+              {config.deletable && (
+                <button onClick={remove} disabled={saving} className="mr-auto px-4 py-2 text-sm font-semibold text-red-600 hover:bg-red-50 rounded-xl transition-colors disabled:opacity-60">
+                  Delete
+                </button>
+              )}
               <button onClick={() => setSelected(null)} className="px-4 py-2 text-sm font-semibold text-gray-600 hover:bg-gray-50 rounded-xl transition-colors">Cancel</button>
               <button onClick={save} disabled={saving} className="px-5 py-2 bg-primary text-white text-sm font-bold rounded-xl hover:bg-pink-700 transition-colors disabled:opacity-60">
                 {saving ? 'Saving...' : 'Save Changes'}

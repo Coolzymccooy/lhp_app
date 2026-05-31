@@ -153,6 +153,12 @@ router.patch('/gift-aid/:id', (req: AuthRequest, res: Response) => {
   res.json({ success: true });
 });
 
+router.delete('/gift-aid/:id', (req: AuthRequest, res: Response) => {
+  const db = getDb();
+  db.prepare('DELETE FROM gift_aid_declarations WHERE id = ?').run(req.params.id);
+  res.json({ success: true });
+});
+
 // ── Sermons CRUD ──────────────────────────────────────────────────────────────
 router.get('/sermons', (_req: AuthRequest, res: Response) => {
   const db = getDb();
