@@ -67,7 +67,8 @@ function OnlineGiveSection() {
     if (!finalAmount || finalAmount < 1) { toast.error('Please enter an amount of at least £1'); return; }
     setLoading(true);
     try {
-      const { data } = await api.post('/forms/create-checkout', { amount: Math.round(finalAmount * 100), fund });
+      // Server expects the amount in pounds and converts to pence itself.
+      const { data } = await api.post('/forms/create-checkout', { amount: finalAmount, fund, returnUrl: window.location.href });
       window.location.href = data.url;
     } catch {
       toast.error('Failed to start payment. Please try again.');
