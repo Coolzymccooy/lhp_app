@@ -58,9 +58,24 @@ function LinkColumn({ heading, links }: { heading: string; links: [string, strin
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-900 text-gray-300">
+    <footer className="relative overflow-hidden bg-gray-900 text-gray-300">
+      {/* Signature: a lighthouse "beam" glow and an oversized brand wordmark bleeding
+          off the bottom edge. Purely decorative, sits behind the content. */}
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{ background: 'radial-gradient(65% 55% at 22% 115%, rgba(233,30,154,0.16), transparent 68%)' }}
+        aria-hidden="true"
+      />
+      <span
+        className="pointer-events-none select-none absolute left-1/2 bottom-0 -translate-x-1/2 translate-y-[28%] whitespace-nowrap text-[22vw] font-bold leading-none tracking-tight md:text-[15vw]"
+        style={{ fontFamily: "'Playfair Display', serif", color: 'rgba(255,255,255,0.045)' }}
+        aria-hidden="true"
+      >
+        Lighthouse
+      </span>
+
       {/* pb clears the fixed WhatsApp / AI-chat buttons at the viewport corners. */}
-      <div className="container-max px-6 pt-12 pb-20">
+      <div className="relative z-10 container-max px-6 pt-12 pb-20">
         <div className="grid grid-cols-2 gap-x-8 gap-y-9 md:grid-cols-[1.3fr_1fr_1fr_1.6fr] md:gap-x-10">
           {/* Brand — full width on mobile, first column on desktop */}
           <div className="col-span-2 md:col-span-1">
