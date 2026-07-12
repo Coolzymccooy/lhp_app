@@ -1,8 +1,10 @@
 import axios from 'axios';
 
+// NOTE: no default Content-Type here. Axios sets application/json automatically
+// for plain-object bodies, but a hardcoded JSON default makes axios serialize
+// FormData uploads to JSON (formDataToJSON), which silently destroys the file.
 const api = axios.create({
   baseURL: '/api',
-  headers: { 'Content-Type': 'application/json' },
 });
 
 api.interceptors.request.use(config => {
