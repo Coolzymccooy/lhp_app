@@ -29,16 +29,17 @@ function InstagramSvg({ className }: { className?: string }) {
 export default function Footer() {
   return (
     <footer className="bg-gray-900 text-gray-300">
-      <div className="container-max py-12 md:py-14">
+      {/* Bottom padding keeps the last row clear of the fixed WhatsApp/AI-chat buttons. */}
+      <div className="container-max pt-10 md:pt-14 pb-24">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-8">
-          {/* Brand */}
-          <div>
-            <h3 className="text-white text-xl font-bold mb-3">{site.shortName}</h3>
-            <p className="text-primary font-semibold mb-4">RCCG · {site.locality}</p>
-            <p className="text-sm leading-relaxed text-gray-400">
+          {/* Brand — full width on mobile so the name and tagline breathe */}
+          <div className="col-span-2 lg:col-span-1">
+            <h3 className="text-white text-xl font-bold mb-1.5">{site.shortName}</h3>
+            <p className="text-primary font-semibold mb-3">RCCG · {site.locality}</p>
+            <p className="text-sm leading-relaxed text-gray-400 max-w-md">
               {site.tagline}.
             </p>
-            <div className="flex gap-4 mt-6">
+            <div className="flex gap-4 mt-5">
               <a href="https://youtube.com/@lighthouseparishbury" target="_blank" rel="noreferrer" className="w-10 h-10 bg-gray-800 hover:bg-primary rounded-full flex items-center justify-center transition-colors" aria-label="YouTube">
                 <YoutubeSvg className="w-5 h-5" />
               </a>
@@ -78,8 +79,8 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Contact */}
-          <div>
+          {/* Contact — full width on mobile so the address stays on few lines */}
+          <div className="col-span-2 lg:col-span-1">
             <h4 className="text-white font-bold mb-4 uppercase text-xs tracking-widest">Find Us</h4>
             <div className="space-y-3 text-sm">
               <div className="flex items-start gap-3">
@@ -98,8 +99,8 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-gray-800 mt-8 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-gray-500">
-          <p>&copy; {new Date().getFullYear()} {site.name}, Bury. All rights reserved.</p>
+        <div className="border-t border-gray-800 mt-8 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-gray-500">
+          <p className="text-center sm:text-left">&copy; {new Date().getFullYear()} {site.name}, Bury. All rights reserved.</p>
           <Link to="/admin/login" className="text-gray-600 hover:text-gray-400 text-xs transition-colors">Admin</Link>
         </div>
       </div>

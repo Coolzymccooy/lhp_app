@@ -58,15 +58,15 @@ export default function AIChat() {
       {/* Toggle button */}
       <button
         onClick={() => setOpen(o => !o)}
-        className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-gradient-brand rounded-full shadow-lg hover:shadow-xl flex items-center justify-center transition-all hover:scale-105"
+        className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-50 w-12 h-12 md:w-14 md:h-14 bg-gradient-brand rounded-full shadow-lg hover:shadow-xl flex items-center justify-center transition-all hover:scale-105"
         aria-label="Open AI chat"
       >
         {open ? <X className="w-6 h-6 text-white" /> : <MessageCircle className="w-6 h-6 text-white" />}
       </button>
 
       {/* Chat panel */}
-      <div className={`fixed bottom-24 right-6 z-50 sm:w-96 bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden transition-all duration-300 origin-bottom-right ${open ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'}`}
-        style={{ width: 'calc(100vw - 3rem)', maxWidth: '24rem', maxHeight: '75vh' }}>
+      <div className={`fixed bottom-20 right-4 md:bottom-24 md:right-6 z-50 sm:w-96 bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden transition-all duration-300 origin-bottom-right ${open ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'}`}
+        style={{ width: 'calc(100vw - 2rem)', maxWidth: '24rem', maxHeight: '75vh' }}>
         {/* Header */}
         <div className="bg-gradient-brand px-4 py-3 flex items-center gap-3">
           <div className="w-9 h-9 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0">
