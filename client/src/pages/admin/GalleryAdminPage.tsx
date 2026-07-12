@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Plus, Trash2, X, Upload } from 'lucide-react';
 import api from '../../api/client';
+import { postImageForm, uploadErrorMessage } from '../../utils/imageUpload';
 import toast from 'react-hot-toast';
 
 interface GalleryImage {
@@ -40,19 +41,13 @@ export default function GalleryAdminPage() {
 
     setUploading(true);
     try {
-      const formData = new FormData();
-      formData.append('image', form.file);
-      formData.append('caption', form.caption);
-      formData.append('album', form.album);
-
-      await api.post('/admin/gallery', formData);
+      await postImageForm('/admin/gallery', form.file, { caption: form.caption, album: form.album });
       toast.success('Image uploaded');
       setShowForm(false);
       setForm({ file: null, caption: '', album: '' });
       load();
     } catch (err) {
-      const error = err as any;
-      toast.error(error.response?.data?.error ?? 'Upload failed');
+      toast.error(uploadErrorMessage(err));
     } finally {
       setUploading(false);
     }

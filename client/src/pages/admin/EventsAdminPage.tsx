@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Plus, Trash2, X, Calendar, Users, Pencil, Upload, Info } from 'lucide-react';
 import api from '../../api/client';
+import { postImageForm, uploadErrorMessage } from '../../utils/imageUpload';
 import toast from 'react-hot-toast';
 
 interface Event {
@@ -86,14 +87,11 @@ export default function EventsAdminPage() {
     if (!file) return;
     setUploading(true);
     try {
-      const fd = new FormData();
-      fd.append('image', file);
-      // Let axios set the multipart boundary automatically — don't override Content-Type.
-      const { data } = await api.post('/admin/upload', fd);
+      const data = await postImageForm<{ url: string }>('/admin/upload', file);
       setForm(f => ({ ...f, image_url: data.url }));
       toast.success('Image uploaded');
-    } catch {
-      toast.error('Upload failed — use a JPG/PNG/WebP image under 8MB');
+    } catch (err) {
+      toast.error(uploadErrorMessage(err));
     } finally {
       setUploading(false);
       e.target.value = ''; // allow re-selecting the same file
@@ -273,7 +271,7 @@ export default function EventsAdminPage() {
                 </div>
                 {showImgHelp && (
                   <div className="mb-2 rounded-lg bg-blue-50 border border-blue-200 text-blue-900 text-xs leading-relaxed p-3">
-                    <b>Easiest:</b> tap <b>Upload image</b> below and pick a photo from your phone or computer (JPG, PNG or WebP, up to 8MB). It’s saved automatically and resized to fit the card — you don’t need a link.
+                    <b>Easiest:</b> tap <b>Upload image</b> below and pick a photo from your phone or computer. Big photos are automatically shrunk to fit, so almost any picture works — you don’t need a link.
                     <br /><br />
                     <b>Advanced:</b> if your photo is already online, paste its web address (URL) in the box below — it must end in .jpg, .png or .webp. Leave everything blank to use the default banner.
                   </div>

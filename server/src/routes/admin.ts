@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod';
 import Stripe from 'stripe';
 import { webpush, vapidPublicKey, vapidPrivateKey } from '../services/webPush';
-import multer from 'multer';
+import { imageUploadMiddleware } from '../lib/imageUpload';
 import fs from 'fs';
 import path from 'path';
 
@@ -539,16 +539,6 @@ router.get('/attendance/analytics', (_req: AuthRequest, res: Response) => {
 const galleryDir = process.env.DATA_DIR
   ? path.join(process.env.DATA_DIR, 'uploads', 'gallery')
   : path.join(__dirname, '../../uploads/gallery');
-fs.mkdirSync(galleryDir, { recursive: true });
-
-const upload = multer({
-  storage: multer.diskStorage({
-    destination: (_req, _file, cb) => cb(null, galleryDir),
-    filename: (_req, file, cb) => cb(null, `${uuidv4()}${path.extname(file.originalname).toLowerCase()}`),
-  }),
-  limits: { fileSize: 8 * 1024 * 1024 },
-  fileFilter: (_req, file, cb) => cb(null, /^image\/(jpe?g|png|webp|gif)$/.test(file.mimetype)),
-});
 
 // Generic image upload (used by the Events form so admins can pick a file
 // instead of pasting a URL). Saved under DATA_DIR/uploads/events, served at
@@ -556,18 +546,8 @@ const upload = multer({
 const eventImgDir = process.env.DATA_DIR
   ? path.join(process.env.DATA_DIR, 'uploads', 'events')
   : path.join(__dirname, '../../uploads/events');
-fs.mkdirSync(eventImgDir, { recursive: true });
 
-const uploadImage = multer({
-  storage: multer.diskStorage({
-    destination: (_req, _file, cb) => cb(null, eventImgDir),
-    filename: (_req, file, cb) => cb(null, `${uuidv4()}${path.extname(file.originalname).toLowerCase()}`),
-  }),
-  limits: { fileSize: 8 * 1024 * 1024 },
-  fileFilter: (_req, file, cb) => cb(null, /^image\/(jpe?g|png|webp|gif)$/.test(file.mimetype)),
-});
-
-router.post('/upload', uploadImage.single('image'), (req: AuthRequest, res: Response) => {
+router.post('/upload', imageUploadMiddleware(eventImgDir), (req: AuthRequest, res: Response) => {
   if (!req.file) {
     res.status(400).json({ success: false, error: 'No image file provided' });
     return;
@@ -575,7 +555,7 @@ router.post('/upload', uploadImage.single('image'), (req: AuthRequest, res: Resp
   res.json({ success: true, url: `/uploads/events/${req.file.filename}` });
 });
 
-router.post('/gallery', upload.single('image'), (req: AuthRequest, res: Response) => {
+router.post('/gallery', imageUploadMiddleware(galleryDir), (req: AuthRequest, res: Response) => {
   if (!req.file) {
     res.status(400).json({ success: false, error: 'No image file provided' });
     return;
