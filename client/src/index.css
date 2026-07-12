@@ -32,7 +32,9 @@
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
-  .section-pad { padding: 5rem 1.5rem; }
+  /* Tighter vertical rhythm on phones; full breathing room from md up. */
+  .section-pad { padding: 3.25rem 1.25rem; }
+  @media (min-width: 768px) { .section-pad { padding: 5rem 1.5rem; } }
   .container-max { max-width: 1200px; margin: 0 auto; width: 100%; }
   .animate-fade-in { animation: fadeIn 0.6s ease forwards; }
   .animate-slide-up { animation: slideUp 0.5s ease forwards; }

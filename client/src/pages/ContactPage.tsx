@@ -3,6 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { MapPin, Clock, Mail, Phone } from 'lucide-react';
 import api from '../api/client';
+import { site } from '../content/site';
 import toast from 'react-hot-toast';
 
 const schema = z.object({
@@ -48,9 +49,9 @@ export default function ContactPage() {
             <h2 className="text-3xl font-bold text-gray-900 mb-6">Get In Touch</h2>
             <div className="space-y-5">
               {[
-                { icon: MapPin, label: 'Address', value: 'The Rock Shopping Centre, Vue Cinema, The Rock, Bury, BL9 0ND, Manchester' },
-                { icon: Mail, label: 'Email', value: 'info@lighthouseparish.org' },
-                { icon: Phone, label: 'Phone', value: '+44 (0) 161 XXX XXXX' },
+                { icon: MapPin, label: 'Address', value: `${site.address}, ${site.locality}` },
+                { icon: Mail, label: 'Email', value: site.email },
+                { icon: Phone, label: 'Phone', value: site.phone },
                 { icon: Clock, label: 'Office Hours', value: 'Monday–Friday: 9:00am – 5:00pm' },
               ].map(({ icon: Icon, label, value }) => (
                 <div key={label} className="flex items-start gap-4">

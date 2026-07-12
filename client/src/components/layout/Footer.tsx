@@ -115,10 +115,17 @@ export default function Footer() {
                 <a href={`tel:${site.phone.replace(/\s/g, '')}`} className="hover:text-primary transition-colors">{site.phone}</a>
               </li>
             </ul>
-            <p className="text-xs text-gray-500 mt-4 leading-relaxed">
-              Sundays 10:00 AM · midweek online.{' '}
-              <Link to="/" className="text-primary hover:underline">Service times →</Link>
-            </p>
+            <div className="mt-5 pt-4 border-t border-gray-800">
+              <h4 className="text-white font-bold mb-2.5 uppercase text-xs tracking-widest">Service Times</h4>
+              <ul className="space-y-1.5 text-sm text-gray-400">
+                {site.services.map(s => (
+                  <li key={`${s.day}-${s.name}`}>
+                    <span className="text-primary font-semibold">{s.day}</span> · {s.name} — {s.time}
+                    {'note' in s && s.note ? ` (${s.note})` : ''}
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
 
