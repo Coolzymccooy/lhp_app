@@ -179,7 +179,7 @@ export default function HomePage() {
           <div className="text-center mb-12">
             <p className="text-primary font-bold text-sm uppercase tracking-widest mb-2">Connect</p>
             <h2 className="text-4xl font-bold text-gray-900">Our Ministries</h2>
-            <p className="text-gray-500 mt-3 max-w-xl mx-auto">Something for everyone, whatever your age or stage of life.</p>
+            <p className="text-gray-500 text-sm mt-3 max-w-xl mx-auto">Something for everyone, whatever your age or stage of life.</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {MINISTRIES.map(m => (
@@ -205,7 +205,7 @@ export default function HomePage() {
             <div className="text-center mb-12">
               <p className="text-primary font-bold text-sm uppercase tracking-widest mb-2">What's Coming Up</p>
               <h2 className="text-4xl font-bold text-gray-900">Upcoming Events</h2>
-              <p className="text-gray-500 mt-3 max-w-xl mx-auto">Join us for worship, fellowship, and special gatherings throughout the month.</p>
+              <p className="text-gray-500 text-sm mt-3 max-w-xl mx-auto">Join us for worship, fellowship, and special gatherings throughout the month.</p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
               {upcomingEvents.map(event => {

@@ -95,7 +95,7 @@ export default function SeniorPastorsPage() {
           <div className="text-center mb-12">
             <p className="text-primary font-bold text-sm uppercase tracking-widest mb-2">The Team</p>
             <h2 className="text-3xl font-bold text-gray-900">Ministry Leadership</h2>
-            <p className="text-gray-500 mt-3 max-w-xl mx-auto">Our pastoral team and ministry leads who serve our church family with dedication.</p>
+            <p className="text-gray-500 text-sm mt-3 max-w-xl mx-auto">Our pastoral team and ministry leads who serve our church family with dedication.</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 max-w-4xl mx-auto">
             {TEAM.map(t => (

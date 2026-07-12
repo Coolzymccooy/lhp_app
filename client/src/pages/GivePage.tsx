@@ -181,7 +181,7 @@ function GiftAidSection() {
         <div className="text-center mb-10">
           <p className="text-primary font-bold text-sm uppercase tracking-widest mb-2">Make Your Giving Go Further</p>
           <h2 className="text-3xl font-bold text-gray-900">Gift Aid Declaration</h2>
-          <p className="text-gray-500 mt-3 max-w-2xl mx-auto">
+          <p className="text-gray-500 text-sm mt-3 max-w-2xl mx-auto">
             If you’re a UK taxpayer, Gift Aid lets us reclaim an extra <span className="font-semibold text-gray-700">25%</span> from HMRC on your donations — completely free to you. Just complete this short declaration.
           </p>
         </div>
@@ -285,10 +285,10 @@ export default function GivePage() {
         <div className="container-max max-w-3xl mx-auto text-center">
           <p className="text-primary font-bold text-sm uppercase tracking-widest mb-2">Why We Give</p>
           <h2 className="text-3xl font-bold text-gray-900 mb-6">Giving is an Act of Worship</h2>
-          <p className="text-gray-600 mb-4 leading-relaxed">
+          <p className="text-gray-600 text-sm mb-4 leading-relaxed">
             At Lighthouse Parish, we believe that generosity is a spiritual discipline — a tangible expression of our trust in God as our provider. When we give, we partner with God in building His Kingdom and making a difference in our community.
           </p>
-          <p className="text-gray-600 leading-relaxed">
+          <p className="text-gray-600 text-sm leading-relaxed">
             <em className="text-gray-800">"Each of you should give what you have decided in your heart to give, not reluctantly or under compulsion, for God loves a cheerful giver."</em> — 2 Corinthians 9:7
           </p>
         </div>
@@ -322,7 +322,7 @@ export default function GivePage() {
             <p className="text-primary font-bold text-sm uppercase tracking-widest mb-2">Ways to Give</p>
             <h2 className="text-3xl font-bold text-gray-900">How to Give</h2>
           </div>
-          <div className="grid lg:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          <div className="grid gap-6 md:grid-cols-3 max-w-6xl mx-auto">
             {GIVING_METHODS.map(m => {
               const Icon = m.icon;
               return (
@@ -353,7 +353,7 @@ export default function GivePage() {
           <div className="text-center mb-12">
             <p className="text-primary font-bold text-sm uppercase tracking-widest mb-2">Designate Your Gift</p>
             <h2 className="text-3xl font-bold text-gray-900">Where Your Giving Goes</h2>
-            <p className="text-gray-500 mt-3 max-w-xl mx-auto">You can specify how you'd like your gift to be used by including a reference when transferring or choosing a designated envelope.</p>
+            <p className="text-gray-500 text-sm mt-3 max-w-xl mx-auto">You can specify how you'd like your gift to be used by including a reference when transferring or choosing a designated envelope.</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 max-w-5xl mx-auto">
             {FUND_CATEGORIES.map(f => (

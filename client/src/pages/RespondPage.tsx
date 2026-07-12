@@ -131,7 +131,7 @@ export default function RespondPage() {
       {/* Scripture */}
       <section className="py-12 bg-white text-center">
         <div className="container-max max-w-2xl mx-auto">
-          <p className="text-gray-600 italic text-lg leading-relaxed">
+          <p className="text-gray-600 italic leading-relaxed">
             "If you declare with your mouth, 'Jesus is Lord,' and believe in your heart that God raised him from the dead, you will be saved."
           </p>
           <p className="text-primary font-bold mt-3 text-sm">— Romans 10:9</p>

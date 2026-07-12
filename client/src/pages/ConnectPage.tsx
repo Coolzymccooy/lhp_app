@@ -72,7 +72,7 @@ export default function ConnectPage() {
               </div>
             </div>
             <h1 className="text-3xl font-bold text-gray-900 mb-4">Welcome to The Lighthouse Church!</h1>
-            <p className="text-gray-600 mb-6 text-lg leading-relaxed">
+            <p className="text-gray-600 mb-6 leading-relaxed">
               Thank you for visiting us. We're so glad you came, and we can't wait to meet you in person.
             </p>
             <p className="text-gray-500 mb-8">
@@ -117,7 +117,7 @@ export default function ConnectPage() {
         <div className="container-max max-w-3xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">It's Great to Meet You!</h2>
-            <p className="text-gray-600 text-lg leading-relaxed">
+            <p className="text-gray-600 leading-relaxed">
               We're The Lighthouse Church RCCG — a vibrant community dedicated to reaching out, saving souls, and making disciples through love. Fill out this short form so we can get to know you better and help you feel at home here.
             </p>
           </div>

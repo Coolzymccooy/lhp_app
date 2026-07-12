@@ -56,7 +56,7 @@ export default function CounsellingPage() {
         <div className="container-max">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900">What We Offer</h2>
-            <p className="text-gray-500 mt-3 max-w-xl mx-auto">All sessions are completely free of charge and handled with the utmost care and confidentiality.</p>
+            <p className="text-gray-500 text-sm mt-3 max-w-xl mx-auto">All sessions are completely free of charge and handled with the utmost care and confidentiality.</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {SERVICES.map(({ icon: Icon, label, desc }) => (

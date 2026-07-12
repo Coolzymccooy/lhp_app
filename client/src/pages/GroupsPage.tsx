@@ -159,7 +159,7 @@ export default function GroupsPage() {
           <div className="text-center mb-12">
             <p className="text-primary font-bold text-sm uppercase tracking-widest mb-2">Serve</p>
             <h2 className="text-3xl font-bold text-gray-900">Service Teams</h2>
-            <p className="text-gray-500 mt-3 max-w-xl mx-auto">There's a place for everyone to serve. Join one of our teams.</p>
+            <p className="text-gray-500 text-sm mt-3 max-w-xl mx-auto">There's a place for everyone to serve. Join one of our teams.</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {SERVICE_TEAMS.map(t => (
