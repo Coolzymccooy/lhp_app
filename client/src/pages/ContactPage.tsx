@@ -68,7 +68,7 @@ export default function ContactPage() {
             {/* Map */}
             <div className="mt-8 rounded-2xl overflow-hidden border border-gray-200 h-64">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2369.1!2d-2.296!3d53.593!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x487b3e2e6e9cfbb3%3A0x9f9e3a4af37d8a2b!2sThe%20Rock%20Shopping%20Centre!5e0!3m2!1sen!2suk!4v1"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2369.0!2d-2.2916973!3d53.5946139!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x487ba4dcf967ea7b%3A0x1df0edecb21c07e6!2sLighthouse%20Church%20bury%20RCCG!5e0!3m2!1sen!2suk!4v1"
                 width="100%" height="100%" style={{ border: 0 }} allowFullScreen loading="lazy" title="Church location map"
               />
             </div>
