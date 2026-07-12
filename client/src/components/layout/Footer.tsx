@@ -26,82 +26,90 @@ function InstagramSvg({ className }: { className?: string }) {
   );
 }
 
+const EXPLORE_LINKS: [string, string][] = [
+  ['Watch Live', '/watch-live'],
+  ['About Us', '/about'],
+  ['Groups & Ministries', '/groups'],
+  ['Events', '/events'],
+  ['Give', '/give'],
+];
+
+const CONNECT_LINKS: [string, string][] = [
+  ['Prayer Request', '/prayer'],
+  ['Counselling', '/counselling'],
+  ['Contact', '/contact'],
+  ['FAQ', '/faq'],
+];
+
+function LinkColumn({ heading, links }: { heading: string; links: [string, string][] }) {
+  return (
+    <div>
+      <h4 className="text-white font-bold mb-3 uppercase text-xs tracking-widest">{heading}</h4>
+      <ul className="space-y-2 text-sm">
+        {links.map(([label, to]) => (
+          <li key={to}>
+            <Link to={to} className="text-gray-400 hover:text-primary transition-colors">{label}</Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 export default function Footer() {
   return (
     <footer className="bg-gray-900 text-gray-300">
-      {/* Bottom padding keeps the last row clear of the fixed WhatsApp/AI-chat buttons. */}
-      <div className="container-max pt-10 md:pt-14 pb-24">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-8">
-          {/* Brand — full width on mobile so the name and tagline breathe */}
-          <div className="col-span-2 lg:col-span-1">
-            <h3 className="text-white text-xl font-bold mb-1.5">{site.shortName}</h3>
-            <p className="text-primary font-semibold mb-3">RCCG · {site.locality}</p>
-            <p className="text-sm leading-relaxed text-gray-400 max-w-md">
-              {site.tagline}.
-            </p>
-            <div className="flex gap-4 mt-5">
-              <a href="https://youtube.com/@lighthouseparishbury" target="_blank" rel="noreferrer" className="w-10 h-10 bg-gray-800 hover:bg-primary rounded-full flex items-center justify-center transition-colors" aria-label="YouTube">
-                <YoutubeSvg className="w-5 h-5" />
+      {/* pb clears the fixed WhatsApp / AI-chat buttons at the viewport corners. */}
+      <div className="container-max px-6 pt-12 pb-20">
+        <div className="grid grid-cols-2 gap-x-8 gap-y-9 md:grid-cols-[1.3fr_1fr_1fr_1.6fr] md:gap-x-10">
+          {/* Brand — full width on mobile, first column on desktop */}
+          <div className="col-span-2 md:col-span-1">
+            <h3 className="text-white text-lg font-bold leading-tight">{site.shortName}</h3>
+            <p className="text-primary font-semibold text-sm mt-1">RCCG · {site.locality}</p>
+            <p className="text-sm leading-relaxed text-gray-400 mt-3 max-w-xs">{site.tagline}.</p>
+            <div className="flex gap-3 mt-5">
+              <a href={site.social.youtube} target="_blank" rel="noreferrer" className="w-9 h-9 bg-gray-800 hover:bg-primary rounded-full flex items-center justify-center transition-colors" aria-label="YouTube">
+                <YoutubeSvg className="w-4 h-4" />
               </a>
-              <a href="https://facebook.com/rccglighthouseparishbury" target="_blank" rel="noreferrer" className="w-10 h-10 bg-gray-800 hover:bg-primary rounded-full flex items-center justify-center transition-colors" aria-label="Facebook">
-                <FacebookSvg className="w-5 h-5" />
+              <a href={site.social.facebook} target="_blank" rel="noreferrer" className="w-9 h-9 bg-gray-800 hover:bg-primary rounded-full flex items-center justify-center transition-colors" aria-label="Facebook">
+                <FacebookSvg className="w-4 h-4" />
               </a>
-              <a href="https://instagram.com/rccgtlp1" target="_blank" rel="noreferrer" className="w-10 h-10 bg-gray-800 hover:bg-primary rounded-full flex items-center justify-center transition-colors" aria-label="Instagram">
-                <InstagramSvg className="w-5 h-5" />
+              <a href={site.social.instagram} target="_blank" rel="noreferrer" className="w-9 h-9 bg-gray-800 hover:bg-primary rounded-full flex items-center justify-center transition-colors" aria-label="Instagram">
+                <InstagramSvg className="w-4 h-4" />
               </a>
             </div>
           </div>
 
-          {/* Services */}
-          <div>
-            <h4 className="text-white font-bold mb-4 uppercase text-xs tracking-widest">Service Times</h4>
-            <ul className="space-y-2 text-sm">
-              {site.services.map(s => (
-                <li key={`${s.day}-${s.name}`}>
-                  <span className="text-primary font-semibold">{s.day}</span> {s.name} — {s.time}
-                  {('note' in s && s.note) ? ` (${s.note})` : ''}
-                </li>
-              ))}
-            </ul>
-          </div>
+          <LinkColumn heading="Explore" links={EXPLORE_LINKS} />
+          <LinkColumn heading="Connect" links={CONNECT_LINKS} />
 
-          {/* Quick Links */}
-          <div>
-            <h4 className="text-white font-bold mb-4 uppercase text-xs tracking-widest">Quick Links</h4>
-            <ul className="space-y-2 text-sm">
-              {[
-                ['Watch Live', '/watch-live'], ['About Us', '/about'], ['Groups & Ministries', '/groups'],
-                ['Prayer Request', '/prayer'], ['Counselling', '/counselling'], ['Give', '/give'],
-                ['FAQ', '/faq'], ['Contact', '/contact'],
-              ].map(([label, to]) => (
-                <li key={to}><Link to={to} className="hover:text-primary transition-colors">{label}</Link></li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Contact — full width on mobile so the address stays on few lines */}
-          <div className="col-span-2 lg:col-span-1">
-            <h4 className="text-white font-bold mb-4 uppercase text-xs tracking-widest">Find Us</h4>
-            <div className="space-y-3 text-sm">
-              <div className="flex items-start gap-3">
+          {/* Visit — full width on mobile, last column on desktop */}
+          <div className="col-span-2 md:col-span-1">
+            <h4 className="text-white font-bold mb-3 uppercase text-xs tracking-widest">Visit Us</h4>
+            <ul className="space-y-3 text-sm text-gray-400">
+              <li className="flex items-start gap-2.5">
                 <MapPin className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                <span>The Rock Shopping Centre, Vue Cinema, The Rock, Bury, BL9 0ND</span>
-              </div>
-              <div className="flex items-center gap-3">
+                <span>{site.address}</span>
+              </li>
+              <li className="flex items-center gap-2.5">
                 <Mail className="w-4 h-4 text-primary flex-shrink-0" />
-                <a href={`mailto:${site.email}`} className="hover:text-primary transition-colors">{site.email}</a>
-              </div>
-              <div className="flex items-center gap-3">
+                <a href={`mailto:${site.email}`} className="hover:text-primary transition-colors break-all">{site.email}</a>
+              </li>
+              <li className="flex items-center gap-2.5">
                 <Phone className="w-4 h-4 text-primary flex-shrink-0" />
-                <span>+44 (0) 161 XXX XXXX</span>
-              </div>
-            </div>
+                <a href={`tel:${site.phone.replace(/\s/g, '')}`} className="hover:text-primary transition-colors">{site.phone}</a>
+              </li>
+            </ul>
+            <p className="text-xs text-gray-500 mt-4 leading-relaxed">
+              Sundays 10:00 AM · midweek online.{' '}
+              <Link to="/" className="text-primary hover:underline">Service times →</Link>
+            </p>
           </div>
         </div>
 
-        <div className="border-t border-gray-800 mt-8 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-gray-500">
+        <div className="border-t border-gray-800 mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-gray-500">
           <p className="text-center sm:text-left">&copy; {new Date().getFullYear()} {site.name}, Bury. All rights reserved.</p>
-          <Link to="/admin/login" className="text-gray-600 hover:text-gray-400 text-xs transition-colors">Admin</Link>
+          <Link to="/admin/login" className="text-gray-600 hover:text-gray-400 transition-colors">Admin</Link>
         </div>
       </div>
     </footer>
