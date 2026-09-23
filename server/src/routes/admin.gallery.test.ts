@@ -109,3 +109,60 @@ describe('DELETE /admin/gallery/:id', () => {
     expect(fs.existsSync(path.join(galleryDir, filename))).toBe(false);
   });
 });
+
+describe('PATCH /admin/gallery/:id/cover', () => {
+  it('marks an image as its album cover', async () => {
+    const res = await upload({ album: 'Teen Fellowship' });
+
+    const patch = await request(app)
+      .patch(`/admin/gallery/${res.body.id}/cover`)
+      .set('Authorization', `Bearer ${token}`);
+
+    expect(patch.status).toBe(200);
+    const row = getDb().prepare('SELECT is_cover FROM gallery_images WHERE id = ?').get(res.body.id) as any;
+    expect(row.is_cover).toBe(1);
+  });
+
+  it('allows only one cover per album, clearing the previous one', async () => {
+    const first = await upload({ album: 'Teen Fellowship' });
+    const second = await upload({ album: 'Teen Fellowship' });
+
+    await request(app).patch(`/admin/gallery/${first.body.id}/cover`).set('Authorization', `Bearer ${token}`);
+    await request(app).patch(`/admin/gallery/${second.body.id}/cover`).set('Authorization', `Bearer ${token}`);
+
+    const rows = getDb()
+      .prepare('SELECT id, is_cover FROM gallery_images WHERE album = ?')
+      .all('Teen Fellowship') as Array<{ id: string; is_cover: number }>;
+    const covers = rows.filter(r => r.is_cover === 1).map(r => r.id);
+    expect(covers).toEqual([second.body.id]);
+  });
+
+  it('does not disturb covers in other albums', async () => {
+    const teen = await upload({ album: 'Teen Fellowship' });
+    const men = await upload({ album: "Men's Fellowship" });
+
+    await request(app).patch(`/admin/gallery/${teen.body.id}/cover`).set('Authorization', `Bearer ${token}`);
+    await request(app).patch(`/admin/gallery/${men.body.id}/cover`).set('Authorization', `Bearer ${token}`);
+
+    const teenRow = getDb().prepare('SELECT is_cover FROM gallery_images WHERE id = ?').get(teen.body.id) as any;
+    expect(teenRow.is_cover).toBe(1);
+  });
+
+  it('404s for an unknown image', async () => {
+    const res = await request(app)
+      .patch('/admin/gallery/does-not-exist/cover')
+      .set('Authorization', `Bearer ${token}`);
+    expect(res.status).toBe(404);
+  });
+});
+
+describe('GET /admin/gallery', () => {
+  it('returns the cover flag so the admin grid can show it', async () => {
+    const res = await upload({ album: 'Evangelism' });
+    await request(app).patch(`/admin/gallery/${res.body.id}/cover`).set('Authorization', `Bearer ${token}`);
+
+    const list = await request(app).get('/admin/gallery').set('Authorization', `Bearer ${token}`);
+    const row = list.body.data.find((r: any) => r.id === res.body.id);
+    expect(row.is_cover).toBe(1);
+  });
+});

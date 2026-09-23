@@ -301,7 +301,7 @@ router.post('/push-subscribe', validate(pushSubscribeSchema), (req: Request, res
 // ── Gallery (public) ──────────────────────────────────────────────────────────
 router.get('/gallery', (_req: Request, res: Response) => {
   const db = getDb();
-  const rows = db.prepare('SELECT id, url, caption, album, created_at FROM gallery_images ORDER BY created_at DESC LIMIT 200').all();
+  const rows = db.prepare('SELECT id, url, caption, album, is_cover, created_at FROM gallery_images ORDER BY created_at DESC LIMIT 200').all();
   res.json({ success: true, data: rows });
 });
 

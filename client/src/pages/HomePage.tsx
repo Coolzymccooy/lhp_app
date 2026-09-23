@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { MapPin, Clock, Heart, Users, BookOpen, Phone, ChevronRight, Monitor, CreditCard, Film, Globe, Bot } from 'lucide-react';
 import { site } from '../content/site';
 import api from '../api/client';
-import { useGalleryImages, newestInAlbum } from '../hooks/useGalleryImages';
+import { useGalleryImages, coverForAlbum } from '../hooks/useGalleryImages';
 
 interface Event {
   id: string;
@@ -71,7 +71,7 @@ export default function HomePage() {
   // artwork for any ministry the church has not photographed yet.
   const ministriesWithRealPhotos = useMemo(
     () => MINISTRIES.map(ministry => {
-      const photo = newestInAlbum(galleryImages, ministry.name);
+      const photo = coverForAlbum(galleryImages, ministry.name);
       return photo ? { ...ministry, img: photo.url } : ministry;
     }),
     [galleryImages]

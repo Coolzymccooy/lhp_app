@@ -6,6 +6,8 @@ export interface GalleryImage {
   url: string;
   caption: string;
   album: string;
+  /** 1 when this image represents its album on the public site. */
+  is_cover?: number;
   created_at: string;
 }
 
@@ -40,10 +42,14 @@ export function useGalleryImages(): { images: GalleryImage[]; loading: boolean }
 }
 
 /**
- * Newest real photo filed under `album`, or null when the church has not
- * supplied one yet. The API already returns newest-first, so the first match
- * is the newest.
+ * The photo that should represent `album` on the public site: the one an admin
+ * marked as cover, otherwise the newest upload (the API returns newest-first).
+ * Null when the church has not supplied a photo for that album yet.
+ *
+ * Falling back to "newest" alone picked whatever happened to be uploaded last,
+ * which is rarely the best picture — hence the explicit cover.
  */
-export function newestInAlbum(images: readonly GalleryImage[], album: string): GalleryImage | null {
-  return images.find(image => image.album === album) ?? null;
+export function coverForAlbum(images: readonly GalleryImage[], album: string): GalleryImage | null {
+  const inAlbum = images.filter(image => image.album === album);
+  return inAlbum.find(image => image.is_cover === 1) ?? inAlbum[0] ?? null;
 }

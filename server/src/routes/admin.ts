@@ -596,6 +596,28 @@ router.get('/gallery', (_req: AuthRequest, res: Response) => {
   res.json({ success: true, data: rows });
 });
 
+// Mark an image as the one representing its album on the public site. Only one
+// cover per album, so setting a new one clears the album's previous cover.
+router.patch('/gallery/:id/cover', (req: AuthRequest, res: Response) => {
+  const db = getDb();
+  const row = db.prepare('SELECT album FROM gallery_images WHERE id = ?').get(req.params.id) as
+    | { album: string }
+    | undefined;
+
+  if (!row) {
+    res.status(404).json({ success: false, error: 'Image not found' });
+    return;
+  }
+
+  const setCover = db.transaction((id: string, album: string) => {
+    db.prepare('UPDATE gallery_images SET is_cover = 0 WHERE album = ?').run(album);
+    db.prepare('UPDATE gallery_images SET is_cover = 1 WHERE id = ?').run(id);
+  });
+  setCover(req.params.id, row.album);
+
+  res.json({ success: true });
+});
+
 router.delete('/gallery/:id', (req: AuthRequest, res: Response) => {
   const db = getDb();
   const row = db.prepare('SELECT url FROM gallery_images WHERE id = ?').get(req.params.id) as { url: string } | undefined;

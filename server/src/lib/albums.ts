@@ -16,6 +16,7 @@ export const GALLERY_ALBUMS = [
   "Women's Fellowship",
   "Sarah's Heart",
   'iCare Ministry',
+  'Membership Class',
   'Evangelism',
   'Outreach & Food Bank',
   'Church Life',

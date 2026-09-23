@@ -291,6 +291,21 @@ export function initDb() {
     CREATE INDEX IF NOT EXISTS idx_gallery_created ON gallery_images(created_at);
   `);
 
+  // Migrations for columns added after a table first shipped. SQLite has no
+  // "ADD COLUMN IF NOT EXISTS", so re-running throws once the column is there.
+  const addColumn = (table: string, definition: string) => {
+    try {
+      db.exec(`ALTER TABLE ${table} ADD COLUMN ${definition}`);
+    } catch {
+      // Column already present
+    }
+  };
+
+  // Marks the photo that represents its album on the public site (one per
+  // album). Without it the album's newest upload was used, which picked
+  // whatever happened to be last rather than the best picture.
+  addColumn('gallery_images', 'is_cover INTEGER NOT NULL DEFAULT 0');
+
   // Seed default admin if none exists
   const adminCount = db.prepare('SELECT COUNT(*) as count FROM admin_users').get() as { count: number };
   if (adminCount.count === 0) {

@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { Plus, Trash2, X, Upload, AlertCircle } from 'lucide-react';
+import { Plus, Trash2, X, Upload, AlertCircle, Star } from 'lucide-react';
 import api from '../../api/client';
 import { postImageForm, uploadErrorMessage } from '../../utils/imageUpload';
 import {
@@ -16,21 +16,29 @@ interface GalleryImage {
   url: string;
   caption: string;
   album: string;
+  is_cover?: number;
   created_at: string;
 }
 
-interface UploadForm {
-  files: File[];
+/** A picked file plus the story line that will be saved with it. */
+interface UploadItem {
+  key: string;
+  file: File;
   caption: string;
+}
+
+interface UploadForm {
+  items: UploadItem[];
   album: GalleryAlbum;
 }
 
 interface FailedUpload {
+  key: string;
   name: string;
   reason: string;
 }
 
-const EMPTY_FORM: UploadForm = { files: [], caption: '', album: DEFAULT_ALBUM };
+const EMPTY_FORM: UploadForm = { items: [], album: DEFAULT_ALBUM };
 
 const ALL_ALBUMS = 'All';
 
@@ -51,6 +59,7 @@ export default function GalleryAdminPage() {
   const [progress, setProgress] = useState<{ done: number; total: number } | null>(null);
   const [failures, setFailures] = useState<FailedUpload[]>([]);
   const [form, setForm] = useState<UploadForm>(EMPTY_FORM);
+  const [bulkCaption, setBulkCaption] = useState('');
   const [filter, setFilter] = useState<string>(ALL_ALBUMS);
 
   async function load() {
@@ -78,12 +87,35 @@ export default function GalleryAdminPage() {
     [images, filter]
   );
 
-  const totalBytes = form.files.reduce((sum, file) => sum + file.size, 0);
+  const totalBytes = form.items.reduce((sum, item) => sum + item.file.size, 0);
 
   function closeForm() {
     setShowForm(false);
     setForm(EMPTY_FORM);
+    setBulkCaption('');
     setFailures([]);
+  }
+
+  function pickFiles(fileList: FileList | null) {
+    const items = Array.from(fileList ?? []).map(file => ({
+      key: `${file.name}-${file.size}-${file.lastModified}`,
+      file,
+      caption: '',
+    }));
+    setForm({ ...form, items });
+    setFailures([]);
+  }
+
+  function setCaption(key: string, caption: string) {
+    setForm({
+      ...form,
+      items: form.items.map(item => (item.key === key ? { ...item, caption } : item)),
+    });
+  }
+
+  function applyCaptionToAll() {
+    if (!bulkCaption.trim()) return;
+    setForm({ ...form, items: form.items.map(item => ({ ...item, caption: bulkCaption })) });
   }
 
   // Uploaded one at a time: each file is compressed in the browser first, and a
@@ -91,7 +123,7 @@ export default function GalleryAdminPage() {
   // are collected and reported at the end rather than aborting the run.
   async function handleUpload(e: React.FormEvent) {
     e.preventDefault();
-    if (form.files.length === 0) {
+    if (form.items.length === 0) {
       toast.error('Please select at least one photo');
       return;
     }
@@ -101,13 +133,16 @@ export default function GalleryAdminPage() {
     const failed: FailedUpload[] = [];
     let uploaded = 0;
 
-    for (const [index, file] of form.files.entries()) {
-      setProgress({ done: index, total: form.files.length });
+    for (const [index, item] of form.items.entries()) {
+      setProgress({ done: index, total: form.items.length });
       try {
-        await postImageForm('/admin/gallery', file, { caption: form.caption, album: form.album });
+        await postImageForm('/admin/gallery', item.file, {
+          caption: item.caption,
+          album: form.album,
+        });
         uploaded += 1;
       } catch (err) {
-        failed.push({ name: file.name, reason: uploadErrorMessage(err) });
+        failed.push({ key: item.key, name: item.file.name, reason: uploadErrorMessage(err) });
       }
     }
 
@@ -126,11 +161,12 @@ export default function GalleryAdminPage() {
       return;
     }
 
-    // Keep only the failures selected so a retry does not re-upload duplicates.
+    // Keep only the failures selected (with their captions) so a retry does not
+    // re-upload the ones that already went through.
     toast.error(`${failed.length} photo${failed.length === 1 ? '' : 's'} could not be uploaded`);
     setForm({
       ...form,
-      files: form.files.filter(file => failed.some(failure => failure.name === file.name)),
+      items: form.items.filter(item => failed.some(failure => failure.key === item.key)),
     });
   }
 
@@ -145,17 +181,29 @@ export default function GalleryAdminPage() {
     }
   }
 
+  async function handleSetCover(image: GalleryImage) {
+    try {
+      await api.patch(`/admin/gallery/${image.id}/cover`);
+      toast.success(`Now representing ${albumOf(image)} on the website`);
+      load();
+    } catch {
+      toast.error('Could not set the cover photo');
+    }
+  }
+
   return (
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold text-gray-900">Gallery</h2>
-          <p className="text-sm text-gray-600 mt-1">Manage church photos and images</p>
+          <p className="text-sm text-gray-600 mt-1">
+            Photos are grouped by album. The photo marked with a star represents its album on the website.
+          </p>
         </div>
         <button
           onClick={() => setShowForm(true)}
-          className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-pink-700 transition-colors font-medium text-sm"
+          className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-pink-700 transition-colors font-medium text-sm shrink-0"
         >
           <Plus className="w-5 h-5" />
           Upload Photos
@@ -165,7 +213,7 @@ export default function GalleryAdminPage() {
       {/* Upload Form Modal */}
       {showForm && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-xl shadow-xl max-w-md w-full p-6 max-h-[90vh] overflow-y-auto">
+          <div className="bg-white rounded-xl shadow-xl max-w-lg w-full p-6 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-bold text-gray-900">Upload Photos</h3>
               <button
@@ -178,43 +226,7 @@ export default function GalleryAdminPage() {
             </div>
 
             <form onSubmit={handleUpload} className="space-y-4">
-              {/* File Input */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Photos
-                </label>
-                <label className="block border-2 border-dashed border-gray-300 rounded-lg p-6 text-center cursor-pointer hover:border-primary transition-colors">
-                  <Upload className="w-8 h-8 text-gray-400 mx-auto mb-2" />
-                  <div className="text-sm font-medium text-gray-700">
-                    {form.files.length > 0
-                      ? `${form.files.length} photo${form.files.length === 1 ? '' : 's'} selected · ${formatBytes(totalBytes)}`
-                      : 'Click to select images'}
-                  </div>
-                  <div className="text-xs text-gray-500 mt-1">
-                    JPG, PNG, WebP, GIF — pick as many as you like, large photos are shrunk automatically
-                  </div>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    multiple
-                    onChange={e => setForm({ ...form, files: Array.from(e.target.files ?? []) })}
-                    className="hidden"
-                  />
-                </label>
-
-                {form.files.length > 0 && (
-                  <ul className="mt-2 max-h-28 overflow-y-auto text-xs text-gray-600 space-y-1">
-                    {form.files.map(file => (
-                      <li key={`${file.name}-${file.size}`} className="flex justify-between gap-3">
-                        <span className="truncate">{file.name}</span>
-                        <span className="shrink-0 text-gray-400">{formatBytes(file.size)}</span>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
-
-              {/* Album */}
+              {/* Album — chosen first, because it decides where the photos land */}
               <div>
                 <label htmlFor="album" className="block text-sm font-medium text-gray-700 mb-1">
                   Album
@@ -229,25 +241,85 @@ export default function GalleryAdminPage() {
                     <option key={album} value={album}>{album}</option>
                   ))}
                 </select>
-                <p className="text-xs text-gray-500 mt-1">Applied to every photo in this batch.</p>
+                <p className="text-xs text-gray-500 mt-1">
+                  Every photo in this batch goes to this album.
+                </p>
               </div>
 
-              {/* Caption */}
+              {/* File Input */}
               <div>
-                <label htmlFor="caption" className="block text-sm font-medium text-gray-700 mb-1">
-                  Caption (optional)
+                <label className="block text-sm font-medium text-gray-700 mb-2">Photos</label>
+                <label className="block border-2 border-dashed border-gray-300 rounded-lg p-6 text-center cursor-pointer hover:border-primary transition-colors">
+                  <Upload className="w-8 h-8 text-gray-400 mx-auto mb-2" />
+                  <div className="text-sm font-medium text-gray-700">
+                    {form.items.length > 0
+                      ? `${form.items.length} photo${form.items.length === 1 ? '' : 's'} selected · ${formatBytes(totalBytes)}`
+                      : 'Click to select images'}
+                  </div>
+                  <div className="text-xs text-gray-500 mt-1">
+                    JPG, PNG, WebP, GIF — pick as many as you like, large photos are shrunk automatically
+                  </div>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    onChange={e => pickFiles(e.target.files)}
+                    className="hidden"
+                  />
                 </label>
-                <input
-                  id="caption"
-                  type="text"
-                  placeholder="e.g., Thanksgiving Service, March 2026"
-                  value={form.caption}
-                  onChange={e => setForm({ ...form, caption: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                  maxLength={200}
-                />
-                <p className="text-xs text-gray-500 mt-1">Applied to every photo in this batch.</p>
               </div>
+
+              {/* Per-photo story lines */}
+              {form.items.length > 0 && (
+                <div>
+                  <div className="flex items-end gap-2 mb-2">
+                    <div className="flex-1">
+                      <label htmlFor="bulk-caption" className="block text-sm font-medium text-gray-700 mb-1">
+                        Story line
+                      </label>
+                      <input
+                        id="bulk-caption"
+                        type="text"
+                        placeholder="e.g., Membership class graduation, September 2026"
+                        value={bulkCaption}
+                        onChange={e => setBulkCaption(e.target.value)}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                        maxLength={200}
+                      />
+                    </div>
+                    <button
+                      type="button"
+                      onClick={applyCaptionToAll}
+                      disabled={!bulkCaption.trim()}
+                      className="px-3 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed"
+                    >
+                      Apply to all
+                    </button>
+                  </div>
+                  <p className="text-xs text-gray-500 mb-2">
+                    Shown under the photo on the website. Edit any line below to give a photo its own story.
+                  </p>
+
+                  <ul className="space-y-2 max-h-60 overflow-y-auto pr-1">
+                    {form.items.map(item => (
+                      <li key={item.key} className="flex items-center gap-2">
+                        <span className="w-28 shrink-0 truncate text-xs text-gray-500" title={item.file.name}>
+                          {item.file.name}
+                        </span>
+                        <input
+                          type="text"
+                          aria-label={`Story line for ${item.file.name}`}
+                          placeholder="Story line (optional)"
+                          value={item.caption}
+                          onChange={e => setCaption(item.key, e.target.value)}
+                          className="flex-1 px-2 py-1.5 border border-gray-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                          maxLength={200}
+                        />
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
 
               {/* Progress */}
               {progress && (
@@ -274,7 +346,7 @@ export default function GalleryAdminPage() {
                   </div>
                   <ul className="text-xs text-red-700 space-y-1 max-h-28 overflow-y-auto">
                     {failures.map(failure => (
-                      <li key={failure.name}>
+                      <li key={failure.key}>
                         <span className="font-medium">{failure.name}</span> — {failure.reason}
                       </li>
                     ))}
@@ -286,7 +358,7 @@ export default function GalleryAdminPage() {
               )}
 
               {/* Actions */}
-              <div className="flex gap-3 pt-4">
+              <div className="flex gap-3 pt-2">
                 <button
                   type="button"
                   onClick={closeForm}
@@ -297,10 +369,10 @@ export default function GalleryAdminPage() {
                 </button>
                 <button
                   type="submit"
-                  disabled={form.files.length === 0 || uploading}
+                  disabled={form.items.length === 0 || uploading}
                   className="flex-1 px-4 py-2 bg-primary text-white rounded-lg hover:bg-pink-700 disabled:bg-gray-300 disabled:cursor-not-allowed font-medium transition-colors"
                 >
-                  {uploading ? 'Uploading…' : `Upload${form.files.length > 0 ? ` ${form.files.length}` : ''}`}
+                  {uploading ? 'Uploading…' : `Upload${form.items.length > 0 ? ` ${form.items.length}` : ''}`}
                 </button>
               </div>
             </form>
@@ -376,22 +448,42 @@ export default function GalleryAdminPage() {
                     alt={image.caption || 'Gallery image'}
                     className="w-full h-40 object-cover"
                   />
-                  {image.album && (
-                    <span className="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-black/60 text-white text-[10px] font-medium">
-                      {image.album}
+
+                  <span className="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-black/60 text-white text-[10px] font-medium">
+                    {albumOf(image)}
+                  </span>
+
+                  {image.is_cover === 1 && (
+                    <span
+                      className="absolute top-2 right-2 flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary text-white text-[10px] font-bold"
+                      title="Represents this album on the website"
+                    >
+                      <Star className="w-3 h-3 fill-current" />
+                      Cover
                     </span>
                   )}
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/50 transition-colors duration-200 flex items-center justify-center opacity-0 group-hover:opacity-100">
+
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/60 transition-colors duration-200 flex flex-col items-center justify-center gap-2 opacity-0 group-hover:opacity-100">
+                    {image.is_cover !== 1 && (
+                      <button
+                        onClick={() => handleSetCover(image)}
+                        className="flex items-center gap-2 px-3 py-2 bg-white text-gray-800 rounded-lg hover:bg-gray-100 transition-colors text-xs font-medium"
+                      >
+                        <Star className="w-4 h-4" />
+                        Use on website
+                      </button>
+                    )}
                     <button
                       onClick={() => handleDelete(image.id)}
-                      className="flex items-center gap-2 px-3 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-sm font-medium"
+                      className="flex items-center gap-2 px-3 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-xs font-medium"
                     >
                       <Trash2 className="w-4 h-4" />
                       Delete
                     </button>
                   </div>
+
                   {image.caption && (
-                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-2">
+                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-2 pointer-events-none">
                       <p className="text-white text-xs font-medium line-clamp-1">
                         {image.caption}
                       </p>
