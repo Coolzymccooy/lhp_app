@@ -7,6 +7,7 @@ import { z } from 'zod';
 import Stripe from 'stripe';
 import { webpush, vapidPublicKey, vapidPrivateKey } from '../services/webPush';
 import { imageUploadMiddleware } from '../lib/imageUpload';
+import { resolveAlbum } from '../lib/albums';
 import fs from 'fs';
 import path from 'path';
 
@@ -562,6 +563,21 @@ router.post('/gallery', imageUploadMiddleware(galleryDir), (req: AuthRequest, re
   }
 
   const { caption, album } = req.body as { caption?: string; album?: string };
+
+  // Albums are a closed list, so an unrecognised one is rejected rather than
+  // quietly filing the photo somewhere the uploader did not choose. multer has
+  // already written the file by this point, so clean it up before bailing out.
+  const resolvedAlbum = resolveAlbum(album);
+  if (resolvedAlbum === null) {
+    try {
+      fs.unlinkSync(path.join(galleryDir, path.basename(req.file.filename)));
+    } catch {
+      // Best-effort cleanup
+    }
+    res.status(400).json({ success: false, error: 'Unknown album' });
+    return;
+  }
+
   const db = getDb();
   const id = uuidv4();
   const url = `/uploads/gallery/${req.file.filename}`;
@@ -569,7 +585,7 @@ router.post('/gallery', imageUploadMiddleware(galleryDir), (req: AuthRequest, re
   db.prepare(`
     INSERT INTO gallery_images (id, url, caption, album)
     VALUES (?, ?, ?, ?)
-  `).run(id, url, caption ?? '', album ?? '');
+  `).run(id, url, caption ?? '', resolvedAlbum);
 
   res.json({ success: true, id, url });
 });
@@ -589,8 +605,9 @@ router.delete('/gallery/:id', (req: AuthRequest, res: Response) => {
     return;
   }
 
-  // Delete file (best-effort, ignore errors)
-  const filePath = path.join(__dirname, '../../' + row.url);
+  // Delete file (best-effort, ignore errors). Resolved against galleryDir so
+  // the file is found under DATA_DIR in production, not just the local tree.
+  const filePath = path.join(galleryDir, path.basename(row.url));
   try {
     fs.unlinkSync(filePath);
   } catch {

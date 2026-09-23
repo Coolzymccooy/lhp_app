@@ -58,7 +58,7 @@ export default function AIChat() {
       {/* Toggle button */}
       <button
         onClick={() => setOpen(o => !o)}
-        className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-50 w-12 h-12 md:w-14 md:h-14 bg-gradient-brand rounded-full shadow-lg hover:shadow-xl flex items-center justify-center transition-all hover:scale-105"
+        className="lhp-floating-action fixed bottom-4 right-4 md:bottom-6 md:right-6 z-50 w-12 h-12 md:w-14 md:h-14 bg-gradient-brand rounded-full shadow-lg hover:shadow-xl flex items-center justify-center transition-all hover:scale-105"
         aria-label="Open AI chat"
       >
         {open ? <X className="w-6 h-6 text-white" /> : <MessageCircle className="w-6 h-6 text-white" />}

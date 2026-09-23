@@ -49,3 +49,13 @@
   from { opacity: 0; transform: translateY(24px); }
   to   { opacity: 1; transform: translateY(0); }
 }
+
+/* While the gallery lightbox is open, hide the fixed header and the floating
+   action buttons. Chrome composites the header's backdrop-filter layer above a
+   semi-transparent overlay regardless of z-index, so the header stayed visible
+   over the lightbox; display:none is immune to that. Also keeps the photo view
+   fully immersive. */
+body.lightbox-open header,
+body.lightbox-open .lhp-floating-action {
+  display: none;
+}
