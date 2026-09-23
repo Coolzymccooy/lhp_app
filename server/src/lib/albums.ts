@@ -5,12 +5,13 @@
 export const GALLERY_ALBUMS = [
   'Sunday Service',
   'Thanksgiving Service',
+  'Lighthouse Praise',
   'Digging Deep',
   'Virtual Prayer Night',
   'Virtual Vigil',
+  'Cell Groups',
   "Children's Ministry",
-  'Teen Fellowship',
-  'Young Adults',
+  'Faith Igniters',
   'Youth Church',
   "Men's Fellowship",
   "Women's Fellowship",
@@ -21,6 +22,17 @@ export const GALLERY_ALBUMS = [
   'Outreach & Food Bank',
   'Church Life',
 ] as const;
+
+/**
+ * Albums that were renamed after photos had already been filed under the old
+ * name. `initDb` rewrites existing rows so nothing is orphaned, and uploads to
+ * a retired name are rejected like any other unknown album.
+ */
+export const RETIRED_ALBUMS: Readonly<Record<string, GalleryAlbum>> = {
+  // The church addresses teens and young adults together as Faith Igniters.
+  'Teen Fellowship': 'Faith Igniters',
+  'Young Adults': 'Faith Igniters',
+};
 
 export type GalleryAlbum = (typeof GALLERY_ALBUMS)[number];
 

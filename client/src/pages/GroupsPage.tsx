@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { ChevronRight, Clock, MapPin, Users } from 'lucide-react';
+import { ChevronRight, Clock, Heart, MapPin, Users } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useGalleryImages, coverForAlbum } from '../hooks/useGalleryImages';
 
@@ -14,11 +14,29 @@ const SERVICE_TEAMS = [
   { name: 'Hospitality', desc: 'Provide refreshments and fellowship opportunities.' },
 ];
 
-// `img`/`imgPos` are stock artwork used only until the church has a real photo.
-// `album` names the gallery album this group draws from — spelled out rather
-// than derived from `name`, because the display names differ ("Teen Fellowship
-// (TF)" vs the album "Teen Fellowship"). See resolvedGroups below.
-const GROUPS = [
+interface Group {
+  name: string;
+  /** Gallery album this group draws its photo from. */
+  album: string;
+  ageRange: string;
+  /** Stock artwork, used only until the album has a real photo. */
+  img: string;
+  imgPos: string;
+  desc: string;
+  meetings: string;
+  lead: string;
+  color: string;
+  accent: string;
+  /** Overrides the church address for groups that meet elsewhere. */
+  location?: string;
+  to?: string;
+  /** A ministry that runs within this group rather than alongside it. */
+  subGroup?: { name: string; desc: string };
+}
+
+// `album` is spelled out rather than derived from `name`, so a group can be
+// renamed on the page without silently losing its photos. See resolvedGroups.
+const GROUPS: Group[] = [
   {
     name: "Children's Ministry",
     album: "Children's Ministry",
@@ -32,28 +50,29 @@ const GROUPS = [
     accent: 'text-yellow-600',
   },
   {
-    name: 'Teen Fellowship (TF)',
-    album: 'Teen Fellowship',
-    ageRange: 'Ages 13–17',
+    name: 'Faith Igniters',
+    album: 'Faith Igniters',
+    ageRange: 'Ages 13–35',
     img: '/assets/teenfellowship.webp',
     imgPos: 'center 30%',
-    desc: 'A dynamic community where teenagers can ask real questions, find true friends, and build a personal faith that lasts. From Bible studies to outings, TF is the place for young people to grow together.',
-    meetings: 'Sundays + Monthly hangouts',
-    lead: 'Youth Ministry Team',
-    color: 'bg-blue-50 border-blue-200',
-    accent: 'text-blue-600',
-  },
-  {
-    name: 'Young Adults',
-    album: 'Young Adults',
-    ageRange: 'Ages 18–35',
-    img: '/assets/youngadults.webp',
-    imgPos: 'center 25%',
-    desc: 'A community for young adults navigating career, relationships, identity, and purpose — all through the lens of faith. We meet, connect, pray, and push each other to live God\'s best.',
-    meetings: 'Monthly meetings + online community',
-    lead: 'Young Adults Leadership',
+    desc: 'Our teenagers and young adults, together. A community where you can ask real questions, find true friends, and build a personal faith that holds through school, university, career and everything after. From Bible study to outings, Faith Igniters is where young people grow side by side.',
+    meetings: 'Sundays + monthly hangouts',
+    lead: 'Faith Igniters Leadership',
     color: 'bg-purple-50 border-purple-200',
     accent: 'text-purple-600',
+  },
+  {
+    name: 'Cell Groups',
+    album: 'Cell Groups',
+    ageRange: 'All ages',
+    img: '/assets/bible.webp',
+    imgPos: 'center',
+    desc: 'Church close to home. Cell groups meet every weekend in homes near you — grouped by where you live — to pray together, share the Word, and look out for one another through the week.',
+    meetings: 'Every weekend, in homes across the area',
+    lead: 'Cell Group Leaders',
+    location: 'Homes across the area — matched to where you live',
+    color: 'bg-teal-50 border-teal-200',
+    accent: 'text-teal-600',
   },
   {
     name: "Men's Fellowship",
@@ -91,6 +110,12 @@ const GROUPS = [
     color: 'bg-green-50 border-green-200',
     accent: 'text-green-600',
     to: '/icare',
+    // Sits inside iCare rather than standing alone: it is part of the same
+    // pastoral care ministry, led by the Pastors.
+    subGroup: {
+      name: "Sarah's Heart",
+      desc: "The Pastors' ministry for couples waiting on God for the fruit of the womb — prayer, spiritual and emotional support, and information on available medical options and signposting.",
+    },
   },
 ];
 
@@ -189,9 +214,23 @@ export default function GroupsPage() {
                     </div>
                     <div className="flex items-center gap-2 text-gray-500 text-sm">
                       <MapPin className="w-4 h-4 flex-shrink-0" />
-                      <span>The Rock Shopping Centre, Bury BL9 0ND</span>
+                      <span>{g.location ?? 'The Rock Shopping Centre, Bury BL9 0ND'}</span>
                     </div>
                   </div>
+
+                  {/* A ministry that runs within this one, rather than beside it */}
+                  {g.subGroup && (
+                    <div className="mb-6 rounded-xl border border-gray-200 bg-white/70 p-4">
+                      <div className="flex items-center gap-2 mb-1">
+                        <Heart className={`w-4 h-4 flex-shrink-0 ${g.accent}`} />
+                        <h4 className="font-bold text-gray-900 text-sm">{g.subGroup.name}</h4>
+                        <span className="text-[10px] font-semibold uppercase tracking-wider text-gray-400">
+                          Part of {g.name}
+                        </span>
+                      </div>
+                      <p className="text-gray-600 text-sm leading-relaxed">{g.subGroup.desc}</p>
+                    </div>
+                  )}
                   <Link
                     to={g.to || '/contact'}
                     className="inline-flex items-center gap-2 text-sm font-bold text-primary hover:underline"

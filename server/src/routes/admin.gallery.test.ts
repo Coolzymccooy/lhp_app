@@ -112,7 +112,7 @@ describe('DELETE /admin/gallery/:id', () => {
 
 describe('PATCH /admin/gallery/:id/cover', () => {
   it('marks an image as its album cover', async () => {
-    const res = await upload({ album: 'Teen Fellowship' });
+    const res = await upload({ album: 'Faith Igniters' });
 
     const patch = await request(app)
       .patch(`/admin/gallery/${res.body.id}/cover`)
@@ -124,21 +124,21 @@ describe('PATCH /admin/gallery/:id/cover', () => {
   });
 
   it('allows only one cover per album, clearing the previous one', async () => {
-    const first = await upload({ album: 'Teen Fellowship' });
-    const second = await upload({ album: 'Teen Fellowship' });
+    const first = await upload({ album: 'Faith Igniters' });
+    const second = await upload({ album: 'Faith Igniters' });
 
     await request(app).patch(`/admin/gallery/${first.body.id}/cover`).set('Authorization', `Bearer ${token}`);
     await request(app).patch(`/admin/gallery/${second.body.id}/cover`).set('Authorization', `Bearer ${token}`);
 
     const rows = getDb()
       .prepare('SELECT id, is_cover FROM gallery_images WHERE album = ?')
-      .all('Teen Fellowship') as Array<{ id: string; is_cover: number }>;
+      .all('Faith Igniters') as Array<{ id: string; is_cover: number }>;
     const covers = rows.filter(r => r.is_cover === 1).map(r => r.id);
     expect(covers).toEqual([second.body.id]);
   });
 
   it('does not disturb covers in other albums', async () => {
-    const teen = await upload({ album: 'Teen Fellowship' });
+    const teen = await upload({ album: 'Faith Igniters' });
     const men = await upload({ album: "Men's Fellowship" });
 
     await request(app).patch(`/admin/gallery/${teen.body.id}/cover`).set('Authorization', `Bearer ${token}`);
@@ -164,5 +164,18 @@ describe('GET /admin/gallery', () => {
     const list = await request(app).get('/admin/gallery').set('Authorization', `Bearer ${token}`);
     const row = list.body.data.find((r: any) => r.id === res.body.id);
     expect(row.is_cover).toBe(1);
+  });
+});
+
+describe('album rename migration', () => {
+  it('re-files photos left under a retired album name', async () => {
+    const res = await upload({ album: 'Faith Igniters' });
+    // Simulate a row uploaded before the rename.
+    getDb().prepare('UPDATE gallery_images SET album = ? WHERE id = ?').run('Teen Fellowship', res.body.id);
+
+    initDb();
+
+    const row = getDb().prepare('SELECT album FROM gallery_images WHERE id = ?').get(res.body.id) as any;
+    expect(row.album).toBe('Faith Igniters');
   });
 });

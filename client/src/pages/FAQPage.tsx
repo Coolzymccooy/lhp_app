@@ -25,7 +25,7 @@ const FAQS = [
     items: [
       { q: 'Is there childcare during services?', a: 'Yes! Our Children\'s Ministry runs during the Sunday Sunshine Service (10:30 AM) for children ages 0–12. Children are registered at the welcome desk and looked after by our trained, DBS-checked team.' },
       { q: 'Is the children\'s team DBS-checked?', a: 'Absolutely. All our children\'s workers are DBS-checked and have undergone child safeguarding training in line with current UK guidelines.' },
-      { q: 'Do you have programmes for teenagers?', a: 'Yes — Teen Fellowship (TF) is for ages 13–17 and runs during services and monthly events. It\'s a great space for young people to build faith and lasting friendships.' },
+      { q: 'Do you have programmes for teenagers?', a: 'Yes — Faith Igniters is our community for teenagers and young adults (ages 13–35), running during services and at monthly events. It\'s a great space for young people to build faith and lasting friendships.' },
     ],
   },
   {

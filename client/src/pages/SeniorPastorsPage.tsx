@@ -32,7 +32,7 @@ const PASTORS = [
 const TEAM = [
   { name: 'Leadership Team', role: 'Serving faithfully together' },
   { name: 'Children\'s Ministry', role: 'Nurturing the next generation' },
-  { name: 'Youth & Teen Fellowship', role: 'Empowering young people' },
+  { name: 'Faith Igniters', role: 'Empowering young people' },
   { name: 'Worship Team', role: 'Leading the church in praise' },
   { name: 'iCare Ministry', role: 'Pastoral care & counselling' },
   { name: 'Administration', role: 'Communications & operations' },

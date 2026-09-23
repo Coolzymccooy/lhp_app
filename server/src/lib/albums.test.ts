@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { GALLERY_ALBUMS, DEFAULT_ALBUM, isGalleryAlbum, resolveAlbum } from './albums';
+import { GALLERY_ALBUMS, DEFAULT_ALBUM, RETIRED_ALBUMS, isGalleryAlbum, resolveAlbum } from './albums';
 
 describe('gallery albums', () => {
   it('exposes a closed, non-empty list containing the default', () => {
@@ -32,5 +32,19 @@ describe('gallery albums', () => {
 
   it('returns null for an unknown album so callers can reject it', () => {
     expect(resolveAlbum('Wedding Photos')).toBeNull();
+  });
+});
+
+describe('retired albums', () => {
+  it('maps every retired name to a current album, and is no longer offered', () => {
+    for (const [oldName, newName] of Object.entries(RETIRED_ALBUMS)) {
+      expect(isGalleryAlbum(newName)).toBe(true);
+      expect(isGalleryAlbum(oldName)).toBe(false);
+    }
+  });
+
+  it('rejects a retired album on upload so it cannot come back', () => {
+    expect(resolveAlbum('Teen Fellowship')).toBeNull();
+    expect(resolveAlbum('Young Adults')).toBeNull();
   });
 });
