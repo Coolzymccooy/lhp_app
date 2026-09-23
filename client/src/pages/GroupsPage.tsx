@@ -1,5 +1,7 @@
+import { useMemo } from 'react';
 import { ChevronRight, Clock, MapPin, Users } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useGalleryImages, coverForAlbum } from '../hooks/useGalleryImages';
 
 const SERVICE_TEAMS = [
   { name: 'Worship Team', desc: 'Lead the congregation in worship through music and song.' },
@@ -12,9 +14,14 @@ const SERVICE_TEAMS = [
   { name: 'Hospitality', desc: 'Provide refreshments and fellowship opportunities.' },
 ];
 
+// `img`/`imgPos` are stock artwork used only until the church has a real photo.
+// `album` names the gallery album this group draws from — spelled out rather
+// than derived from `name`, because the display names differ ("Teen Fellowship
+// (TF)" vs the album "Teen Fellowship"). See resolvedGroups below.
 const GROUPS = [
   {
     name: "Children's Ministry",
+    album: "Children's Ministry",
     ageRange: 'Ages 0–12',
     img: '/assets/family.webp',
     imgPos: 'center 30%',
@@ -26,6 +33,7 @@ const GROUPS = [
   },
   {
     name: 'Teen Fellowship (TF)',
+    album: 'Teen Fellowship',
     ageRange: 'Ages 13–17',
     img: '/assets/teenfellowship.webp',
     imgPos: 'center 30%',
@@ -37,6 +45,7 @@ const GROUPS = [
   },
   {
     name: 'Young Adults',
+    album: 'Young Adults',
     ageRange: 'Ages 18–35',
     img: '/assets/youngadults.webp',
     imgPos: 'center 25%',
@@ -48,6 +57,7 @@ const GROUPS = [
   },
   {
     name: "Men's Fellowship",
+    album: "Men's Fellowship",
     ageRange: 'Men 18+',
     img: '/assets/mensfellowship.webp',
     imgPos: 'center 25%',
@@ -59,6 +69,7 @@ const GROUPS = [
   },
   {
     name: "Women's Fellowship",
+    album: "Women's Fellowship",
     ageRange: 'Women 18+',
     img: '/assets/womenfellowship.webp',
     imgPos: 'center 25%',
@@ -70,6 +81,7 @@ const GROUPS = [
   },
   {
     name: 'iCare Ministry',
+    album: 'iCare Ministry',
     ageRange: 'All ages',
     img: '/assets/counseling.webp',
     imgPos: 'center 35%',
@@ -82,12 +94,52 @@ const GROUPS = [
   },
 ];
 
+// Albums worth showing in the wide hero banner, best first. A banner needs a
+// broad congregation shot, so a whole-church gathering beats a single group.
+const HERO_ALBUMS = [
+  'Sunday Service',
+  'Thanksgiving Service',
+  'Church Life',
+  'Membership Class',
+  "Men's Fellowship",
+  "Women's Fellowship",
+];
+
 export default function GroupsPage() {
+  const { images: galleryImages } = useGalleryImages();
+
+  // Prefer the church's own photo for each group, keeping the stock artwork for
+  // any group not photographed yet. Real photos are already well framed, so
+  // they use a plain centre crop rather than the stock images' tuned offsets.
+  const resolvedGroups = useMemo(
+    () => GROUPS.map(group => {
+      const photo = coverForAlbum(galleryImages, group.album);
+      return photo ? { ...group, img: photo.url, imgPos: 'center' } : group;
+    }),
+    [galleryImages]
+  );
+
+  // Prefer a hero photo no group card below is already using, so the page does
+  // not show the same picture twice. Falls back to the best available (and then
+  // to stock) when every candidate album is also a group's cover.
+  const heroPhoto = useMemo(() => {
+    const usedBelow = new Set(resolvedGroups.map(group => group.img));
+    const candidates = HERO_ALBUMS
+      .map(album => coverForAlbum(galleryImages, album))
+      .filter((photo): photo is NonNullable<typeof photo> => photo !== null);
+    return candidates.find(photo => !usedBelow.has(photo.url)) ?? candidates[0] ?? null;
+  }, [galleryImages, resolvedGroups]);
+
   return (
     <main className="pt-20">
       {/* Hero */}
       <div className="relative h-64 md:h-80 overflow-hidden">
-        <img src="/assets/youngadults.webp" alt="Groups & Ministries" className="img-cover" style={{ objectPosition: 'center 20%' }} />
+        <img
+          src={heroPhoto?.url ?? '/assets/youngadults.webp'}
+          alt="Groups & Ministries"
+          className="img-cover"
+          style={{ objectPosition: heroPhoto ? 'center' : 'center 20%' }}
+        />
         <div className="absolute inset-0 bg-gradient-to-r from-black/80 to-black/40" />
         <div className="absolute inset-0 flex items-center">
           <div className="container-max px-6">
@@ -112,7 +164,7 @@ export default function GroupsPage() {
       {/* Groups */}
       <section className="section-pad bg-gray-50">
         <div className="container-max space-y-8">
-          {GROUPS.map((g, i) => (
+          {resolvedGroups.map((g, i) => (
             <div key={g.name} className={`bg-white rounded-2xl border overflow-hidden hover:shadow-lg transition-all ${g.color}`}>
               <div className={`grid lg:grid-cols-2 ${i % 2 === 1 ? 'lg:flex-row-reverse' : ''}`}>
                 <div className={`relative h-64 lg:h-auto overflow-hidden ${i % 2 === 1 ? 'lg:order-2' : ''}`}>
