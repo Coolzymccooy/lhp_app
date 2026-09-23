@@ -28,6 +28,7 @@ import RespondPage from './pages/RespondPage';
 import EventsPage from './pages/EventsPage';
 import PrayerWallPage from './pages/PrayerWallPage';
 import GalleryPage from './pages/GalleryPage';
+import LighthousePraisePage from './pages/LighthousePraisePage';
 
 // Admin pages
 import LoginPage from './pages/admin/LoginPage';
@@ -117,6 +118,7 @@ export default function App() {
         <Route path="/respond" element={<PublicLayout><RespondPage /></PublicLayout>} />
         <Route path="/events" element={<PublicLayout><EventsPage /></PublicLayout>} />
         <Route path="/gallery" element={<PublicLayout><GalleryPage /></PublicLayout>} />
+        <Route path="/lighthouse-praise" element={<PublicLayout><LighthousePraisePage /></PublicLayout>} />
         <Route path="/prayer-wall" element={<PublicLayout><PrayerWallPage /></PublicLayout>} />
 
         {/* Admin auth */}
