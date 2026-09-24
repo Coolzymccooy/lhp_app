@@ -1,7 +1,8 @@
 import { useMemo } from 'react';
 import { ChevronRight, Clock, Heart, MapPin, Users } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { useGalleryImages, coverForAlbum } from '../hooks/useGalleryImages';
+import { useGalleryImages, coverForAlbum, photosForAlbum, type GalleryImage } from '../hooks/useGalleryImages';
+import AlbumSlideshow from '../components/ui/AlbumSlideshow';
 
 const SERVICE_TEAMS = [
   { name: 'Worship Team', desc: 'Lead the congregation in worship through music and song.' },
@@ -16,15 +17,17 @@ const SERVICE_TEAMS = [
 
 interface Group {
   name: string;
-  /** Gallery album this group draws its photo from. */
+  /** Gallery album this group draws its photos from. */
   album: string;
   ageRange: string;
   /** Stock artwork, used only until the album has a real photo. */
   img: string;
   imgPos: string;
   desc: string;
-  meetings: string;
-  lead: string;
+  /** Omitted where the church has not confirmed a schedule. */
+  meetings?: string;
+  /** Omitted where there is no named lead to publish. */
+  lead?: string;
   color: string;
   accent: string;
   /** Overrides the church address for groups that meet elsewhere. */
@@ -35,7 +38,7 @@ interface Group {
 }
 
 // `album` is spelled out rather than derived from `name`, so a group can be
-// renamed on the page without silently losing its photos. See resolvedGroups.
+// renamed on the page without silently losing its photos. See resolveGroup.
 const GROUPS: Group[] = [
   {
     name: "Children's Ministry",
@@ -45,7 +48,7 @@ const GROUPS: Group[] = [
     imgPos: 'center 30%',
     desc: 'A vibrant, safe, and Spirit-filled environment where children discover who Jesus is through fun, worship, and age-appropriate Bible teaching. We believe children are not the church of tomorrow — they are the church of today.',
     meetings: 'Every Sunday during Sunshine Service (10:30 AM)',
-    lead: 'Children\'s Ministry Team',
+    lead: "Children's Ministry Team",
     color: 'bg-yellow-50 border-yellow-200',
     accent: 'text-yellow-600',
   },
@@ -62,6 +65,37 @@ const GROUPS: Group[] = [
     accent: 'text-purple-600',
   },
   {
+    name: "Men's Fellowship",
+    album: "Men's Fellowship",
+    ageRange: 'Men 18+',
+    img: '/assets/mensfellowship.webp',
+    imgPos: 'center 25%',
+    desc: "Brotherhood built on prayer, accountability, and the Word. Men's Fellowship equips men to lead with integrity in the home, workplace, and church — iron sharpening iron.",
+    meetings: 'Monthly meetings + prayer sessions',
+    lead: "Men's Ministry Team",
+    color: 'bg-slate-50 border-slate-200',
+    accent: 'text-slate-600',
+  },
+  {
+    name: "Women's Fellowship",
+    album: "Women's Fellowship",
+    ageRange: 'Women 18+',
+    img: '/assets/womenfellowship.webp',
+    imgPos: 'center 25%',
+    desc: "A nurturing space for women to grow in faith, build deep friendships, and discover their God-given purpose. Through mentoring, events, and prayer, Women's Fellowship empowers every woman to flourish.",
+    meetings: 'Monthly gatherings + special events',
+    lead: "Women's Ministry Team",
+    color: 'bg-pink-50 border-pink-200',
+    accent: 'text-pink-600',
+  },
+];
+
+// Ministries the whole church takes part in, whatever age or stage: they are
+// not somewhere you belong instead of a group above, they are things everyone
+// is invited into. Grouping them separately keeps the list above answering the
+// one question a newcomer actually has — "where do I fit?"
+const CHURCH_WIDE: Group[] = [
+  {
     name: 'Cell Groups',
     album: 'Cell Groups',
     ageRange: 'All ages',
@@ -75,36 +109,12 @@ const GROUPS: Group[] = [
     accent: 'text-teal-600',
   },
   {
-    name: "Men's Fellowship",
-    album: "Men's Fellowship",
-    ageRange: 'Men 18+',
-    img: '/assets/mensfellowship.webp',
-    imgPos: 'center 25%',
-    desc: 'Brotherhood built on prayer, accountability, and the Word. Men\'s Fellowship equips men to lead with integrity in the home, workplace, and church — iron sharpening iron.',
-    meetings: 'Monthly meetings + prayer sessions',
-    lead: 'Men\'s Ministry Team',
-    color: 'bg-slate-50 border-slate-200',
-    accent: 'text-slate-600',
-  },
-  {
-    name: "Women's Fellowship",
-    album: "Women's Fellowship",
-    ageRange: 'Women 18+',
-    img: '/assets/womenfellowship.webp',
-    imgPos: 'center 25%',
-    desc: 'A nurturing space for women to grow in faith, build deep friendships, and discover their God-given purpose. Through mentoring, events, and prayer, Women\'s Fellowship empowers every woman to flourish.',
-    meetings: 'Monthly gatherings + special events',
-    lead: 'Women\'s Ministry Team',
-    color: 'bg-pink-50 border-pink-200',
-    accent: 'text-pink-600',
-  },
-  {
     name: 'iCare Ministry',
     album: 'iCare Ministry',
     ageRange: 'All ages',
     img: '/assets/counseling.webp',
     imgPos: 'center 35%',
-    desc: 'Our pastoral care ministry that visits the sick, supports the bereaved, checks on the lonely, and ensures no one in our congregation walks through life\'s hardest moments alone.',
+    desc: "Our pastoral care ministry that visits the sick, supports the bereaved, checks on the lonely, and ensures no one in our congregation walks through life's hardest moments alone.",
     meetings: 'Ongoing visitation & support',
     lead: 'Pastoral Care Team',
     color: 'bg-green-50 border-green-200',
@@ -116,6 +126,30 @@ const GROUPS: Group[] = [
       name: "Sarah's Heart",
       desc: "The Pastors' ministry for couples waiting on God for the fruit of the womb — prayer, spiritual and emotional support, and information on available medical options and signposting.",
     },
+  },
+  {
+    name: 'Lighthouse Praise',
+    album: 'Lighthouse Praise',
+    ageRange: 'Everyone welcome',
+    img: '/assets/auditoriumpic1.webp',
+    imgPos: 'center',
+    desc: 'Our biggest event of the year — the whole church family together in praise, and the night we most love to invite friends, neighbours and family into.',
+    // No meeting time or lead here on purpose: this year's date is not
+    // confirmed, and an invented one on the page is worse than none.
+    color: 'bg-indigo-50 border-indigo-200',
+    accent: 'text-indigo-600',
+    to: '/lighthouse-praise',
+  },
+  {
+    name: 'Evangelism',
+    album: 'Evangelism',
+    ageRange: 'Everyone welcome',
+    img: '/assets/hands_giving.webp',
+    imgPos: 'center',
+    desc: 'Taking the good news out beyond our walls — onto the streets of Bury, into our workplaces, and to the people God has already placed around each of us.',
+    lead: 'Evangelism Team',
+    color: 'bg-orange-50 border-orange-200',
+    accent: 'text-orange-600',
   },
 ];
 
@@ -130,30 +164,106 @@ const HERO_ALBUMS = [
   "Women's Fellowship",
 ];
 
+interface GroupCardProps {
+  group: Group;
+  photos: readonly GalleryImage[];
+  /** Mirrors the row the card sits on, so images alternate sides down the page. */
+  flipped: boolean;
+}
+
+function GroupCard({ group, photos, flipped }: GroupCardProps) {
+  return (
+    <div className={`bg-white rounded-2xl border overflow-hidden hover:shadow-lg transition-all ${group.color}`}>
+      <div className="grid lg:grid-cols-2">
+        <AlbumSlideshow
+          photos={photos}
+          fallbackSrc={group.img}
+          fallbackPos={group.imgPos}
+          alt={group.name}
+          className={`h-64 lg:h-auto ${flipped ? 'lg:order-2' : ''}`}
+        />
+        <div className={`p-8 flex flex-col justify-center ${flipped ? 'lg:order-1' : ''}`}>
+          <div className="flex items-center gap-3 mb-3">
+            <span className={`text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full border ${group.color} ${group.accent}`}>
+              {group.ageRange}
+            </span>
+          </div>
+          <h3 className="text-2xl font-bold text-gray-900 mb-3">{group.name}</h3>
+          <p className="text-gray-600 mb-5 leading-relaxed text-sm">{group.desc}</p>
+          <div className="space-y-2">
+            {group.meetings && (
+              <div className="flex items-center gap-2 text-gray-500 text-sm">
+                <Clock className="w-4 h-4 flex-shrink-0" />
+                <span>{group.meetings}</span>
+              </div>
+            )}
+            {group.lead && (
+              <div className="flex items-center gap-2 text-gray-500 text-sm">
+                <Users className="w-4 h-4 flex-shrink-0" />
+                <span>{group.lead}</span>
+              </div>
+            )}
+            <div className="flex items-center gap-2 text-gray-500 text-sm">
+              <MapPin className="w-4 h-4 flex-shrink-0" />
+              <span>{group.location ?? 'The Rock Shopping Centre, Bury BL9 0ND'}</span>
+            </div>
+          </div>
+
+          {/* A ministry that runs within this one, rather than beside it */}
+          {group.subGroup && (
+            <div className="mt-6 rounded-xl border border-gray-200 bg-white/70 p-4">
+              <div className="flex items-center gap-2 mb-1">
+                <Heart className={`w-4 h-4 flex-shrink-0 ${group.accent}`} />
+                <h4 className="font-bold text-gray-900 text-sm">{group.subGroup.name}</h4>
+                <span className="text-[10px] font-semibold uppercase tracking-wider text-gray-400">
+                  Part of {group.name}
+                </span>
+              </div>
+              <p className="text-gray-600 text-sm leading-relaxed">{group.subGroup.desc}</p>
+            </div>
+          )}
+
+          {/* Only pages with more to say link onward. Getting in touch is one
+              invitation at the foot of the page, not six identical ones. */}
+          {group.to && (
+            <Link
+              to={group.to}
+              className="mt-6 inline-flex items-center gap-2 text-sm font-bold text-primary hover:underline"
+            >
+              More about {group.name} <ChevronRight className="w-4 h-4" />
+            </Link>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function GroupsPage() {
   const { images: galleryImages } = useGalleryImages();
 
-  // Prefer the church's own photo for each group, keeping the stock artwork for
-  // any group not photographed yet. Real photos are already well framed, so
-  // they use a plain centre crop rather than the stock images' tuned offsets.
-  const resolvedGroups = useMemo(
-    () => GROUPS.map(group => {
-      const photo = coverForAlbum(galleryImages, group.album);
-      return photo ? { ...group, img: photo.url, imgPos: 'center' } : group;
-    }),
+  // Each card gets its album's photos for the slideshow, keeping the stock
+  // artwork as a fallback for any group not photographed yet.
+  const withPhotos = useMemo(
+    () => [...GROUPS, ...CHURCH_WIDE].map(group => ({
+      group,
+      photos: photosForAlbum(galleryImages, group.album),
+    })),
     [galleryImages]
   );
+  const groupCards = withPhotos.slice(0, GROUPS.length);
+  const ministryCards = withPhotos.slice(GROUPS.length);
 
-  // Prefer a hero photo no group card below is already using, so the page does
-  // not show the same picture twice. Falls back to the best available (and then
-  // to stock) when every candidate album is also a group's cover.
+  // Prefer a hero photo no card below is already leading with, so the page does
+  // not open with the same picture twice. Falls back to the best available (and
+  // then to stock) when every candidate album is also a card's first slide.
   const heroPhoto = useMemo(() => {
-    const usedBelow = new Set(resolvedGroups.map(group => group.img));
+    const usedBelow = new Set(withPhotos.map(({ photos }) => photos[0]?.url).filter(Boolean));
     const candidates = HERO_ALBUMS
       .map(album => coverForAlbum(galleryImages, album))
-      .filter((photo): photo is NonNullable<typeof photo> => photo !== null);
+      .filter((photo): photo is GalleryImage => photo !== null);
     return candidates.find(photo => !usedBelow.has(photo.url)) ?? candidates[0] ?? null;
-  }, [galleryImages, resolvedGroups]);
+  }, [galleryImages, withPhotos]);
 
   return (
     <main className="pt-20">
@@ -181,71 +291,40 @@ export default function GroupsPage() {
           <p className="text-primary font-bold text-sm uppercase tracking-widest mb-2">Community</p>
           <h2 className="text-3xl font-bold text-gray-900 mb-4">You Were Made for This</h2>
           <p className="text-gray-500 leading-relaxed">
-            Life is better together. Our ministries and small groups are where real community happens — where you'll find people who share your season of life, who'll pray with you through the hard times, and celebrate the good ones. Find your group below and get connected today.
+            Life is better together. Our ministries and small groups are where real community happens — where you'll find people who share your season of life, who'll pray with you through the hard times, and celebrate the good ones. Find your group below.
           </p>
         </div>
       </section>
 
-      {/* Groups */}
+      {/* Groups by age and stage */}
       <section className="section-pad bg-gray-50">
         <div className="container-max space-y-8">
-          {resolvedGroups.map((g, i) => (
-            <div key={g.name} className={`bg-white rounded-2xl border overflow-hidden hover:shadow-lg transition-all ${g.color}`}>
-              <div className={`grid lg:grid-cols-2 ${i % 2 === 1 ? 'lg:flex-row-reverse' : ''}`}>
-                <div className={`relative h-64 lg:h-auto overflow-hidden ${i % 2 === 1 ? 'lg:order-2' : ''}`}>
-                  <img src={g.img} alt={g.name} className="img-cover" style={{ objectPosition: g.imgPos }} />
-                </div>
-                <div className={`p-8 flex flex-col justify-center ${i % 2 === 1 ? 'lg:order-1' : ''}`}>
-                  <div className="flex items-center gap-3 mb-3">
-                    <span className={`text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full border ${g.color} ${g.accent}`}>
-                      {g.ageRange}
-                    </span>
-                  </div>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-3">{g.name}</h3>
-                  <p className="text-gray-600 mb-5 leading-relaxed text-sm">{g.desc}</p>
-                  <div className="space-y-2 mb-6">
-                    <div className="flex items-center gap-2 text-gray-500 text-sm">
-                      <Clock className="w-4 h-4 flex-shrink-0" />
-                      <span>{g.meetings}</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-gray-500 text-sm">
-                      <Users className="w-4 h-4 flex-shrink-0" />
-                      <span>{g.lead}</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-gray-500 text-sm">
-                      <MapPin className="w-4 h-4 flex-shrink-0" />
-                      <span>{g.location ?? 'The Rock Shopping Centre, Bury BL9 0ND'}</span>
-                    </div>
-                  </div>
-
-                  {/* A ministry that runs within this one, rather than beside it */}
-                  {g.subGroup && (
-                    <div className="mb-6 rounded-xl border border-gray-200 bg-white/70 p-4">
-                      <div className="flex items-center gap-2 mb-1">
-                        <Heart className={`w-4 h-4 flex-shrink-0 ${g.accent}`} />
-                        <h4 className="font-bold text-gray-900 text-sm">{g.subGroup.name}</h4>
-                        <span className="text-[10px] font-semibold uppercase tracking-wider text-gray-400">
-                          Part of {g.name}
-                        </span>
-                      </div>
-                      <p className="text-gray-600 text-sm leading-relaxed">{g.subGroup.desc}</p>
-                    </div>
-                  )}
-                  <Link
-                    to={g.to || '/contact'}
-                    className="inline-flex items-center gap-2 text-sm font-bold text-primary hover:underline"
-                  >
-                    Get Connected <ChevronRight className="w-4 h-4" />
-                  </Link>
-                </div>
-              </div>
-            </div>
+          {groupCards.map(({ group, photos }, i) => (
+            <GroupCard key={group.name} group={group} photos={photos} flipped={i % 2 === 1} />
           ))}
         </div>
       </section>
 
-      {/* Service Teams */}
+      {/* Church-wide ministries */}
       <section className="section-pad bg-white">
+        <div className="container-max">
+          <div className="text-center mb-12">
+            <p className="text-primary font-bold text-sm uppercase tracking-widest mb-2">For the Whole Church</p>
+            <h2 className="text-3xl font-bold text-gray-900">Ministries &amp; Gatherings</h2>
+            <p className="text-gray-500 text-sm mt-3 max-w-xl mx-auto">
+              Whatever group you call home, these are for everyone.
+            </p>
+          </div>
+          <div className="space-y-8">
+            {ministryCards.map(({ group, photos }, i) => (
+              <GroupCard key={group.name} group={group} photos={photos} flipped={i % 2 === 1} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Service Teams */}
+      <section className="section-pad bg-gray-50">
         <div className="container-max">
           <div className="text-center mb-12">
             <p className="text-primary font-bold text-sm uppercase tracking-widest mb-2">Serve</p>
@@ -254,7 +333,7 @@ export default function GroupsPage() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {SERVICE_TEAMS.map(t => (
-              <div key={t.name} className="bg-gray-50 rounded-2xl p-5 border border-gray-100 hover:border-pink-200 hover:shadow-md transition-all">
+              <div key={t.name} className="bg-white rounded-2xl p-5 border border-gray-100 hover:border-pink-200 hover:shadow-md transition-all">
                 <h3 className="font-bold text-gray-900 text-sm mb-1">{t.name}</h3>
                 <p className="text-gray-500 text-xs leading-relaxed">{t.desc}</p>
               </div>
@@ -263,13 +342,15 @@ export default function GroupsPage() {
         </div>
       </section>
 
-      {/* CTA */}
+      {/* The one invitation to get connected, for every group above */}
       <section className="section-pad bg-gradient-brand text-center">
         <div className="container-max max-w-2xl mx-auto">
-          <h2 className="text-3xl font-bold text-white mb-4">Not Sure Where to Start?</h2>
-          <p className="text-white/80 mb-8">We're happy to help you find the right place to connect. Send us a message and we'll point you in the right direction.</p>
-          <Link to="/contact" className="px-8 py-3.5 bg-white text-purple-700 font-bold rounded-full hover:bg-gray-50 transition-colors shadow">
-            Get in Touch
+          <h2 className="text-3xl font-bold text-white mb-4">Ready to Get Connected?</h2>
+          <p className="text-white/80 mb-8">
+            Tell us which group caught your eye — or that you're not sure yet — and we'll introduce you to the right people.
+          </p>
+          <Link to="/contact" className="px-8 py-3.5 bg-white text-purple-700 font-bold rounded-full hover:bg-gray-50 transition-colors shadow inline-block">
+            Get Connected
           </Link>
         </div>
       </section>

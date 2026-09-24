@@ -53,3 +53,21 @@ export function coverForAlbum(images: readonly GalleryImage[], album: string): G
   const inAlbum = images.filter(image => image.album === album);
   return inAlbum.find(image => image.is_cover === 1) ?? inAlbum[0] ?? null;
 }
+
+/**
+ * Every photo in `album`, cover first and the rest newest-first behind it.
+ *
+ * Capped because a card slideshow mounts all of its slides at once: an album
+ * with fifty photos would otherwise pull fifty images down for a card the
+ * visitor may never even scroll past.
+ */
+export function photosForAlbum(
+  images: readonly GalleryImage[],
+  album: string,
+  limit = 8
+): GalleryImage[] {
+  const inAlbum = images.filter(image => image.album === album);
+  const cover = inAlbum.find(image => image.is_cover === 1);
+  const rest = inAlbum.filter(image => image !== cover);
+  return (cover ? [cover, ...rest] : rest).slice(0, limit);
+}
