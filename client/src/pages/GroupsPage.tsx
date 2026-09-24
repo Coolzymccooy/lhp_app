@@ -267,13 +267,22 @@ export default function GroupsPage() {
 
   return (
     <main className="pt-20">
-      {/* Hero */}
-      <div className="relative h-64 md:h-80 overflow-hidden">
+      {/* Hero. Taller on wide screens than the fixed-artwork heroes elsewhere,
+          because this photo comes from the gallery and changes whenever the
+          covers do: at 320px on a 1500px screen a band only ~30% of the photo
+          survives `cover`, and whoever happens to be standing at the top of
+          that month's picture loses their head. */}
+      <div className="relative h-64 md:h-80 lg:h-[24rem] overflow-hidden">
         <img
           src={heroPhoto?.url ?? '/assets/youngadults.webp'}
           alt="Groups & Ministries"
           className="img-cover"
-          style={{ objectPosition: heroPhoto ? 'center' : 'center 20%' }}
+          // A hero band is far wider than it is tall, so `cover` keeps only a
+          // narrow horizontal slice of the photo. Centring that slice cuts
+          // people's heads off, because faces sit above the middle of a group
+          // shot — hence the upward bias. Stock artwork keeps its own hand-
+          // tuned offset.
+          style={{ objectPosition: heroPhoto ? 'center 25%' : 'center 20%' }}
         />
         <div className="absolute inset-0 bg-gradient-to-r from-black/80 to-black/40" />
         <div className="absolute inset-0 flex items-center">
