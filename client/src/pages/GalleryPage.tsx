@@ -1,25 +1,37 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
-import { X, ChevronLeft, ChevronRight, Camera } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight, Camera, LayoutGrid, Images } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useGalleryImages, type GalleryImage } from '../hooks/useGalleryImages';
-import { UNFILED_LABEL, orderAlbums } from '../constants/albums';
+import { useGalleryImages } from '../hooks/useGalleryImages';
+import { orderAlbums } from '../constants/albums';
+import { albumOf, formatDate } from '../lib/gallery';
+import AlbumStory from '../components/ui/AlbumStory';
 
 const ALL_ALBUMS = 'All';
 
-function albumOf(image: GalleryImage): string {
-  return image.album?.trim() ? image.album : UNFILED_LABEL;
-}
+type View = 'slides' | 'grid';
+const VIEW_KEY = 'lhp.gallery.view';
 
-function formatDate(value: string): string {
-  const date = new Date(value.includes('T') ? value : value.replace(' ', 'T') + 'Z');
-  if (Number.isNaN(date.getTime())) return '';
-  return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+/**
+ * The viewer's preferred way of reading an album, remembered between visits.
+ *
+ * Storage can be missing or throw outright — private windows, blocked site
+ * data — so every access is guarded and the default simply stands.
+ */
+function storedView(): View {
+  try {
+    const value = localStorage.getItem(VIEW_KEY);
+    return value === 'grid' || value === 'slides' ? value : 'slides';
+  } catch {
+    return 'slides';
+  }
 }
 
 export default function GalleryPage() {
   const { images, loading } = useGalleryImages();
   const [filter, setFilter] = useState<string>(ALL_ALBUMS);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const [slideIndex, setSlideIndex] = useState(0);
+  const [viewPref, setViewPref] = useState<View>(storedView);
 
   // Only offer albums that actually hold photos, so the filter never leads to
   // an empty page. Legacy/blank albums collapse into one "Unfiled" tab.
@@ -33,6 +45,21 @@ export default function GalleryPage() {
     [images, filter]
   );
 
+  // "All" is a scanning view — someone who has not picked an album yet wants to
+  // see everything at once, and a slideshow would hide all but one photo from
+  // them. Once they choose an album they have asked for that album's story, so
+  // the slides lead unless they have said otherwise.
+  const view: View = filter === ALL_ALBUMS ? 'grid' : viewPref;
+
+  const chooseView = useCallback((next: View) => {
+    setViewPref(next);
+    try {
+      localStorage.setItem(VIEW_KEY, next);
+    } catch {
+      // Preference simply will not persist; the session still honours it.
+    }
+  }, []);
+
   const selected = selectedIndex === null ? null : visibleImages[selectedIndex] ?? null;
 
   const step = useCallback((delta: number) => {
@@ -42,16 +69,23 @@ export default function GalleryPage() {
     });
   }, [visibleImages.length]);
 
+  // Closing the lightbox leaves the story on whichever photo they ended on,
+  // rather than snapping back to where they opened it.
+  const closeLightbox = useCallback(() => {
+    if (view === 'slides' && selectedIndex !== null) setSlideIndex(selectedIndex);
+    setSelectedIndex(null);
+  }, [view, selectedIndex]);
+
   useEffect(() => {
     if (selected === null) return;
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setSelectedIndex(null);
+      if (e.key === 'Escape') closeLightbox();
       if (e.key === 'ArrowRight') step(1);
       if (e.key === 'ArrowLeft') step(-1);
     };
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [selected, step]);
+  }, [selected, step, closeLightbox]);
 
   // The lightbox covers the page: stop the page behind it from scrolling, and
   // flag the body so the fixed header and floating buttons hide (see the
@@ -69,6 +103,7 @@ export default function GalleryPage() {
 
   function selectAlbum(album: string) {
     setSelectedIndex(null);
+    setSlideIndex(0);
     setFilter(album);
   }
 
@@ -114,10 +149,36 @@ export default function GalleryPage() {
               </button>
             ))}
           </div>
+
+          {/* Kept in plain sight rather than tucked in a menu: the grid is how
+              someone finds one particular photo, and they should never have to
+              hunt for the way back to it. */}
+          {filter !== ALL_ALBUMS && visibleImages.length > 1 && (
+            <div className="container-max flex justify-center mt-4">
+              <div className="inline-flex items-center gap-1 p-1 rounded-full bg-white border border-gray-200 shadow-sm">
+                {([
+                  { value: 'slides' as const, label: 'Slides', Icon: Images },
+                  { value: 'grid' as const, label: 'Grid', Icon: LayoutGrid },
+                ]).map(({ value, label, Icon }) => (
+                  <button
+                    key={value}
+                    onClick={() => chooseView(value)}
+                    aria-pressed={view === value}
+                    className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold transition-colors ${
+                      view === value ? 'bg-primary text-white' : 'text-gray-500 hover:text-primary'
+                    }`}
+                  >
+                    <Icon className="w-3.5 h-3.5" />
+                    {label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
         </motion.div>
       )}
 
-      {/* Grid */}
+      {/* Photos — slides or grid */}
       <div className="px-5 md:px-6 pt-6">
         <div className="container-max">
           {loading ? (
@@ -129,6 +190,20 @@ export default function GalleryPage() {
               <Camera className="w-16 h-16 mx-auto text-gray-300 mb-4" />
               <p className="text-gray-600 text-lg">No photos yet. Check back soon!</p>
             </div>
+          ) : view === 'slides' ? (
+            <motion.div
+              key={`${filter}-slides`}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, ease: 'easeOut' }}
+            >
+              <AlbumStory
+                images={visibleImages}
+                index={slideIndex}
+                onIndexChange={setSlideIndex}
+                onExpand={() => setSelectedIndex(Math.min(slideIndex, visibleImages.length - 1))}
+              />
+            </motion.div>
           ) : (
             <motion.div
               key={filter}
@@ -188,13 +263,13 @@ export default function GalleryPage() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
             className="fixed inset-0 bg-black/90 z-[60] flex items-center justify-center p-4"
-            onClick={() => setSelectedIndex(null)}
+            onClick={closeLightbox}
             role="dialog"
             aria-modal="true"
             aria-label={selected.caption || 'Gallery photo'}
           >
             <button
-              onClick={() => setSelectedIndex(null)}
+              onClick={closeLightbox}
               className="absolute top-4 right-4 bg-white/10 hover:bg-white/25 text-white p-2 rounded-full transition-colors z-20"
               aria-label="Close"
             >
