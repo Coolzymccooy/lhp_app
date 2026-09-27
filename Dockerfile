@@ -19,9 +19,20 @@ COPY . .
 # skips @rolldown/binding-linux-x64-gnu (npm optional-deps bug npm/cli#4828) and the
 # build crashes with "Cannot find native binding". A fresh install resolves the
 # correct linux-x64 native deps (rolldown, better-sqlite3) for this platform.
-# install:all passes --include=dev so tsc/vite are available for the build.
-RUN rm -f package-lock.json client/package-lock.json server/package-lock.json \
- && npm run install:all \
+# --include=dev keeps tsc/vite available for the build.
+#
+# Installed with `cd` rather than `npm install --prefix`, and on a pinned npm.
+# The npm bundled with node:22-bookworm (10.9.9) crashes partway through the
+# server install with "Cannot read properties of null (reading 'edgesOut')" —
+# an arborist bug reached via the --prefix path. Because the lockfiles are
+# deleted above, each build re-resolves every range fresh, so a build that
+# worked last month can fail today with no change to this repo. Pinning npm
+# keeps the resolver itself fixed even though the dependency ranges float.
+RUN npm install -g npm@11 \
+ && rm -f package-lock.json client/package-lock.json server/package-lock.json \
+ && npm install --include=dev \
+ && (cd client && npm install --include=dev) \
+ && (cd server && npm install --include=dev) \
  && npm run build
 
 ENV NODE_ENV=production
