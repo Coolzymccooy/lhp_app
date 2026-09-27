@@ -112,6 +112,25 @@ describe('removing the published default admin', () => {
     expect(admins()).toEqual([LEGACY_EMAIL]);
   });
 
+  it('rotates the password when ADMIN_EMAIL is set to the legacy address', () => {
+    // Otherwise this configuration is a trap: seedAdmin sees the account
+    // already exists and returns without applying ADMIN_PASSWORD, and the
+    // cleanup below sees no other admin and keeps the row — so the published
+    // password survives every restart while appearing to be configured.
+    insertLegacyAdmin();
+    process.env.ADMIN_EMAIL = LEGACY_EMAIL;
+    process.env.ADMIN_PASSWORD = 'a-new-password';
+
+    schema.initDb();
+
+    expect(admins()).toEqual([LEGACY_EMAIL]);
+    const row = schema.getDb()
+      .prepare('SELECT password_hash FROM admin_users WHERE email = ?')
+      .get(LEGACY_EMAIL) as { password_hash: string };
+    expect(bcrypt.compareSync('a-new-password', row.password_hash)).toBe(true);
+    expect(bcrypt.compareSync('Admin@LHP2024!', row.password_hash)).toBe(false);
+  });
+
   it('is idempotent — a second boot changes nothing', () => {
     insertLegacyAdmin();
     insertRealAdmin();

@@ -374,6 +374,18 @@ function removeInsecureDefaultAdmin(db: Database.Database) {
     .get(INSECURE_DEFAULT_ADMIN_EMAIL) as { count: number };
 
   if (others.count === 0) {
+    // Configuring ADMIN_EMAIL as the legacy address would otherwise be a trap:
+    // seedAdmin finds the account already present and returns without applying
+    // ADMIN_PASSWORD, and the warning below repeats on every restart while the
+    // published password quietly keeps working. Rotate it instead — the
+    // address is harmless, it is the known password that is the problem.
+    if (process.env.ADMIN_EMAIL === INSECURE_DEFAULT_ADMIN_EMAIL && process.env.ADMIN_PASSWORD) {
+      db.prepare('UPDATE admin_users SET password_hash = ? WHERE email = ?')
+        .run(bcrypt.hashSync(process.env.ADMIN_PASSWORD, 12), INSECURE_DEFAULT_ADMIN_EMAIL);
+      console.log(`[security] rotated the password for ${INSECURE_DEFAULT_ADMIN_EMAIL} to the configured one.`);
+      return;
+    }
+
     console.warn(
       `[security] ${INSECURE_DEFAULT_ADMIN_EMAIL} is still present and its password is public. ` +
       'It is the only admin account, so it has been left in place rather than locking you out. ' +
