@@ -613,7 +613,9 @@ router.patch('/gallery/:id/cover', (req: AuthRequest, res: Response) => {
     db.prepare('UPDATE gallery_images SET is_cover = 0 WHERE album = ?').run(album);
     db.prepare('UPDATE gallery_images SET is_cover = 1 WHERE id = ?').run(id);
   });
-  setCover(req.params.id, row.album);
+  // Express 5 types a route param as string | string[]; for a single :id
+  // segment it is always a string at runtime.
+  setCover(String(req.params.id), row.album);
 
   res.json({ success: true });
 });
