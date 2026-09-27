@@ -33,7 +33,7 @@ export default function PrayerPage() {
     <main className="pt-20">
       {/* Hero Banner */}
       <div className="relative h-56 md:h-72 overflow-hidden">
-        <img src="/assets/arise.webp" alt="Prayer" className="img-cover" style={{ objectPosition: 'center 30%' }} />
+        <img src="/assets/arise.webp" alt="Prayer" className="img-cover" style={{ objectPosition: 'center 50%' }} />
         <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/30" />
         <div className="absolute inset-0 flex items-center">
           <div className="container-max px-6">

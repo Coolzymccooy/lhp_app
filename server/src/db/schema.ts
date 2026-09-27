@@ -2,6 +2,7 @@ import Database from 'better-sqlite3';
 import path from 'path';
 import fs from 'fs';
 import bcrypt from 'bcryptjs';
+import { RETIRED_ALBUMS } from '../lib/albums';
 
 // Use in-memory database for tests, file-based otherwise.
 // In production set DATA_DIR to a persistent volume (e.g. a Render disk) so the
@@ -290,6 +291,28 @@ export function initDb() {
     CREATE INDEX IF NOT EXISTS idx_attendance_date ON attendance(service_date);
     CREATE INDEX IF NOT EXISTS idx_gallery_created ON gallery_images(created_at);
   `);
+
+  // Migrations for columns added after a table first shipped. SQLite has no
+  // "ADD COLUMN IF NOT EXISTS", so re-running throws once the column is there.
+  const addColumn = (table: string, definition: string) => {
+    try {
+      db.exec(`ALTER TABLE ${table} ADD COLUMN ${definition}`);
+    } catch {
+      // Column already present
+    }
+  };
+
+  // Marks the photo that represents its album on the public site (one per
+  // album). Without it the album's newest upload was used, which picked
+  // whatever happened to be last rather than the best picture.
+  addColumn('gallery_images', 'is_cover INTEGER NOT NULL DEFAULT 0');
+
+  // Re-file photos whose album was renamed, so they stay visible instead of
+  // falling into "Unfiled". Idempotent: once moved, the WHERE matches nothing.
+  const renameAlbum = db.prepare('UPDATE gallery_images SET album = ? WHERE album = ?');
+  for (const [oldName, newName] of Object.entries(RETIRED_ALBUMS)) {
+    renameAlbum.run(newName, oldName);
+  }
 
   // Seed default admin if none exists
   const adminCount = db.prepare('SELECT COUNT(*) as count FROM admin_users').get() as { count: number };

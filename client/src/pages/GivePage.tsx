@@ -269,7 +269,7 @@ export default function GivePage() {
     <main className="pt-20">
       {/* Hero */}
       <div className="relative h-64 md:h-80 overflow-hidden">
-        <img src="/assets/hands_giving.webp" alt="Give" className="img-cover" style={{ objectPosition: 'center 50%' }} />
+        <img src="/assets/hands_giving.webp" alt="Give" className="img-cover" style={{ objectPosition: 'center 40%' }} />
         <div className="absolute inset-0 bg-gradient-to-r from-black/80 to-black/40" />
         <div className="absolute inset-0 flex items-center">
           <div className="container-max px-6">

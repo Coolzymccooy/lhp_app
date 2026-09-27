@@ -32,7 +32,7 @@ const PASTORS = [
 const TEAM = [
   { name: 'Leadership Team', role: 'Serving faithfully together' },
   { name: 'Children\'s Ministry', role: 'Nurturing the next generation' },
-  { name: 'Youth & Teen Fellowship', role: 'Empowering young people' },
+  { name: 'Faith Igniters', role: 'Empowering young people' },
   { name: 'Worship Team', role: 'Leading the church in praise' },
   { name: 'iCare Ministry', role: 'Pastoral care & counselling' },
   { name: 'Administration', role: 'Communications & operations' },
@@ -43,7 +43,7 @@ export default function SeniorPastorsPage() {
     <main className="pt-20">
       {/* Hero */}
       <div className="relative h-64 md:h-80 overflow-hidden">
-        <img src="/assets/seniorpsts.webp" alt="Our Pastors" className="img-cover" style={{ objectPosition: 'center 25%' }} />
+        <img src="/assets/seniorpsts.webp" alt="Our Pastors" className="img-cover" style={{ objectPosition: 'center 20%' }} />
         <div className="absolute inset-0 bg-gradient-to-r from-black/80 to-black/40" />
         <div className="absolute inset-0 flex items-center">
           <div className="container-max px-6">

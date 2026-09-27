@@ -301,7 +301,18 @@ router.post('/push-subscribe', validate(pushSubscribeSchema), (req: Request, res
 // ── Gallery (public) ──────────────────────────────────────────────────────────
 router.get('/gallery', (_req: Request, res: Response) => {
   const db = getDb();
-  const rows = db.prepare('SELECT id, url, caption, album, created_at FROM gallery_images ORDER BY created_at DESC LIMIT 200').all();
+  // The newest 200 photos, plus every album cover regardless of age. Without
+  // the second clause a cover that has been pushed out of the window by newer
+  // uploads never reaches the public site, so the album silently falls back to
+  // a newer photo — or to stock artwork when the whole album is older — and
+  // the admin's choice appears to do nothing.
+  const rows = db.prepare(`
+    SELECT id, url, caption, album, is_cover, created_at
+    FROM gallery_images
+    WHERE is_cover = 1
+       OR id IN (SELECT id FROM gallery_images ORDER BY created_at DESC LIMIT 200)
+    ORDER BY created_at DESC
+  `).all();
   res.json({ success: true, data: rows });
 });
 

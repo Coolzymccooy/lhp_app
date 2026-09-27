@@ -20,6 +20,26 @@ export const site = {
     youtube: 'https://www.youtube.com/@rccgtlp1',
     x: 'https://x.com/rccgtlp1',
   },
+  /**
+   * Lighthouse Praise — the church's biggest event of the year.
+   *
+   * Every field below is null until the church confirms it. The page hides any
+   * section whose field is null rather than showing a guess: invented dates or
+   * descriptions for a real event are worse than an honest "to be confirmed".
+   */
+  lighthousePraise: {
+    /** One line under the title, e.g. "A night of praise with the whole church family". */
+    tagline: null as string | null,
+    /** When it runs, in words, e.g. "Saturday 13 December 2026, 5:00 PM". */
+    when: null as string | null,
+    /** Where, when it is not the usual church address. */
+    where: null as string | null,
+    /** Two or three sentences on what the event is. */
+    description: null as string | null,
+    /** Booking or ticket link; null when it is free and unticketed. */
+    bookingUrl: null as string | null,
+  },
+
   fellowshipImages: {
     youngAdults: '/assets/youngadults.webp',
     teens: '/assets/teenfellowship.webp',

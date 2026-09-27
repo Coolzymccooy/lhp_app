@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { MapPin, Clock, Heart, Users, BookOpen, Phone, ChevronRight, Monitor, CreditCard, Film, Globe, Bot } from 'lucide-react';
 import { site } from '../content/site';
 import api from '../api/client';
+import { useGalleryImages, coverForAlbum } from '../hooks/useGalleryImages';
 
 interface Event {
   id: string;
@@ -33,11 +34,14 @@ function InstagramSvg({ className }: { className?: string }) {
 import HeroSlider from '../components/ui/HeroSlider';
 import toast from 'react-hot-toast';
 
-// NOTE: Replace these with a racially diverse photo set when the church supplies them — just drop files in /public/assets and update site.fellowshipImages.
+// `img` here is stock artwork used only as a fallback. Each card's `name`
+// doubles as its gallery album, so as soon as the church uploads a real photo
+// to that album (admin → Gallery) the card switches to it automatically — see
+// ministriesWithRealPhotos below. No code change needed when photos arrive.
 const MINISTRIES = [
   { name: "Children's Ministry", img: '/assets/family.webp', desc: 'Fun, safe, Spirit-filled for ages 0–12', to: '/groups' },
-  { name: 'Teen Fellowship', img: site.fellowshipImages.teens, desc: 'Discipleship & community for ages 13–17', to: '/groups' },
-  { name: 'Young Adults', img: site.fellowshipImages.youngAdults, desc: 'Faith Igniters · for 18–35s', to: '/groups' },
+  { name: 'Faith Igniters', img: site.fellowshipImages.teens, desc: 'Teens & young adults · ages 13–35', to: '/groups' },
+  { name: 'Cell Groups', img: '/assets/bible.webp', desc: 'Weekend groups near where you live', to: '/groups' },
   { name: "Men's Fellowship", img: site.fellowshipImages.men, desc: 'Brotherhood, prayer & accountability', to: '/groups' },
   { name: "Women's Fellowship", img: site.fellowshipImages.women, desc: 'Community, mentoring & sisterhood', to: '/groups' },
   { name: 'iCare Ministry', img: '/assets/counseling.webp', desc: 'Pastoral care & visitation', to: '/icare' },
@@ -61,6 +65,17 @@ export default function HomePage() {
   const [need, setNeed] = useState('');
   const [nextStep, setNextStep] = useState<{ message: string; url: string } | null>(null);
   const [upcomingEvents, setUpcomingEvents] = useState<Event[]>([]);
+  const { images: galleryImages } = useGalleryImages();
+
+  // Prefer a real church photo from the matching gallery album; keep the stock
+  // artwork for any ministry the church has not photographed yet.
+  const ministriesWithRealPhotos = useMemo(
+    () => MINISTRIES.map(ministry => {
+      const photo = coverForAlbum(galleryImages, ministry.name);
+      return photo ? { ...ministry, img: photo.url } : ministry;
+    }),
+    [galleryImages]
+  );
 
   useEffect(() => {
     api.get('/forms/events')
@@ -182,7 +197,7 @@ export default function HomePage() {
             <p className="text-gray-500 text-sm mt-3 max-w-xl mx-auto">Something for everyone, whatever your age or stage of life.</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {MINISTRIES.map(m => (
+            {ministriesWithRealPhotos.map(m => (
               <Link key={m.name} to={m.to} className="group bg-white rounded-2xl overflow-hidden border border-gray-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
                 <div className="aspect-[4/3] overflow-hidden">
                   <img src={m.img} alt={m.name} className="img-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />

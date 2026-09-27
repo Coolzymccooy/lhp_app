@@ -11,6 +11,7 @@ const NAV_LINKS = [
     children: [
       { label: 'About Us', to: '/about' },
       { label: 'Groups & Ministries', to: '/groups' },
+      { label: 'Lighthouse Praise', to: '/lighthouse-praise' },
       { label: 'Events', to: '/events' },
       { label: 'Gallery', to: '/gallery' },
       { label: 'FAQ', to: '/faq' },
