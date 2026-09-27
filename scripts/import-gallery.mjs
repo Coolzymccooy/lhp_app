@@ -42,7 +42,7 @@ const FOLDERS = [
   },
   {
     dir: 'LH_teens_images',
-    album: 'Teen Fellowship',
+    album: 'Faith Igniters',
     caption: 'Teens in worship',
     cover: 'IMG_2691.PNG',
   },

@@ -126,7 +126,7 @@ export default function GalleryPage() {
       </div>
 
       {/* Album filter */}
-      {!loading && images.length > 0 && albumTabs.length > 2 && (
+      {!loading && images.length > 0 && albumTabs.length > 1 && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
