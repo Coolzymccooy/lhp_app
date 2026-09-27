@@ -23,7 +23,11 @@ beforeAll(() => {
 
 beforeEach(() => {
   resetDb();
-  // Create a valid JWT token
+  // requireAuth checks the token's admin still exists, so the row has to be
+  // recreated after every reset — a signature alone no longer authenticates.
+  getDb()
+    .prepare('INSERT INTO admin_users (id, email, password_hash, name, role) VALUES (?, ?, ?, ?, ?)')
+    .run('test-user', 'test@test.com', 'unused-hash', 'Test User', 'admin');
   token = jwt.sign(
     { id: 'test-user', email: 'test@test.com', name: 'Test User', role: 'admin' },
     process.env.JWT_SECRET!,
