@@ -314,17 +314,12 @@ export function initDb() {
     renameAlbum.run(newName, oldName);
   }
 
-  // Seed default admin if none exists
-  const adminCount = db.prepare('SELECT COUNT(*) as count FROM admin_users').get() as { count: number };
-  if (adminCount.count === 0) {
-    const hash = bcrypt.hashSync('Admin@LHP2024!', 12);
-    db.prepare(
-      `INSERT INTO admin_users (id, email, password_hash, name, role)
-       VALUES (?, ?, ?, ?, ?)`
-    ).run('admin-001', 'admin@lighthouseparish.org', hash, 'LHP Admin', 'super_admin');
-    console.log('✅ Default admin created: admin@lighthouseparish.org / Admin@LHP2024!');
-    console.log('⚠️  Change this password immediately after first login!');
-  }
+  // No admin is seeded by default. This used to create
+  // admin@lighthouseparish.org with a password written in plain text a few
+  // lines below it — in a public repository — which meant anyone who read the
+  // source could sign in to any deployment that had never been touched.
+  // Administrators now come from ADMIN_EMAIL / ADMIN_PASSWORD only; see
+  // seedAdmin below.
 
   // Seed sermons from existing data
   const sermonCount = db.prepare('SELECT COUNT(*) as count FROM sermons').get() as { count: number };
@@ -342,10 +337,53 @@ export function initDb() {
   // Seed admin from environment if configured
   seedAdmin(db);
 
+  // Runs after seedAdmin so that setting ADMIN_EMAIL/ADMIN_PASSWORD and
+  // restarting is enough to clear the old account in one go.
+  removeInsecureDefaultAdmin(db);
+
   // Seed sample events
   seedEvents(db);
 
   console.log('✅ Database initialized');
+}
+
+/** The account earlier versions seeded, with its password published in this repo. */
+const INSECURE_DEFAULT_ADMIN_EMAIL = 'admin@lighthouseparish.org';
+
+/**
+ * Delete the old default admin from databases that already have it.
+ *
+ * Dropping the seed only stops *new* installs getting the account; every
+ * deployment created before that still carries the row, and its password is
+ * readable by anyone who opens this repository. So it has to be removed from
+ * the data, not just the code.
+ *
+ * It is kept when it is the only administrator, because deleting it would
+ * leave nobody able to sign in and no way back without shell access to the
+ * server. Set ADMIN_EMAIL and ADMIN_PASSWORD and restart: seedAdmin creates a
+ * real account first, and this then clears the old one on the same boot.
+ */
+function removeInsecureDefaultAdmin(db: Database.Database) {
+  const legacy = db
+    .prepare('SELECT id FROM admin_users WHERE email = ?')
+    .get(INSECURE_DEFAULT_ADMIN_EMAIL) as { id: string } | undefined;
+  if (!legacy) return;
+
+  const others = db
+    .prepare('SELECT COUNT(*) as count FROM admin_users WHERE email != ?')
+    .get(INSECURE_DEFAULT_ADMIN_EMAIL) as { count: number };
+
+  if (others.count === 0) {
+    console.warn(
+      `[security] ${INSECURE_DEFAULT_ADMIN_EMAIL} is still present and its password is public. ` +
+      'It is the only admin account, so it has been left in place rather than locking you out. ' +
+      'Set ADMIN_EMAIL and ADMIN_PASSWORD and restart to replace it.'
+    );
+    return;
+  }
+
+  db.prepare('DELETE FROM admin_users WHERE email = ?').run(INSECURE_DEFAULT_ADMIN_EMAIL);
+  console.log(`[security] removed the old default admin account (${INSECURE_DEFAULT_ADMIN_EMAIL}).`);
 }
 
 function seedAdmin(db: Database.Database) {
